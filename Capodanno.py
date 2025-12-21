@@ -14,68 +14,40 @@ with open(config_path, "w") as f:
 st.set_page_config(page_title="Sdrogo Games 2025", page_icon="🔥", layout="wide")
 
 # ============================================
-# CSS COMPLETO E DEFINITIVO (SDROGO STYLE)
+# CSS COMPLETO 
 # ============================================
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap');
 
-/* Variabili Globali */
 :root {
     --primary-bg: #0f0c29;
     --accent-gold: #f09819;
     --accent-purple: #8e2de2;
-    --text-white: #ffffff;
 }
 
-/* 1. RESET SFONDO E TESTO */
 html, body, .stApp, [data-testid="stAppViewContainer"] {
     background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
-    color: var(--text-white) !important;
+    color: white !important;
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Forza il colore bianco per tutti i testi generici */
-.stApp label, .stApp p, .stApp span, .stApp li {
-    color: var(--text-white) !important;
+.stApp label, .stApp p, .stApp span, .stApp li, .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
+    color: white !important;
 }
 
-/* 2. SIDEBAR */
-[data-testid="stSidebar"] {
-    background-color: rgba(15, 12, 41, 0.98) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-[data-testid="stSidebar"] * {
-    color: var(--text-white) !important;
-}
-
-/* 3. TITOLI PRINCIPALI (SYNCROPATE) */
-.main-title {
-    font-family: 'Syncopate', sans-serif;
-    font-weight: 700;
-    font-size: 3.5rem;
-    background: linear-gradient(90deg, var(--accent-gold), #edde5d);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-transform: uppercase;
-    display: block;
-}
-
-/* Classi per i colori specifici richiesti */
+/* Classi per i colori richiesti */
 .text-gold { color: var(--accent-gold) !important; }
 .text-purple { color: var(--accent-purple) !important; }
 
-/* 4. GLASS CARDS */
 .glass-card {
     background: rgba(255, 255, 255, 0.08);
     padding: 2.5rem;
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(15px);
-    margin-bottom: 2rem;
 }
 
-/* 5. PULSANTI (SUBMIT, START, RESET) */
 .stButton > button {
     background: linear-gradient(45deg, var(--accent-purple), #4a00e0) !important;
     color: white !important;
@@ -83,58 +55,17 @@ html, body, .stApp, [data-testid="stAppViewContainer"] {
     padding: 0.6rem 2rem !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    letter-spacing: 1.5px !important;
-    border-radius: 10px !important;
-    transition: 0.3s ease !important;
-    width: auto !important;
-}
-.stButton > button:hover {
-    transform: translateY(-3px) !important;
-    box-shadow: 0 8px 20px rgba(142, 45, 226, 0.5) !important;
 }
 
-/* 6. LINK AI GIOCHI */
-.game-link-btn {
-    display: block;
-    padding: 1rem;
-    background: linear-gradient(45deg, var(--accent-purple), #4a00e0) !important;
-    color: white !important;
-    text-align: center;
-    border-radius: 8px;
-    font-weight: 700;
-    text-decoration: none;
-    text-transform: uppercase;
-    transition: 0.3s ease;
-}
-.game-link-btn:hover {
-    box-shadow: 0 0 20px rgba(142, 45, 226, 0.6);
-    transform: scale(1.02);
+/* FORZA COLORE BARRE ISTOGRAMMA (SVG) */
+rect {
+    fill: var(--accent-purple) !important;
 }
 
-/* 7. WIDGET INPUT (SELECTBOX, TABS) */
-div[data-baseweb="select"] > div {
-    background-color: rgba(255, 255, 255, 0.07) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-div[data-baseweb="select"] * { color: white !important; }
-
-button[data-baseweb="tab"] p {
-    color: rgba(255, 255, 255, 0.6) !important;
-}
-button[aria-selected="true"] p {
-    color: var(--accent-gold) !important;
-    font-weight: bold !important;
-}
-
-/* 8. FIX GRAFICI */
-canvas {
-    filter: drop-shadow(0 0 5px rgba(255,255,255,0.1));
-}
-
-/* Messaggi di successo */
-.stAlert {
-    background-color: rgba(0, 255, 136, 0.1) !important;
-    color: white !important;
+/* Sidebar Fix */
+[data-testid="stSidebar"] {
+    background-color: rgba(15, 12, 41, 0.98) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 </style>
 """, unsafe_allow_html=True)
