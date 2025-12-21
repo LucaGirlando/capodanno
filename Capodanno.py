@@ -14,40 +14,69 @@ with open(config_path, "w") as f:
 st.set_page_config(page_title="Sdrogo Games 2025", page_icon="🔥", layout="wide")
 
 # ============================================
-# CSS COMPLETO 
+# CSS COMPLETO E DEFINITIVO (STRUTTURA TOTALE)
 # ============================================
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap');
 
+/* Variabili Globali */
 :root {
     --primary-bg: #0f0c29;
     --accent-gold: #f09819;
     --accent-purple: #8e2de2;
+    --text-white: #ffffff;
+    --glass: rgba(255, 255, 255, 0.08);
 }
 
+/* 1. RESET SFONDO E TESTO GENERALE */
 html, body, .stApp, [data-testid="stAppViewContainer"] {
     background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
-    color: white !important;
+    color: var(--text-white) !important;
     font-family: 'Montserrat', sans-serif;
 }
 
+/* Forziamo il bianco su tutti i testi e label nativi */
 .stApp label, .stApp p, .stApp span, .stApp li, .stApp h1, .stApp h2, .stApp h3, .stApp h4 {
-    color: white !important;
+    color: var(--text-white) !important;
 }
 
-/* Classi per i colori richiesti */
+/* 2. SIDEBAR */
+[data-testid="stSidebar"] {
+    background-color: rgba(15, 12, 41, 0.98) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+[data-testid="stSidebar"] * {
+    color: var(--text-white) !important;
+}
+
+/* 3. TITOLI PRINCIPALI */
+.main-title {
+    font-family: 'Syncopate', sans-serif;
+    font-weight: 700;
+    font-size: 3.5rem;
+    background: linear-gradient(90deg, var(--accent-gold), #edde5d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    display: block;
+}
+
+/* Classi per colori specifici Dashboard */
 .text-gold { color: var(--accent-gold) !important; }
 .text-purple { color: var(--accent-purple) !important; }
 
+/* 4. GLASS CARDS */
 .glass-card {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--glass);
     padding: 2.5rem;
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(15px);
+    margin-bottom: 2rem;
 }
 
+/* 5. PULSANTI STREAMLIT (Submit, Start, Reset) */
 .stButton > button {
     background: linear-gradient(45deg, var(--accent-purple), #4a00e0) !important;
     color: white !important;
@@ -55,18 +84,51 @@ html, body, .stApp, [data-testid="stAppViewContainer"] {
     padding: 0.6rem 2rem !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    border-radius: 10px !important;
+    transition: 0.3s ease !important;
+}
+.stButton > button:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 20px rgba(142, 45, 226, 0.5) !important;
 }
 
-/* FORZA COLORE BARRE ISTOGRAMMA (SVG) */
+/* 6. LINK AI GIOCHI */
+.game-link-btn {
+    display: block;
+    padding: 1rem;
+    background: linear-gradient(45deg, var(--accent-purple), #4a00e0) !important;
+    color: white !important;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+/* 7. WIDGET INPUT (Selectbox, Tabs) */
+div[data-baseweb="select"] > div {
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    color: white !important;
+}
+div[role="listbox"] { background-color: #1a1a1a !important; }
+
+button[data-baseweb="tab"] p { color: rgba(255, 255, 255, 0.6) !important; }
+button[aria-selected="true"] p { color: var(--accent-gold) !important; font-weight: bold !important; }
+
+/* 8. FIX TOTALE PER I RETTANGOLI DEI GRAFICI */
+/* Questa regola forza il colore Viola Neon a ogni elemento rettangolare dei grafici SVG */
 rect {
-    fill: var(--accent-purple) !important;
+    fill: #8e2de2 !important; 
 }
 
-/* Sidebar Fix */
-[data-testid="stSidebar"] {
-    background-color: rgba(15, 12, 41, 0.98) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+/* Se i grafici usano percorsi invece di rettangoli */
+path.mark-rect.role-mark {
+    fill: #8e2de2 !important;
 }
+
+.stAlert { background-color: rgba(0, 255, 136, 0.1) !important; color: white !important; }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -314,20 +376,23 @@ elif menu == "Event Betting":
                     st.bar_chart(pair_counts, color="#8e2de2")
                 st.markdown("---")
             
-            # --- TOTAL MVP (Most Voted Person) ---
-            st.markdown("## Overall 'Sdrogo' Ranking")
-            st.caption("Total number of times each person was voted across all categories")
+        # --- TOTAL MVP (Most Voted Person) ---
+        st.markdown("## Overall 'Sdrogo' Ranking")
+        st.caption("Total number of times each person was voted across all categories")
+
+        all_names = []
+        for col in single_bets:
+            all_names.extend(df[col].tolist())
+        for col in pair_bets:
+            for pair in df[col].dropna():
+                all_names.extend(list(pair))
+
+        if all_names:
+            total_counts = pd.Series(all_names).value_counts().reset_index()
+            total_counts.columns = ['Name', 'Total Votes']
             
-            # Appiattiamo tutti i voti (singoli e coppie)
-            all_voted_names = []
-            for col in single_bets:
-                all_voted_names.extend(df[col].tolist())
-            for col in pair_bets:
-                for pair in df[col].dropna():
-                    all_voted_names.extend(list(pair))
-            
-            total_counts = pd.Series(all_voted_names).value_counts()
-            st.bar_chart(total_counts, color="#ffffff")
+            # Il CSS sopra (rect { fill: ... }) forzerà questo grafico a essere viola
+            st.bar_chart(data=total_counts, x='Name', y='Total Votes', color="#8e2de2")
 
 # ============================================
 # LUPUS IN FABULA
