@@ -20,22 +20,22 @@ st.set_page_config(
 )
 
 # ============================================
-# CSS "BLINDATO" (FORZA SFONDO SCURO E COLORI)
+# CSS "BLINDATO"
 # ============================================
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap');
 
-/* 1. FORZA SFONDO SCURO OVUNQUE */
+/* 1. SFONDO SCURO */
 html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
     background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
     color: white !important;
     font-family: 'Montserrat', sans-serif;
 }
 
-/* 2. TESTI GENERICI BIANCHI */
+/* 2. TESTI GENERICI BIANCHI (Default) */
 p, label, span, li, div {
-    color: white !important;
+    color: white;
 }
 
 /* 3. SIDEBAR */
@@ -123,7 +123,7 @@ if 'votes' not in st.session_state:
 # SIDEBAR
 # ============================================
 with st.sidebar:
-    # Stile inline forzato per la sidebar
+    # Colori forzati inline
     st.markdown("<h2 style='color:#f09819 !important; font-weight:900;'>SDROGO HUB</h2>", unsafe_allow_html=True)
     st.markdown("<h4 style='color:#8e2de2 !important; font-size:0.9rem;'>NAVIGATION</h4>", unsafe_allow_html=True)
     menu = st.radio("", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula"], label_visibility="collapsed")
@@ -133,16 +133,16 @@ with st.sidebar:
 # ============================================
 if menu == "Main Dashboard":
     st.markdown("<div class='main-title'>THE MEZZENILE TAKEOVER</div>", unsafe_allow_html=True)
-    # Colore VIOLA forzato inline
+    # COLORE FORZATO: VIOLA
     st.markdown("<h3 style='color:#8e2de2 !important; font-weight:900; letter-spacing:6px; margin-top:0;'>SDROGO NEW YEAR 2025</h3><br>", unsafe_allow_html=True)
     
     st.markdown("<div class='glass-card'>", unsafe_allow_html=True)
-    # Colore ORO forzato inline
+    # COLORE FORZATO: ORO
     st.markdown("<h2 style='color:#f09819 !important; border:none; margin-bottom:30px; font-family: \"Syncopate\", sans-serif;'>MEZZENILE INSIGHTS</h2>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
-    # NOTA: Uso !important dentro lo style di ogni tag per impedire che diventino bianchi
+    # In ogni blocco qui sotto, i colori sono scritti direttamente nel tag HTML
     with col1:
         st.markdown("<h4 style='color:#8e2de2 !important; font-weight:bold;'>Origins</h4>", unsafe_allow_html=True)
         st.markdown("""
@@ -272,24 +272,23 @@ elif menu == "Event Betting":
             st.markdown("<h3 style='color:#8e2de2 !important;'>Pair Predictions (Pick Two)</h3>", unsafe_allow_html=True)
             
             for bet in pair_bets:
-                # MODIFICA: Ho rimosso "max_selections=2" per evitare il popup d'errore nativo
+                # FIX: Rimosso 'max_selections' e i controlli immediati. Nessun errore mentre selezioni.
                 pair = st.multiselect(f"**{bet}:**", people, key=f"{voter_name}_{bet}_pair")
                 
-                # Controllo manuale: se ne selezionano più di 2, mostro warning ma non blocco l'UI
-                if len(pair) > 2:
-                    st.warning("⚠️ You selected more than 2 people! Please remove one.")
-                    current_votes[bet] = None
-                elif len(pair) == 2:
-                    current_votes[bet] = tuple(sorted(pair))
-                else:
-                    current_votes[bet] = None
+                # Salviamo sempre, controlliamo il numero solo al submit
+                current_votes[bet] = tuple(sorted(pair))
 
             if st.button("SUBMIT MY PREDICTIONS", use_container_width=True):
-                # Validazione al momento del submit
-                if any(v is None for v in current_votes.values()):
-                    st.error("Please ensure you picked EXACTLY 2 people for the pair questions!")
+                # Validazione
+                errors = []
+                for bet in pair_bets:
+                    if len(current_votes[bet]) != 2:
+                        errors.append(bet)
+                
+                if errors:
+                    st.error(f"⚠️ Error: You must pick exactly 2 people for: {', '.join(errors)}")
                 else:
-                    # Rimuove voti vecchi dello stesso utente
+                    # Se tutto ok
                     st.session_state.votes = [v for v in st.session_state.votes if v.get('_voter') != voter_name]
                     current_votes['_voter'] = voter_name
                     st.session_state.votes.append(current_votes)
@@ -317,11 +316,13 @@ elif menu == "Event Betting":
             for bet in pair_bets:
                 st.markdown(f"#### {bet}")
                 if bet in df.columns:
-                    # Converte tuple in stringhe per il grafico
-                    pair_series = df[bet].dropna().apply(lambda x: f"{x[0]} & {x[1]}")
-                    pair_counts = pair_series.value_counts().head(3).reset_index()
-                    pair_counts.columns = ['Pair', 'Votes']
-                    st.bar_chart(data=pair_counts, x='Pair', y='Votes', color="#8e2de2")
+                    # Controllo che sia una tupla valida di 2 elementi prima di formattare
+                    valid_pairs = df[bet].dropna()
+                    if not valid_pairs.empty:
+                        pair_series = valid_pairs.apply(lambda x: f"{x[0]} & {x[1]}" if isinstance(x, tuple) and len(x)==2 else None).dropna()
+                        pair_counts = pair_series.value_counts().head(3).reset_index()
+                        pair_counts.columns = ['Pair', 'Votes']
+                        st.bar_chart(data=pair_counts, x='Pair', y='Votes', color="#8e2de2")
                 st.markdown("---")
             
             # Overall Ranking
@@ -337,7 +338,8 @@ elif menu == "Event Betting":
                 for col in pair_bets:
                     if col in df.columns:
                         for pair in df[col].dropna():
-                            all_names.extend(list(pair))
+                            if isinstance(pair, tuple):
+                                all_names.extend(list(pair))
 
                 if all_names:
                     total_counts = pd.Series(all_names).value_counts().reset_index()
