@@ -412,22 +412,31 @@ elif menu == "Lupus in Fabula":
         with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
             st.markdown("""
             <h3 style='color:#8e2de2; margin-top:0;'>🌙 THE NIGHT PHASE</h3>
-            <ol style='color:white; font-size:1rem; line-height:1.6;'>
-                <li><b>"Everyone, close your eyes! Night falls on Mezzenile."</b></li>
-                <li><b>"Cupid, wake up."</b> (Night 1 Only). Choose lovers. <b>"Cupid, sleep."</b></li>
-                <li><b>"Lovers, wake up."</b> (Night 1 Only). Look at each other. <b>"Sleep."</b></li>
-                <li><b>"Werewolves, wake up."</b> Choose victim. <b>"Wolves, sleep."</b></li>
-                <li><b>"Seer, wake up."</b> Inspect one person. <b>"Seer, sleep."</b></li>
-                <li><b>"Doctor, wake up."</b> Protect one person. <b>"Doctor, sleep."</b></li>
-                <li><b>"Witch, wake up."</b> Show victim. Heal? Kill? <b>"Witch, sleep."</b></li>
+            <ol style='color:white; font-size:1rem; line-height:1.8;'>
+                <li><b>"Everyone, close your eyes! Deep sleep falls on Mezzenile."</b> (Make sure no one is peeking).</li>
+                
+                <br><span style='color:#f09819; font-weight:bold;'>--- NIGHT 1 ONLY ---</span>
+                <li><b>"Cupid, wake up."</b> (Wait for eyes open). <b>"Point to the two Lovers."</b> (Cupid points).<br><i>(Narrator: Walk around and <u>GENTLY TAP THE SHOULDERS</u> of the two chosen people).</i><br><b>"Cupid, close your eyes."</b></li>
+                <li><b>"Lovers, wake up."</b> (The two people you touched wake up). <b>"Look at each other. Memorize your partner."</b><br><b>"Lovers, close your eyes."</b></li>
+                <br><span style='color:#f09819; font-weight:bold;'>--- EVERY NIGHT ---</span>
+                
+                <li><b>"Werewolves, wake up."</b> (Wolves open eyes). <b>"Choose your victim."</b> (Wolves must agree silently and point to ONE person).<br><i>(Narrator: Nod to confirm you saw who the victim is).</i><br><b>"Wolves, close your eyes."</b></li>
+                
+                <li><b>"The Seer, wake up."</b> <b>"Point at someone to inspect."</b> (Seer points to a player).<br><i>(Narrator: Show 👎 <b>THUMB DOWN</b> if they are a WOLF, 👍 <b>THUMB UP</b> if they are GOOD/VILLAGER).</i><br><b>"Seer, close your eyes."</b></li>
+                
+                <li><b>"The Doctor, wake up."</b> <b>"Who do you want to protect tonight?"</b> (Doctor points to a player).<br><i>(Narrator: Remember this person. If they were the Wolves' victim, they are saved).</i><br><b>"Doctor, close your eyes."</b></li>
+                
+                <li><b>"The Witch, wake up."</b><br><i>(Narrator: <u>POINT to the victim</u> killed by Wolves so the Witch knows).</i><br><b>"This person is dying. Do you want to use your Healing Potion?"</b> (Witch nods YES or NO).<br><b>"Do you want to use your Poison Potion to kill someone else?"</b> (Witch points to a target or shakes head).<br><b>"Witch, close your eyes."</b></li>
             </ol>
+            
             <h3 style='color:#f09819;'>☀️ THE DAY PHASE</h3>
-            <ol start='8' style='color:white; font-size:1rem; line-height:1.6;'>
-                <li><b>"Everybody wake up!"</b></li>
-                <li>Announce the dead (or "Nobody died").</li>
-                <li>If Hunter died: <b>"Hunter, shoot someone immediately."</b></li>
-                <li><b>"Town, debate! Find the wolves!"</b> (5 mins).</li>
-                <li><b>"3... 2... 1... VOTE!"</b> Execute the majority.</li>
+            <ol start='8' style='color:white; font-size:1rem; line-height:1.8;'>
+                <li><b>"Everybody wake up! It's morning in Mezzenile."</b></li>
+                <li><b>"Last night..."</b> (Announce who died. If Doctor saved them or Witch healed them, say: <b>"Nobody died! It was a peaceful night."</b>).</li>
+                <li>If a Hunter died: <b>"Hunter, you are dead. You have 3 seconds to shoot someone. NOW."</b></li>
+                <li>If a Lover died: <b>"Tragedy strikes! [Partner Name] dies immediately of a broken heart."</b></li>
+                <li><b>"Town, debate! You have 5 minutes. Find the wolves!"</b></li>
+                <li><b>"3... 2... 1... VOTE!"</b> (Everyone points at someone. Majority gets executed).</li>
             </ol>
             """, unsafe_allow_html=True)
         
