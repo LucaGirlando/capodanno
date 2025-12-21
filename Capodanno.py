@@ -14,113 +14,171 @@ with open(config_path, "w") as f:
 st.set_page_config(page_title="Sdrogo Games 2025", page_icon="🔥", layout="wide")
 
 # ============================================
-# CSS 
+# CSS COMPLETO E DEFINITIVO
 # ============================================
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap');
 
+/* Variabili Colore Principali */
 :root {
-    --primary: #0f0c29;
-    --accent: #f09819;
-    --neon-purple: #8e2de2;
-    --glass: rgba(255, 255, 255, 0.1);
+    --primary-bg: #0f0c29;
+    --secondary-bg: #302b63;
+    --tertiary-bg: #24243e;
+    --accent-gold: #f09819;
+    --accent-purple: #8e2de2;
+    --text-white: #ffffff;
+    --glass-effect: rgba(255, 255, 255, 0.08);
 }
 
-/* Forziamo lo sfondo e il testo principale ovunque */
+/* 1. SFONDO E TESTO GENERALE */
 html, body, .stApp, [data-testid="stAppViewContainer"] {
-    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
-    color: #ffffff !important;
+    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 50%, var(--tertiary-bg) 100%) !important;
+    color: var(--text-white) !important;
     font-family: 'Montserrat', sans-serif;
 }
 
-/* Forziamo il testo bianco per tutti i widget di Streamlit (label, selectbox, tab) */
-.stApp label, .stApp p, .stApp div, .stApp span, .stApp h1, .stApp h2, .stApp h3 {
-    color: #ffffff !important;
+/* Forziamo il colore bianco per tutti gli elementi di testo nativi di Streamlit */
+.stApp label, .stApp p, .stApp span, .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp li {
+    color: var(--text-white) !important;
 }
 
-/* Sidebar: manteniamo lo sfondo scuro */
+/* 2. SIDEBAR */
 [data-testid="stSidebar"] {
-    background-color: rgba(15, 12, 41, 0.95) !important;
+    background-color: rgba(15, 12, 41, 0.98) !important;
     border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 [data-testid="stSidebar"] * {
-    color: #ffffff !important;
+    color: var(--text-white) !important;
 }
 
+/* 3. TITOLI E TIPOGRAFIA */
 .main-title {
     font-family: 'Syncopate', sans-serif;
     font-weight: 700;
     font-size: 3.5rem;
-    background: linear-gradient(90deg, #f09819, #edde5d);
+    background: linear-gradient(90deg, var(--accent-gold), #edde5d);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-transform: uppercase;
-    display: block;
     margin-bottom: 0.5rem;
+    display: block;
 }
 
+/* 4. CARD EFFETTO VETRO (GLASSMORPHISM) */
 .glass-card {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--glass-effect);
     padding: 2.5rem;
     border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(15px);
     margin-bottom: 2rem;
-    color: #ffffff !important;
+    color: var(--text-white) !important;
 }
 
-.menu-category {
-    color: var(--accent) !important;
-    font-weight: 900;
-    text-transform: uppercase;
-    font-size: 1.1rem;
-    margin-top: 25px;
-    margin-bottom: 10px;
-    letter-spacing: 2px;
+/* 5. PULSANTI (SUBMIT, START, RESET) */
+/* Questo sovrascrive tutti i bottoni st.button */
+.stButton > button {
+    background: linear-gradient(45deg, var(--accent-purple), #4a00e0) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.6rem 2rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1.5px !important;
+    border-radius: 10px !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    width: auto !important;
 }
 
-.menu-item {
-    font-size: 1rem;
-    margin-bottom: 15px;
-    line-height: 1.4;
-    color: #ffffff !important;
+.stButton > button:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 20px rgba(142, 45, 226, 0.5) !important;
+    color: white !important;
+    border: none !important;
 }
 
-.menu-item small {
-    color: #cccccc !important;
-    display: block;
+.stButton > button:active {
+    transform: translateY(1px) !important;
 }
 
-/* Fix per i pulsanti dei giochi */
+/* 6. LINK AI GIOCHI (PULSANTI PERSONALIZZATI) */
 .game-link-btn {
     display: block;
     padding: 1rem;
-    background: linear-gradient(45deg, #8e2de2, #4a00e0) !important;
-    color: #ffffff !important;
+    background: linear-gradient(45deg, var(--accent-purple), #4a00e0) !important;
+    color: white !important;
     text-align: center;
     border-radius: 8px;
     font-weight: 700;
     text-decoration: none;
-    margin-bottom: 10px;
+    text-transform: uppercase;
+    transition: 0.3s ease;
     border: none !important;
 }
 
-/* Fix per i Tabs (le etichette delle schede) */
-button[data-baseweb="tab"] p {
-    color: #ffffff !important;
-}
-
-/* Fix per le Selectbox e Input (sfondo scuro anche in light mode) */
-div[data-baseweb="select"] > div {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+.game-link-btn:hover {
+    box-shadow: 0 0 20px rgba(142, 45, 226, 0.6);
+    transform: scale(1.02);
     color: white !important;
 }
 
+/* 7. WIDGET DI INPUT (SELECTBOX, MULTISELECT) */
+div[data-baseweb="select"] > div {
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+div[data-baseweb="select"] * {
+    color: white !important;
+}
+
+/* Menu a discesa quando aperto */
 div[role="listbox"] {
     background-color: #1a1a1a !important;
 }
+
+div[role="option"] {
+    color: white !important;
+}
+
+/* 8. TABS (SCHEDE VOTO / RISULTATI) */
+button[data-baseweb="tab"] {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+button[data-baseweb="tab"] p {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+}
+
+button[aria-selected="true"] p {
+    color: var(--accent-gold) !important;
+    font-size: 1.1rem !important;
+}
+
+/* 9. FIX AGGIUNTIVI PER VISIBILITÀ */
+hr {
+    border: none !important;
+    height: 1px !important;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent) !important;
+    margin: 2rem 0 !important;
+}
+
+.stAlert {
+    background-color: rgba(0, 255, 136, 0.1) !important;
+    color: white !important;
+    border: 1px solid #00ff88 !important;
+}
+
+/* Forza il colore bianco per i nomi degli assi e i valori nei grafici */
+canvas {
+    filter: invert(0) !important; /* Mantiene i colori originali dei grafici */
+}
+
 </style>
 """, unsafe_allow_html=True)
 
