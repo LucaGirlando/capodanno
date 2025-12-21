@@ -15,7 +15,7 @@ with open(config_path, "w") as f:
 st.set_page_config(page_title="Sdrogo Games 2025", page_icon="🔥", layout="wide", initial_sidebar_state="expanded")
 
 # ============================================
-# 2. FUNZIONI DI STILE 
+# 2. FUNZIONI DI STILE (PER COLORARE TUTTO)
 # ============================================
 def title_html(text, color="#f09819", size="1.5rem", weight="bold"):
     return f"<div style='color:{color}; font-size:{size}; font-weight:{weight}; margin-bottom:5px; font-family:Montserrat, sans-serif;'>{text}</div>"
@@ -36,7 +36,7 @@ def gold_text(text, size="1rem"):
     return f"<span style='color:#f09819; font-weight:bold; font-size:{size};'>{text}</span>"
 
 # ============================================
-# 3. CSS 
+# 3. CSS ESTREMO (Override Totale)
 # ============================================
 st.markdown("""
 <style>
@@ -115,7 +115,7 @@ role_descriptions = {
     "Doctor": "💉 <b>THE SAVIOR.</b> Every night, choose one player to protect. If the wolves attack them, they survive.",
     "Hunter": "🔫 <b>THE AVENGER.</b> If you are killed (by wolves or vote), you have 3 seconds to shoot (eliminate) another player immediately.",
     "Witch": "🧪 <b>THE ALCHEMIST.</b> You have TWO potions for the whole game. One to HEAL a victim, one to KILL anyone. Use them anytime at night.",
-    "Cupid": "💘 <b>THE MATCHMAKER.</b> ONLY on the first night, choose two players to be Lovers. If one dies, the other dies of heartbreak.",
+    "Cupid": "💘 <b>THE MATCHMAKER.</b> ONLY on the first night, choose two players to be Lovers. If one dies, the other dies of a broken heart.",
     "Villager": "🧑‍🌾 <b>THE MOB.</b> You have no powers. Sleep at night, wake up, and try to figure out who is lying. Vote to kill the wolves."
 }
 
@@ -408,7 +408,7 @@ elif menu == "Lupus in Fabula":
         </div>
         """, unsafe_allow_html=True)
         
-        # SCRIPT CORRETTO: STRUTTURA HTML SEMPLICE PER EVITARE BUG
+        # SCRIPT NARRATORE SUPER DETTAGLIATO E FORMATTATO CORRETTAMENTE
         with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
             st.markdown("""
             <h3 style='color:#8e2de2; margin-top:0;'>🌙 THE NIGHT PHASE</h3>
