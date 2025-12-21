@@ -15,7 +15,7 @@ with open(config_path, "w") as f:
 st.set_page_config(page_title="Sdrogo Games 2025", page_icon="🔥", layout="wide", initial_sidebar_state="expanded")
 
 # ============================================
-# 2. FUNZIONI DI STILE (PER COLORARE TUTTO)
+# 2. FUNZIONI DI STILE 
 # ============================================
 def title_html(text, color="#f09819", size="1.5rem", weight="bold"):
     return f"<div style='color:{color}; font-size:{size}; font-weight:{weight}; margin-bottom:5px; font-family:Montserrat, sans-serif;'>{text}</div>"
@@ -36,7 +36,7 @@ def gold_text(text, size="1rem"):
     return f"<span style='color:#f09819; font-weight:bold; font-size:{size};'>{text}</span>"
 
 # ============================================
-# 3. CSS ESTREMO (Override Totale)
+# 3. CSS 
 # ============================================
 st.markdown("""
 <style>
@@ -258,14 +258,12 @@ elif menu == "Event Betting":
             
             for bet in pair_bets:
                 st.markdown(f"<br>{gold_text(bet)}", unsafe_allow_html=True)
-                # Multiselect senza etichetta nativa per evitare il bianco
                 pair = st.multiselect("", people, key=f"{voter_name}_{bet}_pair", label_visibility="collapsed")
                 current_votes[bet] = tuple(sorted(pair))
 
             st.markdown("<br>", unsafe_allow_html=True)
             
             if st.button("🔒 LOCK IN PREDICTIONS", use_container_width=True):
-                # Validazione
                 valid = True
                 for bet in pair_bets:
                     if current_votes[bet] is None or len(current_votes[bet]) != 2:
@@ -301,7 +299,6 @@ elif menu == "Event Betting":
                     st.markdown(f"**{bet}**")
                     valid_pairs = df[bet].dropna()
                     if not valid_pairs.empty:
-                        # Converti tuple in stringhe solo se sono tuple valide
                         pair_series = valid_pairs.apply(lambda x: f"{x[0]} & {x[1]}" if isinstance(x, tuple) and len(x)==2 else None).dropna()
                         if not pair_series.empty:
                             counts = pair_series.value_counts().head(3).reset_index()
@@ -336,7 +333,6 @@ elif menu == "Lupus in Fabula":
         st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
         st.markdown(title_html("THE RULES OF MEZZENILE", "#f09819"), unsafe_allow_html=True)
         
-        # SPIEGAZIONE DETTAGLIATA REGOLE E RUOLI
         st.markdown(f"""
         <div style='color:white; line-height:1.6;'>
             <p><b>1. THE GOAL:</b> Villagers must kill all Wolves. Wolves must kill enough Villagers to outnumber them.</p>
@@ -373,7 +369,6 @@ elif menu == "Lupus in Fabula":
             st.rerun()
 
     elif st.session_state.current_player_index < len(st.session_state.players_to_reveal):
-        # NOME NARRATORE GIGANTE
         st.markdown(f"""
         <div style='text-align:center; margin-bottom:20px;'>
             <div style='color:#8e2de2; font-size:1.2rem; font-weight:bold;'>THE NARRATOR IS</div>
@@ -406,7 +401,6 @@ elif menu == "Lupus in Fabula":
             """, unsafe_allow_html=True)
 
     else:
-        # DASHBOARD NARRATORE FINALE
         st.markdown(f"""
         <div style='text-align:center; margin-bottom:30px;'>
             <span style='color:white; font-size:1.5rem;'>Narrator Dashboard:</span><br>
@@ -414,27 +408,27 @@ elif menu == "Lupus in Fabula":
         </div>
         """, unsafe_allow_html=True)
         
-        # SCRIPT COMPLETO E DETTAGLIATO
+        # SCRIPT CORRETTO: STRUTTURA HTML SEMPLICE PER EVITARE BUG
         with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
-            st.markdown(f"""
-            <div style='font-size:1.1rem; line-height:1.8; color:#eee;'>
-                <h3 style='color:#8e2de2'>🌙 THE NIGHT PHASE</h3>
-                <p>1. <b>"Everyone, close your eyes! Night falls on Mezzenile."</b> (Ensure no one is peeking)</p>
-                <p>2. <b>"Cupid, wake up."</b> (Only Night 1). <b>"Choose two lovers."</b> (Touch their shoulders). <b>"Cupid, sleep."</b></p>
-                <p>3. <b>"Lovers, wake up."</b> (Only Night 1). <b>"Look at each other. Now sleep."</b></p>
-                <p>4. <b>"Werewolves, wake up."</b> (Wait for them). <b>"Choose a victim to kill."</b> (Confirm the victim). <b>"Wolves, sleep."</b></p>
-                <p>5. <b>"Seer, wake up. Point at someone to inspect."</b> (Narrator shows thumb UP for Villager, DOWN for Wolf). <b>"Seer, sleep."</b></p>
-                <p>6. <b>"Doctor, wake up. Choose someone to save."</b> (If they pick the Wolf's victim, nobody dies). <b>"Doctor, sleep."</b></p>
-                <p>7. <b>"Witch, wake up."</b> (Show her the victim). <b>"Do you want to HEAL? Do you want to KILL?"</b> (Confirm actions). <b>"Witch, sleep."</b></p>
-                
-                <h3 style='color:#f09819'>☀️ THE DAY PHASE</h3>
-                <p>8. <b>"Everybody wake up!"</b></p>
-                <p>9. Announce the dead: <b>"Last night [Player X] died."</b> (If Doctor saved them, say "Nobody died").</p>
-                <p>10. If a Hunter died: <b>"Hunter, you are dead. Shoot someone immediately."</b></p>
-                <p>11. If a Lover died: <b>"The other Lover dies of a broken heart immediately."</b></p>
-                <p>12. <b>"Town, debate! Find the wolves!"</b> (Set a timer for 5 mins).</p>
-                <p>13. <b>"3... 2... 1... VOTE!"</b> (Everyone points at someone. Majority gets executed).</p>
-            </div>
+            st.markdown("""
+            <h3 style='color:#8e2de2; margin-top:0;'>🌙 THE NIGHT PHASE</h3>
+            <ol style='color:white; font-size:1rem; line-height:1.6;'>
+                <li><b>"Everyone, close your eyes! Night falls on Mezzenile."</b></li>
+                <li><b>"Cupid, wake up."</b> (Night 1 Only). Choose lovers. <b>"Cupid, sleep."</b></li>
+                <li><b>"Lovers, wake up."</b> (Night 1 Only). Look at each other. <b>"Sleep."</b></li>
+                <li><b>"Werewolves, wake up."</b> Choose victim. <b>"Wolves, sleep."</b></li>
+                <li><b>"Seer, wake up."</b> Inspect one person. <b>"Seer, sleep."</b></li>
+                <li><b>"Doctor, wake up."</b> Protect one person. <b>"Doctor, sleep."</b></li>
+                <li><b>"Witch, wake up."</b> Show victim. Heal? Kill? <b>"Witch, sleep."</b></li>
+            </ol>
+            <h3 style='color:#f09819;'>☀️ THE DAY PHASE</h3>
+            <ol start='8' style='color:white; font-size:1rem; line-height:1.6;'>
+                <li><b>"Everybody wake up!"</b></li>
+                <li>Announce the dead (or "Nobody died").</li>
+                <li>If Hunter died: <b>"Hunter, shoot someone immediately."</b></li>
+                <li><b>"Town, debate! Find the wolves!"</b> (5 mins).</li>
+                <li><b>"3... 2... 1... VOTE!"</b> Execute the majority.</li>
+            </ol>
             """, unsafe_allow_html=True)
         
         st.markdown("### 💀 GRAVEYARD & ALIVE PLAYERS")
@@ -446,7 +440,6 @@ elif menu == "Lupus in Fabula":
             st.markdown(title_html("VILLAGERS (GOOD)", "#00ff88"), unsafe_allow_html=True)
             for n, r in st.session_state.game_roles.items():
                 if r != "Werewolf":
-                    # Checkbox colorato hack non possibile facilmente, usiamo testo standard
                     is_dead = st.checkbox(f"{n} ({r})", key=f"d_{n}")
                     if is_dead and n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
                     elif not is_dead and n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
