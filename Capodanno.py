@@ -20,7 +20,7 @@ st.set_page_config(
 )
 
 # ============================================
-# CSS COMPLETO E DEFINITIVO (SENZA TAGLI)
+# CSS 
 # ============================================
 st.markdown("""
 <style>
@@ -67,10 +67,6 @@ html, body, .stApp, [data-testid="stAppViewContainer"] {
     text-transform: uppercase;
     display: block;
 }
-
-/* Classi per colori specifici Dashboard */
-.text-gold { color: var(--accent-gold) !important; font-weight: 900 !important; }
-.text-purple { color: var(--accent-purple) !important; font-weight: 900 !important; }
 
 /* 4. GLASS CARDS */
 .glass-card {
@@ -126,13 +122,10 @@ div[role="listbox"] { background-color: #1a1a1a !important; }
 button[data-baseweb="tab"] p { color: rgba(255, 255, 255, 0.6) !important; }
 button[aria-selected="true"] p { color: var(--accent-gold) !important; font-weight: bold !important; }
 
-/* 8. FIX TOTALE PER I RETTANGOLI DEI GRAFICI */
-/* Questa regola forza il colore Viola Neon a ogni elemento rettangolare dei grafici SVG */
+/* 8. FIX TOTALE PER I RETTANGOLI DEI GRAFICI (forza viola) */
 rect {
     fill: #8e2de2 !important; 
 }
-
-/* Se i grafici usano percorsi invece di rettangoli */
 path.mark-rect.role-mark {
     fill: #8e2de2 !important;
 }
@@ -155,24 +148,25 @@ if 'votes' not in st.session_state:
 # SIDEBAR
 # ============================================
 with st.sidebar:
-    st.markdown("<h2 style='color:#f09819;'>SDROGO HUB</h2>", unsafe_allow_html=True)
-    menu = st.radio("NAVIGATION", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula"])
+    st.markdown("<h2 style='color:#f09819; font-weight:900;'>SDROGO HUB</h2>", unsafe_allow_html=True)
+    st.markdown("<h4 style='color:#8e2de2; font-size:0.9rem;'>NAVIGATION</h4>", unsafe_allow_html=True)
+    menu = st.radio("", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula"], label_visibility="collapsed")
 
 # ============================================
 # MAIN DASHBOARD
 # ============================================
 if menu == "Main Dashboard":
     st.markdown("<div class='main-title'>THE MEZZENILE TAKEOVER</div>", unsafe_allow_html=True)
-    st.markdown("<h3 class='text-purple' style='letter-spacing:6px;'>SDROGO NEW YEAR 2025</h3><br>", unsafe_allow_html=True)
+    # Colore forzato inline per evitare il bianco
+    st.markdown("<h3 style='color:#8e2de2; font-weight:900; letter-spacing:6px;'>SDROGO NEW YEAR 2025</h3><br>", unsafe_allow_html=True)
     
-    # Layout a tre colonne per le curiosità
     st.markdown("<div class='glass-card'>", unsafe_allow_html=True)
-    st.markdown("<h2 class='text-gold' style='border:none; margin-bottom:30px; font-family: \"Syncopate\", sans-serif;'>MEZZENILE INSIGHTS</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color:#f09819; border:none; margin-bottom:30px; font-family: \"Syncopate\", sans-serif;'>MEZZENILE INSIGHTS</h2>", unsafe_allow_html=True)
     
     col1, col2, col3 = st.columns(3)
     
     with col1:
-        st.markdown("<h4 class='text-purple'>Origins</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#8e2de2; font-weight:bold;'>Origins</h4>", unsafe_allow_html=True)
         st.markdown("""
             <p style='font-size: 0.95rem; line-height: 1.6;'>
                 <b>The Name:</b> Mezzenile derives from the Latin <i>"Mesenile"</i>, indicating a central settlement. It has always been the strategic heart of the lower Val di Lanzo.
@@ -180,14 +174,14 @@ if menu == "Main Dashboard":
         
         st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
         
-        st.markdown("<h4 class='text-gold'>Noble History</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#f09819; font-weight:bold;'>Noble History</h4>", unsafe_allow_html=True)
         st.markdown("""
             <p style='font-size: 0.95rem; line-height: 1.6;'>
                 <b>The Castle:</b> The Francesetti Castle is the town's crown jewel. It once hosted the high aristocracy of Turin seeking mountain refuge.
             </p>""", unsafe_allow_html=True)
 
     with col2:
-        st.markdown("<h4 class='text-gold'>Craftsmanship</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#f09819; font-weight:bold;'>Craftsmanship</h4>", unsafe_allow_html=True)
         st.markdown("""
             <p style='font-size: 0.95rem; line-height: 1.6;'>
                 <b>Nail Makers:</b> Mezzenile was the European capital of handmade nails. The <i>"Chiodaioli"</i> were famous for their indestructible steel creations.
@@ -195,14 +189,14 @@ if menu == "Main Dashboard":
             
         st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 
-        st.markdown("<h4 class='text-purple'>The Legend</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#8e2de2; font-weight:bold;'>The Legend</h4>", unsafe_allow_html=True)
         st.markdown("""
             <p style='font-size: 0.95rem; line-height: 1.6;'>
                 <b>The Sdrogo Code:</b> What happens in the mountains stays in the mountains. This is the first and only rule of the 2025 takeover.
             </p>""", unsafe_allow_html=True)
 
     with col3:
-        st.markdown("<h4 class='text-purple'>Environment</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#8e2de2; font-weight:bold;'>Environment</h4>", unsafe_allow_html=True)
         st.markdown("""
             <p style='font-size: 0.95rem; line-height: 1.6;'>
                 <b>Thin Air:</b> At 600m+ elevation, oxygen is lower and spirits are higher. Science says one shot here counts as two in the valley.
@@ -210,7 +204,7 @@ if menu == "Main Dashboard":
             
         st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
 
-        st.markdown("<h4 class='text-gold'>Survival</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='color:#f09819; font-weight:bold;'>Survival</h4>", unsafe_allow_html=True)
         st.markdown("""
             <p style='font-size: 0.95rem; line-height: 1.6;'>
                 <b>The Cold:</b> Don't let the fire go out. Mezzenile winters are unforgiving for those who don't keep their "hydration" levels up.
@@ -244,7 +238,7 @@ elif menu == "Online Games Links":
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("<h3 class='text-gold' style='margin-top:40px; letter-spacing: 2px;'>THE 5 CHALLENGES</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='color:#f09819; margin-top:40px; letter-spacing: 2px;'>THE 5 CHALLENGES</h3>", unsafe_allow_html=True)
 
     # Updated Games List
     games = [
@@ -330,15 +324,17 @@ elif menu == "Event Betting":
             for bet in pair_bets:
                 # Per le coppie usiamo un multiselect limitato a 2
                 pair = st.multiselect(f"**{bet}:**", people, max_selections=2, key=f"{voter_name}_{bet}_pair")
+                
+                # VALIDAZIONE SILENZIOSA (Nessun errore se selezionano 2)
                 if len(pair) == 2:
-                    # Ordiniamo i nomi alfabeticamente per far sì che (A,B) e (B,A) siano la stessa coppia
                     current_votes[bet] = tuple(sorted(pair))
                 else:
                     current_votes[bet] = None
 
             if st.button("SUBMIT MY PREDICTIONS", use_container_width=True):
                 if any(v is None for v in current_votes.values()):
-                    st.error("Please complete all predictions (including pairs) before submitting.")
+                    # Errore solo se provano a inviare senza aver completato
+                    st.error("Please ensure you picked exactly 2 people for the pair questions!")
                 else:
                     # Rimuoviamo voti precedenti dello stesso utente se esistono
                     st.session_state.votes = [v for v in st.session_state.votes if v.get('_voter') != voter_name]
@@ -357,20 +353,21 @@ elif menu == "Event Betting":
             st.markdown("## Individual Rankings")
             for bet in single_bets:
                 st.markdown(f"#### {bet}")
-                counts = df[bet].value_counts().head(3).reset_index()
-                counts.columns = ['Candidate', 'Votes']
-                st.bar_chart(data=counts, x='Candidate', y='Votes', color="#f09819")
+                if bet in df.columns:
+                    counts = df[bet].value_counts().head(3).reset_index()
+                    counts.columns = ['Candidate', 'Votes']
+                    st.bar_chart(data=counts, x='Candidate', y='Votes', color="#f09819")
                 st.markdown("---")
             
             # --- COPPIE ---
             st.markdown("## Pair Rankings")
             for bet in pair_bets:
                 st.markdown(f"#### {bet}")
-                # Trasformiamo la tupla in stringa leggibile per il grafico
-                pair_series = df[bet].dropna().apply(lambda x: f"{x[0]} & {x[1]}")
-                pair_counts = pair_series.value_counts().head(3).reset_index()
-                pair_counts.columns = ['Pair', 'Votes']
-                st.bar_chart(data=pair_counts, x='Pair', y='Votes', color="#8e2de2")
+                if bet in df.columns:
+                    pair_series = df[bet].dropna().apply(lambda x: f"{x[0]} & {x[1]}")
+                    pair_counts = pair_series.value_counts().head(3).reset_index()
+                    pair_counts.columns = ['Pair', 'Votes']
+                    st.bar_chart(data=pair_counts, x='Pair', y='Votes', color="#8e2de2")
                 st.markdown("---")
             
             # --- TOTAL MVP (Most Voted Person) ---
