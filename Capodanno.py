@@ -206,7 +206,6 @@ elif menu == "Online Games Links":
     st.markdown(f"""
     <div style='color:#eee; font-size:1.1rem; line-height:1.6;'>
         ► {gold_text('The Setup:')} Form <b>5 TEAMS of 4 players</b> each.<br>
-        ► {gold_text('The Flow:')} Each team will play the 5 games in order. While one team competes, the others witness the performance.<br>
         ► {gold_text('The Penalty:')} At the end of every game round, the <b>4 LOSING TEAMS</b> must take a shot or a full glass of wine/beer.<br>
         ► {gold_text('The Grand Finale:')} After the final game, the <b>OVERALL WINNING TEAM</b> earns the right to choose <b>ONE PLAYER</b> from each of the other teams to take an extra penalty drink.
     </div>
