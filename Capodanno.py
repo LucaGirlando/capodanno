@@ -14,7 +14,7 @@ with open(config_path, "w") as f:
 st.set_page_config(page_title="Sdrogo Games 2025", page_icon="🔥", layout="wide")
 
 # ============================================
-# CSS AGGIORNATO 
+# CSS 
 # ============================================
 st.markdown("""
 <style>
@@ -24,13 +24,29 @@ st.markdown("""
     --primary: #0f0c29;
     --accent: #f09819;
     --neon-purple: #8e2de2;
-    --glass: rgba(255, 255, 255, 0.05);
+    --glass: rgba(255, 255, 255, 0.1);
 }
 
-.stApp {
+/* Forziamo lo sfondo e il testo principale ovunque */
+html, body, .stApp, [data-testid="stAppViewContainer"] {
     background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
     color: #ffffff !important;
     font-family: 'Montserrat', sans-serif;
+}
+
+/* Forziamo il testo bianco per tutti i widget di Streamlit (label, selectbox, tab) */
+.stApp label, .stApp p, .stApp div, .stApp span, .stApp h1, .stApp h2, .stApp h3 {
+    color: #ffffff !important;
+}
+
+/* Sidebar: manteniamo lo sfondo scuro */
+[data-testid="stSidebar"] {
+    background-color: rgba(15, 12, 41, 0.95) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-testid="stSidebar"] * {
+    color: #ffffff !important;
 }
 
 .main-title {
@@ -41,19 +57,22 @@ st.markdown("""
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.5rem;
 }
 
 .glass-card {
-    background: var(--glass);
+    background: rgba(255, 255, 255, 0.08);
     padding: 2.5rem;
     border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(15px);
     margin-bottom: 2rem;
+    color: #ffffff !important;
 }
 
 .menu-category {
-    color: var(--accent);
+    color: var(--accent) !important;
     font-weight: 900;
     text-transform: uppercase;
     font-size: 1.1rem;
@@ -66,10 +85,11 @@ st.markdown("""
     font-size: 1rem;
     margin-bottom: 15px;
     line-height: 1.4;
+    color: #ffffff !important;
 }
 
 .menu-item small {
-    color: #a0a0a0;
+    color: #cccccc !important;
     display: block;
 }
 
@@ -77,13 +97,29 @@ st.markdown("""
 .game-link-btn {
     display: block;
     padding: 1rem;
-    background: linear-gradient(45deg, #8e2de2, #4a00e0);
-    color: white !important;
+    background: linear-gradient(45deg, #8e2de2, #4a00e0) !important;
+    color: #ffffff !important;
     text-align: center;
     border-radius: 8px;
     font-weight: 700;
     text-decoration: none;
     margin-bottom: 10px;
+    border: none !important;
+}
+
+/* Fix per i Tabs (le etichette delle schede) */
+button[data-baseweb="tab"] p {
+    color: #ffffff !important;
+}
+
+/* Fix per le Selectbox e Input (sfondo scuro anche in light mode) */
+div[data-baseweb="select"] > div {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: white !important;
+}
+
+div[role="listbox"] {
+    background-color: #1a1a1a !important;
 }
 </style>
 """, unsafe_allow_html=True)
