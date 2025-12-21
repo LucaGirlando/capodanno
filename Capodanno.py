@@ -358,7 +358,7 @@ elif menu == "Lupus in Fabula":
         """, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
         
-        # SELEZIONE GIOCATORI ATTIVI
+        # GESTIONE GIOCATORI ATTIVI
         st.markdown(neon_text("WHO IS PLAYING? (Uncheck who is missing)", "1.2rem"), unsafe_allow_html=True)
         active_players = st.multiselect("", people, default=people, key="active_p_sel", label_visibility="collapsed")
         
@@ -368,22 +368,17 @@ elif menu == "Lupus in Fabula":
              st.error("Need at least 5 players to start!")
         else:
             if st.button("🔥 START THE GAME (ASSIGN ROLES)", use_container_width=True):
-                # LOGICA DI ASSEGNAZIONE DINAMICA
+                # LOGICA DINAMICA
                 n_players = len(active_players)
-                
-                # Scegli narratore
                 narrator = random.choice(active_players)
                 players_without_narrator = [p for p in active_players if p != narrator]
-                
                 n_actual_players = len(players_without_narrator)
                 
-                # Calcola numero lupi (circa 1 ogni 4 giocatori)
+                # Calcolo Lupi e Ruoli
                 n_wolves = max(1, math.floor(n_actual_players / 4))
-                
-                # Lista ruoli speciali (Se siamo in pochi, riduciamo i ruoli speciali opzionali se necessario, ma qui li teniamo)
                 specials = ["Seer", "Doctor", "Witch", "Hunter", "Cupid"]
-                # Se ci sono troppi pochi giocatori, taglia i ruoli speciali per lasciare spazio ai Villici
-                # Assicuriamo almeno 1 Villico se possibile
+                
+                # Se siamo pochi, riduciamo i ruoli speciali
                 max_specials = max(0, n_actual_players - n_wolves - 1)
                 active_specials = specials[:min(len(specials), max_specials)]
                 
@@ -438,45 +433,68 @@ elif menu == "Lupus in Fabula":
         </div>
         """, unsafe_allow_html=True)
         
-        # SCRIPT CORRETTO FORMATTATO IN HTML PURO
+        # SCRIPT NARRATORE FINALE PERFETTAMENTE FORMATTATO
         with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
             st.markdown("""
             <div style='background:rgba(0,0,0,0.3); padding:15px; border-radius:10px;'>
-                <h3 style='color:#8e2de2; margin-top:0; border-bottom:1px solid #8e2de2;'>🌙 THE NIGHT PHASE</h3>
-                <ul style='list-style-type:none; padding-left:0; color:white; font-size:1.05rem; line-height:1.8;'>
-                    <li style='margin-bottom:10px;'>🛑 <b>"Everyone, close your eyes! Night falls on Mezzenile."</b><br><small>(Ensure no one is peeking)</small></li>
-                    
-                    <li style='margin-bottom:10px; border-left:3px solid #f09819; padding-left:10px;'>
-                        💘 <b>"Cupid, wake up."</b> (Night 1 Only).<br>
-                        <b>"Point to the two Lovers."</b><br>
-                        <i>(Narrator: Walk around and <u>GENTLY TAP THE SHOULDERS</u> of the two chosen people).</i><br>
-                        <b>"Cupid, sleep."</b>
-                    </li>
-                    
-                    <li style='margin-bottom:10px; border-left:3px solid #f09819; padding-left:10px;'>
-                        ❤️ <b>"Lovers, wake up."</b> (Night 1 Only).<br>
-                        <b>"Look at each other. Memorize your partner."</b><br>
-                        <b>"Lovers, sleep."</b>
-                    </li>
-                    
-                    <li style='margin-bottom:10px;'>🐺 <b>"Werewolves, wake up."</b><br><b>"Choose your victim."</b> (Wolves point).<br><i>(Narrator: Nod to confirm).</i><br><b>"Wolves, sleep."</b></li>
-                    
-                    <li style='margin-bottom:10px;'>🔮 <b>"Seer, wake up."</b><br><b>"Point at someone to inspect."</b><br><i>(Narrator: 👎 = WOLF, 👍 = GOOD).</i><br><b>"Seer, sleep."</b></li>
-                    
-                    <li style='margin-bottom:10px;'>💉 <b>"Doctor, wake up."</b><br><b>"Who do you want to protect?"</b><br><i>(Narrator: Remember this person. If Wolves picked them, they survive).</i><br><b>"Doctor, sleep."</b></li>
-                    
-                    <li style='margin-bottom:10px;'>🧪 <b>"Witch, wake up."</b><br><i>(Narrator: <u>POINT to the victim</u> killed by Wolves).</i><br><b>"Do you want to HEAL? Do you want to KILL?"</b> (Confirm actions).<br><b>"Witch, sleep."</b></li>
-                </ul>
+                <h3 style='color:#8e2de2; margin-top:0; border-bottom:1px solid #8e2de2; padding-bottom:5px;'>🌙 THE NIGHT PHASE</h3>
+                
+                <div style='margin-bottom:15px; color:white;'>
+                    🛑 <b>"Everyone, close your eyes! Night falls on Mezzenile."</b><br>
+                    <small>(Ensure no one is peeking)</small>
+                </div>
+                
+                <div style='margin-bottom:15px; border-left:4px solid #f09819; padding-left:15px; background:rgba(240, 152, 25, 0.1); color:white;'>
+                    <div style='color:#f09819; font-weight:bold; font-size:0.9rem; margin-bottom:5px;'>--- NIGHT 1 ONLY ---</div>
+                    💘 <b>"Cupid, wake up."</b><br>
+                    "Point to the two Lovers."<br>
+                    <i>(Narrator: Walk around and <u>GENTLY TAP THE SHOULDERS</u> of the two chosen people).</i><br>
+                    <b>"Cupid, sleep."</b>
+                </div>
 
-                <h3 style='color:#f09819; margin-top:20px; border-bottom:1px solid #f09819;'>☀️ THE DAY PHASE</h3>
-                <ul style='list-style-type:none; padding-left:0; color:white; font-size:1.05rem; line-height:1.8;'>
-                    <li style='margin-bottom:10px;'>🌅 <b>"Everybody wake up! It's morning."</b></li>
-                    <li style='margin-bottom:10px;'>📣 <b>"Last night..."</b> (Announce who died. If Doctor saved them or Witch healed them: "Nobody died").</li>
-                    <li style='margin-bottom:10px;'>🔫 If Hunter died: <b>"Hunter, shoot someone immediately."</b></li>
-                    <li style='margin-bottom:10px;'>💔 If Lover died: <b>"The other Lover dies of a broken heart."</b></li>
-                    <li style='margin-bottom:10px;'>🗣️ <b>"Town, debate! Find the wolves!"</b> (5 mins).</li>
-                    <li style='margin-bottom:10px;'>🗳️ <b>"3... 2... 1... VOTE!"</b> (Majority dies).</li>
-                </ul>
+                <div style='margin-bottom:15px; border-left:4px solid #f09819; padding-left:15px; background:rgba(240, 152, 25, 0.1); color:white;'>
+                    <div style='color:#f09819; font-weight:bold; font-size:0.9rem; margin-bottom:5px;'>--- NIGHT 1 ONLY ---</div>
+                    ❤️ <b>"Lovers, wake up."</b><br>
+                    "Look at each other. Memorize your partner."<br>
+                    <b>"Lovers, sleep."</b>
+                </div>
+
+                <div style='margin-bottom:15px; color:white;'>
+                    🐺 <b>"Werewolves, wake up."</b><br>
+                    "Choose your victim." (Wolves point).<br>
+                    <i>(Narrator: Nod to confirm).</i><br>
+                    <b>"Wolves, sleep."</b>
+                </div>
+
+                <div style='margin-bottom:15px; color:white;'>
+                    🔮 <b>"Seer, wake up."</b><br>
+                    "Point at someone to inspect."<br>
+                    <i>(Narrator: 👎 = WOLF, 👍 = GOOD).</i><br>
+                    <b>"Seer, sleep."</b>
+                </div>
+
+                <div style='margin-bottom:15px; color:white;'>
+                    💉 <b>"Doctor, wake up."</b><br>
+                    "Who do you want to protect?"<br>
+                    <i>(Narrator: Remember this person. If Wolves picked them, they survive).</i><br>
+                    <b>"Doctor, sleep."</b>
+                </div>
+
+                <div style='margin-bottom:15px; color:white;'>
+                    🧪 <b>"Witch, wake up."</b><br>
+                    <i>(Narrator: <u>POINT to the victim</u> killed by Wolves).</i><br>
+                    "Do you want to HEAL? Do you want to KILL?" (Confirm actions).<br>
+                    <b>"Witch, sleep."</b>
+                </div>
+
+                <h3 style='color:#f09819; margin-top:25px; border-bottom:1px solid #f09819; padding-bottom:5px;'>☀️ THE DAY PHASE</h3>
+                
+                <div style='margin-bottom:10px; color:white;'>🌅 <b>"Everybody wake up! It's morning."</b></div>
+                <div style='margin-bottom:10px; color:white;'>📣 <b>"Last night..."</b> (Announce who died. If Doctor saved them or Witch healed them: "Nobody died").</div>
+                <div style='margin-bottom:10px; color:white;'>🔫 If Hunter died: <b>"Hunter, shoot someone immediately."</b></div>
+                <div style='margin-bottom:10px; color:white;'>💔 If Lover died: <b>"The other Lover dies of a broken heart."</b></div>
+                <div style='margin-bottom:10px; color:white;'>🗣️ <b>"Town, debate! Find the wolves!"</b> (5 mins).</div>
+                <div style='margin-bottom:10px; color:white;'>🗳️ <b>"3... 2... 1... VOTE!"</b> (Majority dies).</div>
             </div>
             """, unsafe_allow_html=True)
         
