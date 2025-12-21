@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import pandas as pd
 import random
+import math
 
 # ============================================
 # 1. CONFIGURAZIONE FORZATA (DARK MODE)
@@ -88,7 +89,7 @@ st.markdown("""
 }
 
 /* Input Fields Style */
-div[data-baseweb="select"] > div, div[data-baseweb="base-input"] {
+div[data-baseweb="select"] > div, div[data-baseweb="base-input"], div[data-baseweb="tag"], span[data-baseweb="tag"] {
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid #8e2de2;
     color: white;
@@ -357,16 +358,45 @@ elif menu == "Lupus in Fabula":
         """, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
         
-        if st.button("🔥 START THE GAME (ASSIGN ROLES)", use_container_width=True):
-            roles = (["Werewolf"]*4 + ["Seer", "Doctor", "Hunter", "Witch", "Cupid"] + ["Villager"]*10)
-            random.shuffle(roles)
-            temp_p = people.copy()
-            narrator = temp_p.pop(random.randint(0, len(temp_p)-1))
-            st.session_state.narrator_name = narrator
-            st.session_state.game_roles = dict(zip(temp_p, roles))
-            st.session_state.players_to_reveal = temp_p
-            st.session_state.game_started = True
-            st.rerun()
+        # SELEZIONE GIOCATORI ATTIVI
+        st.markdown(neon_text("WHO IS PLAYING? (Uncheck who is missing)", "1.2rem"), unsafe_allow_html=True)
+        active_players = st.multiselect("", people, default=people, key="active_p_sel", label_visibility="collapsed")
+        
+        st.markdown(f"<div style='margin:10px 0; color:#ddd;'>Active Players: <b>{len(active_players)}</b></div>", unsafe_allow_html=True)
+        
+        if len(active_players) < 5:
+             st.error("Need at least 5 players to start!")
+        else:
+            if st.button("🔥 START THE GAME (ASSIGN ROLES)", use_container_width=True):
+                # LOGICA DI ASSEGNAZIONE DINAMICA
+                n_players = len(active_players)
+                
+                # Scegli narratore
+                narrator = random.choice(active_players)
+                players_without_narrator = [p for p in active_players if p != narrator]
+                
+                n_actual_players = len(players_without_narrator)
+                
+                # Calcola numero lupi (circa 1 ogni 4 giocatori)
+                n_wolves = max(1, math.floor(n_actual_players / 4))
+                
+                # Lista ruoli speciali (Se siamo in pochi, riduciamo i ruoli speciali opzionali se necessario, ma qui li teniamo)
+                specials = ["Seer", "Doctor", "Witch", "Hunter", "Cupid"]
+                # Se ci sono troppi pochi giocatori, taglia i ruoli speciali per lasciare spazio ai Villici
+                # Assicuriamo almeno 1 Villico se possibile
+                max_specials = max(0, n_actual_players - n_wolves - 1)
+                active_specials = specials[:min(len(specials), max_specials)]
+                
+                n_villagers = n_actual_players - n_wolves - len(active_specials)
+                
+                roles_pool = (["Werewolf"] * n_wolves) + active_specials + (["Villager"] * n_villagers)
+                random.shuffle(roles_pool)
+                
+                st.session_state.narrator_name = narrator
+                st.session_state.game_roles = dict(zip(players_without_narrator, roles_pool))
+                st.session_state.players_to_reveal = players_without_narrator
+                st.session_state.game_started = True
+                st.rerun()
 
     elif st.session_state.current_player_index < len(st.session_state.players_to_reveal):
         st.markdown(f"""
@@ -408,36 +438,46 @@ elif menu == "Lupus in Fabula":
         </div>
         """, unsafe_allow_html=True)
         
-        # SCRIPT NARRATORE SUPER DETTAGLIATO E FORMATTATO CORRETTAMENTE
+        # SCRIPT CORRETTO FORMATTATO IN HTML PURO
         with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
             st.markdown("""
-            <h3 style='color:#8e2de2; margin-top:0;'>🌙 THE NIGHT PHASE</h3>
-            <ol style='color:white; font-size:1rem; line-height:1.8;'>
-                <li><b>"Everyone, close your eyes! Deep sleep falls on Mezzenile."</b> (Make sure no one is peeking).</li>
-                
-                <br><span style='color:#f09819; font-weight:bold;'>--- NIGHT 1 ONLY ---</span>
-                <li><b>"Cupid, wake up."</b> (Wait for eyes open). <b>"Point to the two Lovers."</b> (Cupid points).<br><i>(Narrator: Walk around and <u>GENTLY TAP THE SHOULDERS</u> of the two chosen people).</i><br><b>"Cupid, close your eyes."</b></li>
-                <li><b>"Lovers, wake up."</b> (The two people you touched wake up). <b>"Look at each other. Memorize your partner."</b><br><b>"Lovers, close your eyes."</b></li>
-                <br><span style='color:#f09819; font-weight:bold;'>--- EVERY NIGHT ---</span>
-                
-                <li><b>"Werewolves, wake up."</b> (Wolves open eyes). <b>"Choose your victim."</b> (Wolves must agree silently and point to ONE person).<br><i>(Narrator: Nod to confirm you saw who the victim is).</i><br><b>"Wolves, close your eyes."</b></li>
-                
-                <li><b>"The Seer, wake up."</b> <b>"Point at someone to inspect."</b> (Seer points to a player).<br><i>(Narrator: Show 👎 <b>THUMB DOWN</b> if they are a WOLF, 👍 <b>THUMB UP</b> if they are GOOD/VILLAGER).</i><br><b>"Seer, close your eyes."</b></li>
-                
-                <li><b>"The Doctor, wake up."</b> <b>"Who do you want to protect tonight?"</b> (Doctor points to a player).<br><i>(Narrator: Remember this person. If they were the Wolves' victim, they are saved).</i><br><b>"Doctor, close your eyes."</b></li>
-                
-                <li><b>"The Witch, wake up."</b><br><i>(Narrator: <u>POINT to the victim</u> killed by Wolves so the Witch knows).</i><br><b>"This person is dying. Do you want to use your Healing Potion?"</b> (Witch nods YES or NO).<br><b>"Do you want to use your Poison Potion to kill someone else?"</b> (Witch points to a target or shakes head).<br><b>"Witch, close your eyes."</b></li>
-            </ol>
-            
-            <h3 style='color:#f09819;'>☀️ THE DAY PHASE</h3>
-            <ol start='8' style='color:white; font-size:1rem; line-height:1.8;'>
-                <li><b>"Everybody wake up! It's morning in Mezzenile."</b></li>
-                <li><b>"Last night..."</b> (Announce who died. If Doctor saved them or Witch healed them, say: <b>"Nobody died! It was a peaceful night."</b>).</li>
-                <li>If a Hunter died: <b>"Hunter, you are dead. You have 3 seconds to shoot someone. NOW."</b></li>
-                <li>If a Lover died: <b>"Tragedy strikes! [Partner Name] dies immediately of a broken heart."</b></li>
-                <li><b>"Town, debate! You have 5 minutes. Find the wolves!"</b></li>
-                <li><b>"3... 2... 1... VOTE!"</b> (Everyone points at someone. Majority gets executed).</li>
-            </ol>
+            <div style='background:rgba(0,0,0,0.3); padding:15px; border-radius:10px;'>
+                <h3 style='color:#8e2de2; margin-top:0; border-bottom:1px solid #8e2de2;'>🌙 THE NIGHT PHASE</h3>
+                <ul style='list-style-type:none; padding-left:0; color:white; font-size:1.05rem; line-height:1.8;'>
+                    <li style='margin-bottom:10px;'>🛑 <b>"Everyone, close your eyes! Night falls on Mezzenile."</b><br><small>(Ensure no one is peeking)</small></li>
+                    
+                    <li style='margin-bottom:10px; border-left:3px solid #f09819; padding-left:10px;'>
+                        💘 <b>"Cupid, wake up."</b> (Night 1 Only).<br>
+                        <b>"Point to the two Lovers."</b><br>
+                        <i>(Narrator: Walk around and <u>GENTLY TAP THE SHOULDERS</u> of the two chosen people).</i><br>
+                        <b>"Cupid, sleep."</b>
+                    </li>
+                    
+                    <li style='margin-bottom:10px; border-left:3px solid #f09819; padding-left:10px;'>
+                        ❤️ <b>"Lovers, wake up."</b> (Night 1 Only).<br>
+                        <b>"Look at each other. Memorize your partner."</b><br>
+                        <b>"Lovers, sleep."</b>
+                    </li>
+                    
+                    <li style='margin-bottom:10px;'>🐺 <b>"Werewolves, wake up."</b><br><b>"Choose your victim."</b> (Wolves point).<br><i>(Narrator: Nod to confirm).</i><br><b>"Wolves, sleep."</b></li>
+                    
+                    <li style='margin-bottom:10px;'>🔮 <b>"Seer, wake up."</b><br><b>"Point at someone to inspect."</b><br><i>(Narrator: 👎 = WOLF, 👍 = GOOD).</i><br><b>"Seer, sleep."</b></li>
+                    
+                    <li style='margin-bottom:10px;'>💉 <b>"Doctor, wake up."</b><br><b>"Who do you want to protect?"</b><br><i>(Narrator: Remember this person. If Wolves picked them, they survive).</i><br><b>"Doctor, sleep."</b></li>
+                    
+                    <li style='margin-bottom:10px;'>🧪 <b>"Witch, wake up."</b><br><i>(Narrator: <u>POINT to the victim</u> killed by Wolves).</i><br><b>"Do you want to HEAL? Do you want to KILL?"</b> (Confirm actions).<br><b>"Witch, sleep."</b></li>
+                </ul>
+
+                <h3 style='color:#f09819; margin-top:20px; border-bottom:1px solid #f09819;'>☀️ THE DAY PHASE</h3>
+                <ul style='list-style-type:none; padding-left:0; color:white; font-size:1.05rem; line-height:1.8;'>
+                    <li style='margin-bottom:10px;'>🌅 <b>"Everybody wake up! It's morning."</b></li>
+                    <li style='margin-bottom:10px;'>📣 <b>"Last night..."</b> (Announce who died. If Doctor saved them or Witch healed them: "Nobody died").</li>
+                    <li style='margin-bottom:10px;'>🔫 If Hunter died: <b>"Hunter, shoot someone immediately."</b></li>
+                    <li style='margin-bottom:10px;'>💔 If Lover died: <b>"The other Lover dies of a broken heart."</b></li>
+                    <li style='margin-bottom:10px;'>🗣️ <b>"Town, debate! Find the wolves!"</b> (5 mins).</li>
+                    <li style='margin-bottom:10px;'>🗳️ <b>"3... 2... 1... VOTE!"</b> (Majority dies).</li>
+                </ul>
+            </div>
             """, unsafe_allow_html=True)
         
         st.markdown("### 💀 GRAVEYARD & ALIVE PLAYERS")
