@@ -87,9 +87,6 @@ st.markdown("""
     box-shadow: 0 0 20px rgba(142, 45, 226, 0.6);
 }
 
-/* Rimuovere padding fastidiosi */
-.block-container { padding-top: 2rem; }
-
 /* Input Fields Style */
 div[data-baseweb="select"] > div, div[data-baseweb="base-input"] {
     background-color: rgba(255, 255, 255, 0.1);
@@ -100,14 +97,27 @@ div[data-baseweb="select"] > div, div[data-baseweb="base-input"] {
 /* Grafici */
 rect { fill: #8e2de2 !important; }
 
+/* Messaggi */
+.stAlert { background-color: rgba(0, 0, 0, 0.5) !important; color: white !important; }
+
 </style>
 """, unsafe_allow_html=True)
 
 # ============================================
-# DATI
+# DATI & COSTANTI
 # ============================================
 people = ["Girla", "Paci", "Marti", "Paga", "Yara", "Gaia", "Chiara", "Ele", "Ceci", "Ari", "Bax", 
           "Enry", "Bomber", "Marghe", "Eugi", "Camilla", "Lulli", "Tommaso", "Stefano", "Elisa"]
+
+role_descriptions = {
+    "Werewolf": "🐺 <b>THE BAD GUY.</b> Every night, wake up with the other wolves and choose a victim to kill. Try to act like a villager during the day.",
+    "Seer": "🔮 <b>THE INVESTIGATOR.</b> Every night, point at one player to reveal their true identity (Wolf or Villager). Keep this info secret or use it wisely.",
+    "Doctor": "💉 <b>THE SAVIOR.</b> Every night, choose one player to protect. If the wolves attack them, they survive.",
+    "Hunter": "🔫 <b>THE AVENGER.</b> If you are killed (by wolves or vote), you have 3 seconds to shoot (eliminate) another player immediately.",
+    "Witch": "🧪 <b>THE ALCHEMIST.</b> You have TWO potions for the whole game. One to HEAL a victim, one to KILL anyone. Use them anytime at night.",
+    "Cupid": "💘 <b>THE MATCHMAKER.</b> ONLY on the first night, choose two players to be Lovers. If one dies, the other dies of heartbreak.",
+    "Villager": "🧑‍🌾 <b>THE MOB.</b> You have no powers. Sleep at night, wake up, and try to figure out who is lying. Vote to kill the wolves."
+}
 
 if 'votes' not in st.session_state:
     st.session_state.votes = []
@@ -231,7 +241,6 @@ elif menu == "Event Betting":
     with tab1:
         st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
         
-        # TRUCCO: Etichetta HTML personalizzata sopra, label standard nascosta
         st.markdown(title_html("WHO ARE YOU?", "#f09819", "1.2rem"), unsafe_allow_html=True)
         voter_name = st.selectbox("", ["Select your name"] + people, label_visibility="collapsed")
         
@@ -326,17 +335,33 @@ elif menu == "Lupus in Fabula":
     if not st.session_state.game_started:
         st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
         st.markdown(title_html("THE RULES OF MEZZENILE", "#f09819"), unsafe_allow_html=True)
-        st.markdown("""
-        <div style='color:white;'>
-        <b>1. Setup:</b> Wolves hidden among Villagers.<br>
-        <b>2. Night:</b> Special roles act in secret.<br>
-        <b>3. Day:</b> Debate and execute.<br>
-        <b>4. Win:</b> Villagers kill Wolves OR Wolves outnumber Villagers.
+        
+        # SPIEGAZIONE DETTAGLIATA REGOLE E RUOLI
+        st.markdown(f"""
+        <div style='color:white; line-height:1.6;'>
+            <p><b>1. THE GOAL:</b> Villagers must kill all Wolves. Wolves must kill enough Villagers to outnumber them.</p>
+            <p><b>2. THE FLOW:</b>
+                <ul>
+                    <li><b>Night:</b> Everyone closes eyes. Narrator wakes up special roles one by one. Wolves kill.</li>
+                    <li><b>Day:</b> Everyone wakes up. Deaths are announced. Debate ensues. One person is voted to be executed.</li>
+                </ul>
+            </p>
+            <hr style='border-color:#8e2de2'>
+            <h3 style='color:#8e2de2'>THE ROLES</h3>
+            <ul>
+                <li>🐺 <b>Werewolf:</b> Kills at night. Deceives by day.</li>
+                <li>🔮 <b>Seer:</b> Checks one player's card every night.</li>
+                <li>💉 <b>Doctor:</b> Saves one player from death every night.</li>
+                <li>🔫 <b>Hunter:</b> If killed, shoots someone else instantly.</li>
+                <li>🧪 <b>Witch:</b> Has 1 Heal Potion and 1 Kill Potion.</li>
+                <li>💘 <b>Cupid:</b> Links two lovers on Night 1.</li>
+                <li>🧑‍🌾 <b>Villager:</b> Just votes. No powers.</li>
+            </ul>
         </div>
         """, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
         
-        if st.button("🔥 START GAME", use_container_width=True):
+        if st.button("🔥 START THE GAME (ASSIGN ROLES)", use_container_width=True):
             roles = (["Werewolf"]*4 + ["Seer", "Doctor", "Hunter", "Witch", "Cupid"] + ["Villager"]*10)
             random.shuffle(roles)
             temp_p = people.copy()
@@ -348,58 +373,100 @@ elif menu == "Lupus in Fabula":
             st.rerun()
 
     elif st.session_state.current_player_index < len(st.session_state.players_to_reveal):
-        st.markdown(f"### Narrator: {gold_text(st.session_state.narrator_name)}", unsafe_allow_html=True)
-        player = st.session_state.players_to_reveal[st.session_state.current_player_index]
+        # NOME NARRATORE GIGANTE
+        st.markdown(f"""
+        <div style='text-align:center; margin-bottom:20px;'>
+            <div style='color:#8e2de2; font-size:1.2rem; font-weight:bold;'>THE NARRATOR IS</div>
+            <div style='color:#f09819; font-size:4rem; font-weight:900; text-transform:uppercase; font-family:"Syncopate"; text-shadow:0 0 15px rgba(240, 152, 25, 0.5);'>
+                {st.session_state.narrator_name}
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        idx = st.session_state.current_player_index
+        player = st.session_state.players_to_reveal[idx]
         
         st.markdown(f"<div class='glass-box' style='text-align:center;'>PASS PHONE TO:<br>{gradient_text(player, '2.5rem')}</div>", unsafe_allow_html=True)
         
         c1, c2 = st.columns(2)
-        if c1.button("👁️ REVEAL"): st.session_state.show_role = True
-        if c2.button("NEXT ➡️"): 
+        if c1.button("👁️ REVEAL ROLE", use_container_width=True): st.session_state.show_role = True
+        if c2.button("NEXT PLAYER ➡️", use_container_width=True): 
             st.session_state.current_player_index += 1
             st.session_state.show_role = False
             st.rerun()
             
         if st.session_state.show_role:
             role = st.session_state.game_roles[player]
-            st.markdown(f"<div style='background:#8e2de2; padding:20px; border-radius:10px; text-align:center; color:white;'><h1>{role}</h1></div>", unsafe_allow_html=True)
+            desc = role_descriptions.get(role, "")
+            st.markdown(f"""
+            <div style='background:rgba(142, 45, 226, 0.2); padding:20px; border-radius:10px; border:2px solid #8e2de2; text-align:center; margin-top:10px;'>
+                <h1 style='color:#f09819; margin:0;'>{role.upper()}</h1>
+                <p style='color:white; font-size:1.1rem; margin-top:10px;'>{desc}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
     else:
-        st.markdown(f"### Narrator: {gold_text(st.session_state.narrator_name)}", unsafe_allow_html=True)
-        with st.expander("📜 NARRATOR SCRIPT"):
-            st.markdown("""
-            <b style='color:#f09819'>NIGHT:</b><br>
-            1. Cupid (1st night only)<br>2. Lovers (1st night only)<br>3. Wolves<br>4. Seer<br>5. Doctor<br>6. Witch<br>
-            <b style='color:#f09819'>DAY:</b><br>Reveal dead, discuss, vote.
+        # DASHBOARD NARRATORE FINALE
+        st.markdown(f"""
+        <div style='text-align:center; margin-bottom:30px;'>
+            <span style='color:white; font-size:1.5rem;'>Narrator Dashboard:</span><br>
+            <span style='color:#f09819; font-size:3rem; font-weight:900;'>{st.session_state.narrator_name}</span>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # SCRIPT COMPLETO E DETTAGLIATO
+        with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
+            st.markdown(f"""
+            <div style='font-size:1.1rem; line-height:1.8; color:#eee;'>
+                <h3 style='color:#8e2de2'>🌙 THE NIGHT PHASE</h3>
+                <p>1. <b>"Everyone, close your eyes! Night falls on Mezzenile."</b> (Ensure no one is peeking)</p>
+                <p>2. <b>"Cupid, wake up."</b> (Only Night 1). <b>"Choose two lovers."</b> (Touch their shoulders). <b>"Cupid, sleep."</b></p>
+                <p>3. <b>"Lovers, wake up."</b> (Only Night 1). <b>"Look at each other. Now sleep."</b></p>
+                <p>4. <b>"Werewolves, wake up."</b> (Wait for them). <b>"Choose a victim to kill."</b> (Confirm the victim). <b>"Wolves, sleep."</b></p>
+                <p>5. <b>"Seer, wake up. Point at someone to inspect."</b> (Narrator shows thumb UP for Villager, DOWN for Wolf). <b>"Seer, sleep."</b></p>
+                <p>6. <b>"Doctor, wake up. Choose someone to save."</b> (If they pick the Wolf's victim, nobody dies). <b>"Doctor, sleep."</b></p>
+                <p>7. <b>"Witch, wake up."</b> (Show her the victim). <b>"Do you want to HEAL? Do you want to KILL?"</b> (Confirm actions). <b>"Witch, sleep."</b></p>
+                
+                <h3 style='color:#f09819'>☀️ THE DAY PHASE</h3>
+                <p>8. <b>"Everybody wake up!"</b></p>
+                <p>9. Announce the dead: <b>"Last night [Player X] died."</b> (If Doctor saved them, say "Nobody died").</p>
+                <p>10. If a Hunter died: <b>"Hunter, you are dead. Shoot someone immediately."</b></p>
+                <p>11. If a Lover died: <b>"The other Lover dies of a broken heart immediately."</b></p>
+                <p>12. <b>"Town, debate! Find the wolves!"</b> (Set a timer for 5 mins).</p>
+                <p>13. <b>"3... 2... 1... VOTE!"</b> (Everyone points at someone. Majority gets executed).</p>
+            </div>
             """, unsafe_allow_html=True)
         
-        # Gestione Morti
+        st.markdown("### 💀 GRAVEYARD & ALIVE PLAYERS")
+        
         if 'dead_p' not in st.session_state: st.session_state.dead_p = []
         
         c1, c2 = st.columns(2)
         with c1:
-            st.markdown(title_html("VILLAGERS", "#00ff88"), unsafe_allow_html=True)
+            st.markdown(title_html("VILLAGERS (GOOD)", "#00ff88"), unsafe_allow_html=True)
             for n, r in st.session_state.game_roles.items():
                 if r != "Werewolf":
-                    if st.checkbox(f"{n} ({r})", key=f"d_{n}"): 
-                        if n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
-                    elif n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
+                    # Checkbox colorato hack non possibile facilmente, usiamo testo standard
+                    is_dead = st.checkbox(f"{n} ({r})", key=f"d_{n}")
+                    if is_dead and n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
+                    elif not is_dead and n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
         with c2:
-            st.markdown(title_html("WOLVES", "#ff4b4b"), unsafe_allow_html=True)
+            st.markdown(title_html("WOLVES (EVIL)", "#ff4b4b"), unsafe_allow_html=True)
             for n, r in st.session_state.game_roles.items():
                 if r == "Werewolf":
-                    if st.checkbox(f"{n}", key=f"d_{n}"):
-                        if n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
-                    elif n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
+                    is_dead = st.checkbox(f"{n}", key=f"d_{n}")
+                    if is_dead and n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
+                    elif not is_dead and n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
         
         wolves_alive = sum(1 for n,r in st.session_state.game_roles.items() if r=="Werewolf" and n not in st.session_state.dead_p)
         villagers_alive = sum(1 for n,r in st.session_state.game_roles.items() if r!="Werewolf" and n not in st.session_state.dead_p)
         
+        st.markdown("---")
         if wolves_alive == 0: 
-            st.markdown("<div style='background:#00ff88; color:black; padding:20px; text-align:center;'><h1>VILLAGERS WIN</h1></div>", unsafe_allow_html=True)
+            st.markdown("<div style='background:#00ff88; color:black; padding:20px; text-align:center; border-radius:15px;'><h1>🎉 VILLAGERS WIN! 🎉</h1></div>", unsafe_allow_html=True)
         elif wolves_alive >= villagers_alive:
-             st.markdown("<div style='background:#ff4b4b; color:white; padding:20px; text-align:center;'><h1>WEREWOLVES WIN</h1></div>", unsafe_allow_html=True)
+             st.markdown("<div style='background:#ff4b4b; color:white; padding:20px; text-align:center; border-radius:15px;'><h1>🐺 WEREWOLVES WIN! 🐺</h1></div>", unsafe_allow_html=True)
              
-        if st.button("RESET GAME"):
+        if st.button("🔄 RESET GAME"):
             for k in list(st.session_state.keys()): del st.session_state[k]
             st.rerun()
