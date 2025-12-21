@@ -4,109 +4,102 @@ import pandas as pd
 import random
 
 # ============================================
-# CONFIGURAZIONE INIZIALE
+# 1. CONFIGURAZIONE FORZATA (DARK MODE)
 # ============================================
 config_path = os.path.expanduser("~/.streamlit/config.toml")
 os.makedirs(os.path.dirname(config_path), exist_ok=True)
 
 with open(config_path, "w") as f:
-    f.write("[theme]\nbase='dark'\n")
+    f.write("[theme]\nbase='dark'\nprimaryColor='#8e2de2'\nbackgroundColor='#0f0c29'\nsecondaryBackgroundColor='#302b63'\ntextColor='#ffffff'\nfont='sans serif'\n")
 
-st.set_page_config(
-    page_title="Sdrogo Games 2025", 
-    page_icon="🔥", 
-    layout="wide",
-    initial_sidebar_state="expanded"
-)
+st.set_page_config(page_title="Sdrogo Games 2025", page_icon="🔥", layout="wide", initial_sidebar_state="expanded")
 
 # ============================================
-# CSS "BLINDATO"
+# 2. FUNZIONI DI STILE (PER COLORARE TUTTO)
+# ============================================
+def title_html(text, color="#f09819", size="1.5rem", weight="bold"):
+    return f"<div style='color:{color}; font-size:{size}; font-weight:{weight}; margin-bottom:5px; font-family:Montserrat, sans-serif;'>{text}</div>"
+
+def gradient_text(text, size="3.5rem"):
+    return f"""
+    <div style='font-family: "Syncopate", sans-serif; font-weight: 700; font-size: {size}; 
+    background: linear-gradient(90deg, #f09819, #edde5d); -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent; text-transform: uppercase; margin-bottom: 10px;'>
+    {text}
+    </div>
+    """
+
+def neon_text(text, size="1.2rem"):
+    return f"<span style='color:#8e2de2; font-weight:900; font-size:{size}; text-shadow: 0 0 10px rgba(142, 45, 226, 0.5);'>{text}</span>"
+
+def gold_text(text, size="1rem"):
+    return f"<span style='color:#f09819; font-weight:bold; font-size:{size};'>{text}</span>"
+
+# ============================================
+# 3. CSS ESTREMO (Override Totale)
 # ============================================
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Montserrat:wght@300;400;700;900&display=swap');
 
-/* 1. SFONDO SCURO */
-html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
-    color: white !important;
+/* Sfondo Animato */
+.stApp {
+    background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
     font-family: 'Montserrat', sans-serif;
 }
+@keyframes gradient {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
 
-/* 2. TESTI GENERICI BIANCHI (Default) */
-p, label, span, li, div {
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: rgba(15, 12, 41, 0.95);
+    border-right: 2px solid #8e2de2;
+}
+
+/* Glass Cards */
+.glass-box {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 25px;
+    margin-bottom: 20px;
+}
+
+/* Pulsanti */
+.stButton > button {
+    background: linear-gradient(90deg, #8e2de2 0%, #4a00e0 100%);
+    color: white;
+    border: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 0.5rem 1rem;
+    transition: transform 0.2s;
+}
+.stButton > button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(142, 45, 226, 0.6);
+}
+
+/* Rimuovere padding fastidiosi */
+.block-container { padding-top: 2rem; }
+
+/* Input Fields Style */
+div[data-baseweb="select"] > div, div[data-baseweb="base-input"] {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #8e2de2;
     color: white;
 }
 
-/* 3. SIDEBAR */
-[data-testid="stSidebar"] {
-    background-color: rgba(15, 12, 41, 0.98) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* 4. TITOLI PRINCIPALI */
-.main-title {
-    font-family: 'Syncopate', sans-serif;
-    font-weight: 700;
-    font-size: 3.5rem;
-    background: linear-gradient(90deg, #f09819, #edde5d);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-transform: uppercase;
-    display: block;
-}
-
-/* 5. GLASS CARDS */
-.glass-card {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 2.5rem;
-    border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(15px);
-    margin-bottom: 2rem;
-}
-
-/* 6. PULSANTI */
-.stButton > button {
-    background: linear-gradient(45deg, #8e2de2, #4a00e0) !important;
-    color: white !important;
-    border: none !important;
-    padding: 0.6rem 2rem !important;
-    font-weight: 700 !important;
-    text-transform: uppercase !important;
-    letter-spacing: 1.5px !important;
-    border-radius: 10px !important;
-}
-.stButton > button:hover {
-    box-shadow: 0 0 15px rgba(142, 45, 226, 0.8) !important;
-    transform: scale(1.02);
-}
-
-/* 7. LINK AI GIOCHI */
-.game-link-btn {
-    display: block;
-    padding: 1rem;
-    background: linear-gradient(45deg, #8e2de2, #4a00e0) !important;
-    color: white !important;
-    text-align: center;
-    border-radius: 8px;
-    font-weight: 700;
-    text-decoration: none;
-    text-transform: uppercase;
-}
-
-/* 8. WIDGET INPUT */
-div[data-baseweb="select"] > div {
-    background-color: rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-}
-div[role="listbox"] { background-color: #1a1a1a !important; }
-
-/* 9. GRAFICI VIOLA */
+/* Grafici */
 rect { fill: #8e2de2 !important; }
 
-/* Messaggi errore/successo */
-.stAlert { background-color: rgba(0, 0, 0, 0.5) !important; color: white !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -123,377 +116,290 @@ if 'votes' not in st.session_state:
 # SIDEBAR
 # ============================================
 with st.sidebar:
-    # Colori forzati inline
-    st.markdown("<h2 style='color:#f09819 !important; font-weight:900;'>SDROGO HUB</h2>", unsafe_allow_html=True)
-    st.markdown("<h4 style='color:#8e2de2 !important; font-size:0.9rem;'>NAVIGATION</h4>", unsafe_allow_html=True)
-    menu = st.radio("", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula"], label_visibility="collapsed")
+    st.markdown(title_html("SDROGO HUB", "#f09819", "2rem", "900"), unsafe_allow_html=True)
+    st.markdown("---")
+    menu = st.radio("NAVIGAZIONE", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula"], label_visibility="collapsed")
+    st.markdown("---")
+    st.markdown(f"<div style='text-align:center; color:#8e2de2;'>Logged in as: <b>Guest</b></div>", unsafe_allow_html=True)
 
 # ============================================
-# MAIN DASHBOARD
+# SEZIONE 1: MAIN DASHBOARD
 # ============================================
 if menu == "Main Dashboard":
-    st.markdown("<div class='main-title'>THE MEZZENILE TAKEOVER</div>", unsafe_allow_html=True)
-    # COLORE FORZATO: VIOLA
-    st.markdown("<h3 style='color:#8e2de2 !important; font-weight:900; letter-spacing:6px; margin-top:0;'>SDROGO NEW YEAR 2025</h3><br>", unsafe_allow_html=True)
+    st.markdown(gradient_text("THE MEZZENILE TAKEOVER"), unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color:#8e2de2; letter-spacing:5px; margin-top:-20px;'>SDROGO NEW YEAR 2025</h2>", unsafe_allow_html=True)
     
-    st.markdown("<div class='glass-card'>", unsafe_allow_html=True)
-    # COLORE FORZATO: ORO
-    st.markdown("<h2 style='color:#f09819 !important; border:none; margin-bottom:30px; font-family: \"Syncopate\", sans-serif;'>MEZZENILE INSIGHTS</h2>", unsafe_allow_html=True)
+    st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
+    st.markdown(title_html("MEZZENILE INSIGHTS", "#f09819", "2rem"), unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns(3)
+    c1, c2, c3 = st.columns(3)
     
-    # In ogni blocco qui sotto, i colori sono scritti direttamente nel tag HTML
-    with col1:
-        st.markdown("<h4 style='color:#8e2de2 !important; font-weight:bold;'>Origins</h4>", unsafe_allow_html=True)
-        st.markdown("""
-            <p style='font-size: 0.95rem; line-height: 1.6; color:white !important;'>
-                <b style='color:#f09819 !important;'>The Name:</b> Mezzenile derives from the Latin <i>"Mesenile"</i>, indicating a central settlement. It has always been the strategic heart of the lower Val di Lanzo.
-            </p>""", unsafe_allow_html=True)
-        
-        st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
-        
-        st.markdown("<h4 style='color:#f09819 !important; font-weight:bold;'>Noble History</h4>", unsafe_allow_html=True)
-        st.markdown("""
-            <p style='font-size: 0.95rem; line-height: 1.6; color:white !important;'>
-                <b style='color:#8e2de2 !important;'>The Castle:</b> The Francesetti Castle is the town's crown jewel. It once hosted the high aristocracy of Turin seeking mountain refuge.
-            </p>""", unsafe_allow_html=True)
+    with c1:
+        st.markdown(neon_text("ORIGINS"), unsafe_allow_html=True)
+        st.markdown(f"""
+        <p style='color:#ddd;'>
+            {gold_text('The Name:')} Mezzenile derives from the Latin <i>"Mesenile"</i>, indicating a central settlement. It has always been the strategic heart of the lower Val di Lanzo.
+        </p>
+        """, unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(neon_text("NOBLE HISTORY"), unsafe_allow_html=True)
+        st.markdown(f"""
+        <p style='color:#ddd;'>
+            {gold_text('The Castle:')} The Francesetti Castle is the town's crown jewel. It once hosted the high aristocracy of Turin seeking mountain refuge.
+        </p>
+        """, unsafe_allow_html=True)
 
-    with col2:
-        st.markdown("<h4 style='color:#f09819 !important; font-weight:bold;'>Craftsmanship</h4>", unsafe_allow_html=True)
-        st.markdown("""
-            <p style='font-size: 0.95rem; line-height: 1.6; color:white !important;'>
-                <b style='color:#8e2de2 !important;'>Nail Makers:</b> Mezzenile was the European capital of handmade nails. The <i>"Chiodaioli"</i> were famous for their indestructible steel creations.
-            </p>""", unsafe_allow_html=True)
-            
-        st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
+    with c2:
+        st.markdown(neon_text("CRAFTSMANSHIP"), unsafe_allow_html=True)
+        st.markdown(f"""
+        <p style='color:#ddd;'>
+            {gold_text('Nail Makers:')} Mezzenile was the European capital of handmade nails. The <i>"Chiodaioli"</i> were famous for their indestructible steel creations.
+        </p>
+        """, unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(neon_text("THE LEGEND"), unsafe_allow_html=True)
+        st.markdown(f"""
+        <p style='color:#ddd;'>
+            {gold_text('The Sdrogo Code:')} What happens in the mountains stays in the mountains. This is the first and only rule of the 2025 takeover.
+        </p>
+        """, unsafe_allow_html=True)
 
-        st.markdown("<h4 style='color:#8e2de2 !important; font-weight:bold;'>The Legend</h4>", unsafe_allow_html=True)
-        st.markdown("""
-            <p style='font-size: 0.95rem; line-height: 1.6; color:white !important;'>
-                <b style='color:#f09819 !important;'>The Sdrogo Code:</b> What happens in the mountains stays in the mountains. This is the first and only rule of the 2025 takeover.
-            </p>""", unsafe_allow_html=True)
+    with c3:
+        st.markdown(neon_text("ENVIRONMENT"), unsafe_allow_html=True)
+        st.markdown(f"""
+        <p style='color:#ddd;'>
+            {gold_text('Thin Air:')} At 600m+ elevation, oxygen is lower and spirits are higher. Science says one shot here counts as two in the valley.
+        </p>
+        """, unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(neon_text("SURVIVAL"), unsafe_allow_html=True)
+        st.markdown(f"""
+        <p style='color:#ddd;'>
+            {gold_text('The Cold:')} Don't let the fire go out. Mezzenile winters are unforgiving for those who don't keep their "hydration" levels up.
+        </p>
+        """, unsafe_allow_html=True)
 
-    with col3:
-        st.markdown("<h4 style='color:#8e2de2 !important; font-weight:bold;'>Environment</h4>", unsafe_allow_html=True)
-        st.markdown("""
-            <p style='font-size: 0.95rem; line-height: 1.6; color:white !important;'>
-                <b style='color:#f09819 !important;'>Thin Air:</b> At 600m+ elevation, oxygen is lower and spirits are higher. Science says one shot here counts as two in the valley.
-            </p>""", unsafe_allow_html=True)
-            
-        st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
-
-        st.markdown("<h4 style='color:#f09819 !important; font-weight:bold;'>Survival</h4>", unsafe_allow_html=True)
-        st.markdown("""
-            <p style='font-size: 0.95rem; line-height: 1.6; color:white !important;'>
-                <b style='color:#8e2de2 !important;'>The Cold:</b> Don't let the fire go out. Mezzenile winters are unforgiving for those who don't keep their "hydration" levels up.
-            </p>""", unsafe_allow_html=True)
-    
     st.markdown("</div>", unsafe_allow_html=True)
-    
-    st.markdown("""
-        <div style='text-align: center; margin-top: 50px; opacity: 0.7;'>
-            <p style='letter-spacing: 3px; color:#cccccc !important;'>USE THE SIDEBAR TO ACCESS THE GAMING MODULES</p>
-        </div>
-    """, unsafe_allow_html=True)
 
 # ============================================
-# ONLINE GAMES LINKS
+# SEZIONE 2: ONLINE GAMES
 # ============================================
 elif menu == "Online Games Links":
-    st.markdown("<div class='main-title'>Gaming HQ</div>", unsafe_allow_html=True)
+    st.markdown(gradient_text("GAMING HQ"), unsafe_allow_html=True)
     
-    # Tournament Rules
-    st.markdown("""
-    <div class='glass-card' style='border-left: 5px solid #8e2de2;'>
-        <h2 style='color:#8e2de2 !important; border:none; margin-bottom:15px; font-family: "Syncopate", sans-serif;'>TOURNAMENT RULES</h2>
-        <div style='font-size: 1.05rem; line-height: 1.7; color:white !important;'>
-            <p><b style='color:#f09819 !important;'>The Setup:</b> Form <b>5 TEAMS of 4 players</b> each.</p>
-            <p><b style='color:#f09819 !important;'>The Flow:</b> Each team will play the 5 games in order. While one team competes, the others witness the performance.</p>
-            <p><b style='color:#f09819 !important;'>The Penalty:</b> At the end of every game round, the <b>4 LOSING TEAMS</b> must take a shot or a full glass of wine/beer.</p>
-            <p><b style='color:#f09819 !important;'>The Grand Finale:</b> After the final game, the <b>OVERALL WINNING TEAM</b> earns the right to choose <b>ONE PLAYER</b> from each of the other teams to take an extra penalty drink.</p>
-        </div>
+    st.markdown("<div class='glass-box' style='border-left: 5px solid #8e2de2;'>", unsafe_allow_html=True)
+    st.markdown(title_html("TOURNAMENT RULES", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
+    st.markdown(f"""
+    <div style='color:#eee; font-size:1.1rem; line-height:1.6;'>
+        ► {gold_text('The Setup:')} Form <b>5 TEAMS of 4 players</b> each.<br>
+        ► {gold_text('The Flow:')} Each team will play the 5 games in order. While one team competes, the others witness the performance.<br>
+        ► {gold_text('The Penalty:')} At the end of every game round, the <b>4 LOSING TEAMS</b> must take a shot or a full glass of wine/beer.<br>
+        ► {gold_text('The Grand Finale:')} After the final game, the <b>OVERALL WINNING TEAM</b> earns the right to choose <b>ONE PLAYER</b> from each of the other teams to take an extra penalty drink.
     </div>
     """, unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("<h3 style='color:#f09819 !important; margin-top:40px; letter-spacing: 2px;'>THE 5 CHALLENGES</h3>", unsafe_allow_html=True)
+    st.markdown(title_html("THE 5 CHALLENGES", "#f09819", "1.5rem"), unsafe_allow_html=True)
 
     games = [
-        {"name": "TimeGuessr", "url": "https://timeguessr.com/", "desc": "Identify the exact year and location of historical photos."},
-        {"name": "FoodGuessr", "url": "https://www.foodguessr.com/", "desc": "A worldwide culinary hunt. Guess the country of origin."},
-        {"name": "The Auction Game", "url": "https://neal.fun/auction-game/", "desc": "Guess the sale price of absurd auction items."},
-        {"name": "OpenGuessr", "url": "https://www.openguessr.com/maps", "desc": "The ultimate geography battle. Drop the pin."},
-        {"name": "Higher or Lower", "url": "https://www.higherorlowergame.com/google/", "desc": "Guess which topic has more Google searches."}
+        {"name": "TimeGuessr", "url": "https://timeguessr.com/", "desc": "Identify year and location."},
+        {"name": "FoodGuessr", "url": "https://www.foodguessr.com/", "desc": "Worldwide culinary hunt."},
+        {"name": "The Auction Game", "url": "https://neal.fun/auction-game/", "desc": "Guess the price of absurd items."},
+        {"name": "OpenGuessr", "url": "https://www.openguessr.com/maps", "desc": "Geography battle. Drop the pin."},
+        {"name": "Higher or Lower", "url": "https://www.higherorlowergame.com/google/", "desc": "Which topic is searched more?"}
     ]
 
     for g in games:
-        col_btn, col_txt = st.columns([1, 3])
-        with col_btn:
-            st.markdown(f"""
-                <a href='{g['url']}' target='_blank' style='text-decoration: none;'>
-                    <div class='game-link-btn'>PLAY {g['name']}</div>
-                </a>
-            """, unsafe_allow_html=True)
-        with col_txt:
-            st.markdown(f"""
-                <div style='padding: 0.5rem 1rem;'>
-                    <b style='color:#f09819 !important; font-size: 1.1rem;'>{g['name']}</b><br>
-                    <span style='color:#cccccc !important;'>{g['desc']}</span>
-                </div>
-            """, unsafe_allow_html=True)
-        st.markdown("<hr style='opacity: 0.1; margin: 10px 0;'>", unsafe_allow_html=True)
+        c1, c2 = st.columns([1, 4])
+        with c1:
+            st.markdown(f"<a href='{g['url']}' target='_blank'><button style='width:100%; padding:15px; background:#8e2de2; color:white; border:none; border-radius:10px; font-weight:bold; cursor:pointer;'>PLAY</button></a>", unsafe_allow_html=True)
+        with c2:
+            st.markdown(f"<div style='background:rgba(255,255,255,0.05); padding:10px; border-radius:10px;'>{gold_text(g['name'])}<br><span style='color:#ccc'>{g['desc']}</span></div>", unsafe_allow_html=True)
+        st.write("")
 
 # ============================================
-# EVENT BETTING
+# SEZIONE 3: EVENT BETTING
 # ============================================
 elif menu == "Event Betting":
-    st.markdown("<div class='main-title'>Prop Bets</div>", unsafe_allow_html=True)
+    st.markdown(gradient_text("PROP BETS"), unsafe_allow_html=True)
     
-    tab1, tab2 = st.tabs(["VOTE NOW", "LIVE PODIUMS"])
+    tab1, tab2 = st.tabs(["🗳️ VOTE NOW", "🏆 LIVE PODIUMS"])
     
-    single_bets = [
-        "The Drunkest of the Night", "First to Throw Up", "First to Fall Asleep", 
-        "First to Take a Massive Shit", "First to Mess Up in the Kitchen", "First to Break Something"
-    ]
-    pair_bets = [
-        "First Two to Start an Argument", "First Couple to Kiss in Public"
-    ]
+    single_bets = ["The Drunkest", "First to Throw Up", "First to Fall Asleep", "First to Take a Massive Shit", "First to Mess in Kitchen", "First to Break Something"]
+    pair_bets = ["First Two to Argue", "First Couple to Kiss"]
 
     with tab1:
-        st.markdown("<div class='glass-card'>", unsafe_allow_html=True)
-        voter_name = st.selectbox("Who is voting?", ["Select your name"] + people)
+        st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
+        
+        # TRUCCO: Etichetta HTML personalizzata sopra, label standard nascosta
+        st.markdown(title_html("WHO ARE YOU?", "#f09819", "1.2rem"), unsafe_allow_html=True)
+        voter_name = st.selectbox("", ["Select your name"] + people, label_visibility="collapsed")
         
         if voter_name != "Select your name":
             current_votes = {}
-            st.markdown("<h3 style='color:#f09819 !important;'>Individual Predictions</h3>", unsafe_allow_html=True)
+            st.markdown("---")
+            st.markdown(neon_text("INDIVIDUAL BETS", "1.5rem"), unsafe_allow_html=True)
+            
             for bet in single_bets:
-                current_votes[bet] = st.selectbox(f"**{bet}:**", people, key=f"{voter_name}_{bet}")
+                st.markdown(f"<br>{gold_text(bet)}", unsafe_allow_html=True)
+                current_votes[bet] = st.selectbox("", people, key=f"{voter_name}_{bet}", label_visibility="collapsed")
             
             st.markdown("---")
-            st.markdown("<h3 style='color:#8e2de2 !important;'>Pair Predictions (Pick Two)</h3>", unsafe_allow_html=True)
+            st.markdown(neon_text("PAIR BETS (Pick 2)", "1.5rem"), unsafe_allow_html=True)
             
             for bet in pair_bets:
-                # FIX: Rimosso 'max_selections' e i controlli immediati. Nessun errore mentre selezioni.
-                pair = st.multiselect(f"**{bet}:**", people, key=f"{voter_name}_{bet}_pair")
-                
-                # Salviamo sempre, controlliamo il numero solo al submit
+                st.markdown(f"<br>{gold_text(bet)}", unsafe_allow_html=True)
+                # Multiselect senza etichetta nativa per evitare il bianco
+                pair = st.multiselect("", people, key=f"{voter_name}_{bet}_pair", label_visibility="collapsed")
                 current_votes[bet] = tuple(sorted(pair))
 
-            if st.button("SUBMIT MY PREDICTIONS", use_container_width=True):
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            if st.button("🔒 LOCK IN PREDICTIONS", use_container_width=True):
                 # Validazione
-                errors = []
+                valid = True
                 for bet in pair_bets:
-                    if len(current_votes[bet]) != 2:
-                        errors.append(bet)
+                    if current_votes[bet] is None or len(current_votes[bet]) != 2:
+                        st.error(f"⚠️ For '{bet}', you must select EXACTLY 2 people!")
+                        valid = False
                 
-                if errors:
-                    st.error(f"⚠️ Error: You must pick exactly 2 people for: {', '.join(errors)}")
-                else:
-                    # Se tutto ok
+                if valid:
                     st.session_state.votes = [v for v in st.session_state.votes if v.get('_voter') != voter_name]
                     current_votes['_voter'] = voter_name
                     st.session_state.votes.append(current_votes)
-                    st.success(f"Predictions successfully locked in for {voter_name}!")
+                    st.balloons()
+                    st.success(f"VOTES SAVED FOR {voter_name}!")
+
         st.markdown("</div>", unsafe_allow_html=True)
 
     with tab2:
         if not st.session_state.votes:
-            st.info("No data available. Start voting to see the podiums.")
+            st.info("No votes yet. Be the first!")
         else:
             df = pd.DataFrame(st.session_state.votes)
             
-            # Rankings Singoli
-            st.markdown("<h2 style='color:#f09819 !important;'>Individual Rankings</h2>", unsafe_allow_html=True)
+            st.markdown(title_html("INDIVIDUAL RANKINGS", "#f09819"), unsafe_allow_html=True)
             for bet in single_bets:
-                st.markdown(f"#### {bet}")
                 if bet in df.columns:
+                    st.markdown(f"**{bet}**")
                     counts = df[bet].value_counts().head(3).reset_index()
-                    counts.columns = ['Candidate', 'Votes']
-                    st.bar_chart(data=counts, x='Candidate', y='Votes', color="#f09819")
-                st.markdown("---")
+                    counts.columns = ['Name', 'Votes']
+                    st.bar_chart(counts, x='Name', y='Votes', color="#f09819")
             
-            # Rankings Coppie
-            st.markdown("<h2 style='color:#8e2de2 !important;'>Pair Rankings</h2>", unsafe_allow_html=True)
+            st.markdown(title_html("PAIR RANKINGS", "#8e2de2"), unsafe_allow_html=True)
             for bet in pair_bets:
-                st.markdown(f"#### {bet}")
                 if bet in df.columns:
-                    # Controllo che sia una tupla valida di 2 elementi prima di formattare
+                    st.markdown(f"**{bet}**")
                     valid_pairs = df[bet].dropna()
                     if not valid_pairs.empty:
+                        # Converti tuple in stringhe solo se sono tuple valide
                         pair_series = valid_pairs.apply(lambda x: f"{x[0]} & {x[1]}" if isinstance(x, tuple) and len(x)==2 else None).dropna()
-                        pair_counts = pair_series.value_counts().head(3).reset_index()
-                        pair_counts.columns = ['Pair', 'Votes']
-                        st.bar_chart(data=pair_counts, x='Pair', y='Votes', color="#8e2de2")
-                st.markdown("---")
-            
-            # Overall Ranking
-            st.markdown("<h2 style='color:#ffffff !important;'>Overall 'Sdrogo' Ranking</h2>", unsafe_allow_html=True)
-            
-            if not df.empty:
-                all_names = []
-                # Raccogli nomi dai singoli
-                for col in single_bets:
-                    if col in df.columns:
-                        all_names.extend(df[col].dropna().tolist())
-                # Raccogli nomi dalle coppie
-                for col in pair_bets:
-                    if col in df.columns:
-                        for pair in df[col].dropna():
-                            if isinstance(pair, tuple):
-                                all_names.extend(list(pair))
+                        if not pair_series.empty:
+                            counts = pair_series.value_counts().head(3).reset_index()
+                            counts.columns = ['Couple', 'Votes']
+                            st.bar_chart(counts, x='Couple', y='Votes', color="#8e2de2")
 
-                if all_names:
-                    total_counts = pd.Series(all_names).value_counts().reset_index()
-                    total_counts.columns = ['Name', 'Total Votes']
-                    # Grafico finale (forzato viola dal CSS rect { fill: #8e2de2 })
-                    st.bar_chart(data=total_counts, x='Name', y='Total Votes', color="#8e2de2")
+            st.markdown(gradient_text("OVERALL MVP"), unsafe_allow_html=True)
+            all_names = []
+            for col in single_bets: 
+                if col in df.columns: all_names.extend(df[col].dropna().tolist())
+            for col in pair_bets:
+                if col in df.columns:
+                    for p in df[col].dropna():
+                        if isinstance(p, tuple): all_names.extend(list(p))
+            
+            if all_names:
+                total = pd.Series(all_names).value_counts().reset_index()
+                total.columns = ['Name', 'Total Votes']
+                st.bar_chart(total, x='Name', y='Total Votes', color="#8e2de2")
 
 # ============================================
-# LUPUS IN FABULA
+# SEZIONE 4: LUPUS IN FABULA
 # ============================================
 elif menu == "Lupus in Fabula":
-    st.markdown("<div class='main-title'>Lupus in Fabula</div>", unsafe_allow_html=True)
+    st.markdown(gradient_text("LUPUS IN FABULA"), unsafe_allow_html=True)
     
-    if 'game_started' not in st.session_state:
-        st.session_state.game_started = False
-    if 'current_player_index' not in st.session_state:
-        st.session_state.current_player_index = 0
-    if 'show_role' not in st.session_state:
-        st.session_state.show_role = False
+    if 'game_started' not in st.session_state: st.session_state.game_started = False
+    if 'current_player_index' not in st.session_state: st.session_state.current_player_index = 0
+    if 'show_role' not in st.session_state: st.session_state.show_role = False
 
     if not st.session_state.game_started:
+        st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
+        st.markdown(title_html("THE RULES OF MEZZENILE", "#f09819"), unsafe_allow_html=True)
         st.markdown("""
-        <div class='glass-card'>
-            <h2 style='color:#f09819 !important; border:none;'>The Rules of Mezzenile</h2>
-            <p style='color:white !important;'><b>1. The Setup:</b> There are Werewolves hidden among the Villagers.</p>
-            <p style='color:white !important;'><b>2. The Night:</b> The Narrator wakes up special roles to perform their actions in secret.</p>
-            <p style='color:white !important;'><b>3. The Day:</b> The town wakes up, finds out who died, and debates who to execute.</p>
-            <p style='color:white !important;'><b>4. Goal:</b> Villagers must kill all Wolves. Wolves must outnumber Villagers.</p>
+        <div style='color:white;'>
+        <b>1. Setup:</b> Wolves hidden among Villagers.<br>
+        <b>2. Night:</b> Special roles act in secret.<br>
+        <b>3. Day:</b> Debate and execute.<br>
+        <b>4. Win:</b> Villagers kill Wolves OR Wolves outnumber Villagers.
         </div>
         """, unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
         
-        if st.button("🔥 START THE GAME", use_container_width=True):
-            roles_pool = (["Werewolf"] * 4 + ["Seer", "Doctor", "Hunter", "Witch", "Cupid"] + ["Villager"] * 10)
-            random.shuffle(roles_pool)
-            
-            narrator_idx = random.randint(0, len(people)-1)
-            temp_people = people.copy()
-            narrator_name = temp_people.pop(narrator_idx)
-            
-            st.session_state.narrator_name = narrator_name
-            st.session_state.game_roles = dict(zip(temp_people, roles_pool))
-            st.session_state.players_to_reveal = temp_people
+        if st.button("🔥 START GAME", use_container_width=True):
+            roles = (["Werewolf"]*4 + ["Seer", "Doctor", "Hunter", "Witch", "Cupid"] + ["Villager"]*10)
+            random.shuffle(roles)
+            temp_p = people.copy()
+            narrator = temp_p.pop(random.randint(0, len(temp_p)-1))
+            st.session_state.narrator_name = narrator
+            st.session_state.game_roles = dict(zip(temp_p, roles))
+            st.session_state.players_to_reveal = temp_p
             st.session_state.game_started = True
             st.rerun()
 
     elif st.session_state.current_player_index < len(st.session_state.players_to_reveal):
-        st.markdown(f"### The Narrator is: <span style='color:#f09819 !important;'>{st.session_state.narrator_name}</span>", unsafe_allow_html=True)
+        st.markdown(f"### Narrator: {gold_text(st.session_state.narrator_name)}", unsafe_allow_html=True)
+        player = st.session_state.players_to_reveal[st.session_state.current_player_index]
         
-        idx = st.session_state.current_player_index
-        player = st.session_state.players_to_reveal[idx]
+        st.markdown(f"<div class='glass-box' style='text-align:center;'>PASS PHONE TO:<br>{gradient_text(player, '2.5rem')}</div>", unsafe_allow_html=True)
         
-        st.markdown(f"""
-        <div class='glass-card' style='text-align: center;'>
-            <p style='letter-spacing:2px; color:white !important;'>HAND THE PHONE TO:</p>
-            <h1 style='color:white !important; border:none;'>{player.upper()}</h1>
-        </div>
-        """, unsafe_allow_html=True)
-
-        col1, col2 = st.columns(2)
-        with col1:
-            if st.button("👁️ REVEAL ROLE", use_container_width=True):
-                st.session_state.show_role = True
-        with col2:
-            if st.button("NEXT PLAYER ➡️", use_container_width=True):
-                st.session_state.current_player_index += 1
-                st.session_state.show_role = False
-                st.rerun()
-
+        c1, c2 = st.columns(2)
+        if c1.button("👁️ REVEAL"): st.session_state.show_role = True
+        if c2.button("NEXT ➡️"): 
+            st.session_state.current_player_index += 1
+            st.session_state.show_role = False
+            st.rerun()
+            
         if st.session_state.show_role:
             role = st.session_state.game_roles[player]
-            descriptions = {
-                "Werewolf": "Kill one villager every night with your pack. Stay hidden.",
-                "Seer": "Check one player's identity every night.",
-                "Doctor": "Protect one player from being killed every night.",
-                "Hunter": "If you die, you can immediately kill another player of your choice.",
-                "Witch": "You have ONLY TWO potions for the whole game: one to heal a victim and one to poison a player. Use them wisely!",
-                "Cupid": "ONLY ON THE FIRST NIGHT, link two players: if one dies, the other dies of a broken heart.",
-                "Villager": "Find the wolves and vote them out. You have no special powers."
-            }
-            st.markdown(f"""
-            <div style='background:rgba(142, 45, 226, 0.2); padding:20px; border-radius:10px; border:1px solid #8e2de2; text-align:center;'>
-                <h2 style='color:#8e2de2 !important; border:none;'>{role.upper()}</h2>
-                <p style='color:white !important;'>{descriptions[role]}</p>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"<div style='background:#8e2de2; padding:20px; border-radius:10px; text-align:center; color:white;'><h1>{role}</h1></div>", unsafe_allow_html=True)
 
     else:
-        st.markdown(f"<h1>Narrator Dashboard: {st.session_state.narrator_name}</h1>", unsafe_allow_html=True)
-        
-        with st.expander("📜 FULL NARRATOR SCRIPT (Read Step-by-Step)"):
-            st.markdown(f"""
-            <div style='color:#f09819 !important; font-weight:bold;'>--- START OF THE NIGHT ---</div>
-            <p style='color:white !important;'>1. <b>"Everyone, close your eyes. Night falls in Mezzenile."</b></p>
-            <p style='color:white !important;'>2. <b>"Cupid, wake up (FIRST NIGHT ONLY)."</b> If it's the first night: <b>"Choose two souls to link forever."</b> (Touch their shoulders). If not: <b>"Cupid, go back to sleep."</b></p>
-            <p style='color:white !important;'>3. <b>"The Lovers, wake up and look at each other (FIRST NIGHT ONLY). Now sleep."</b></p>
-            <p style='color:white !important;'>4. <b>"Werewolves, wake up. Point at your victim."</b> (Take note, then: <b>"Wolves, sleep."</b>)</p>
-            <p style='color:white !important;'>5. <b>"The Seer, wake up. Point at someone to inspect."</b> (Give thumbs down for Wolf, up for Villager. Then: <b>"Seer, sleep."</b>)</p>
-            <p style='color:white !important;'>6. <b>"The Doctor, wake up. Point at the person you want to save tonight. Doctor, sleep."</b></p>
-            <p style='color:white !important;'>7. <b>"The Witch, wake up. The victim is [Point]. Do you want to use your healing potion? (ONLY ONCE PER GAME). Do you want to use your poison? (ONLY ONCE PER GAME). Point at your target. Witch, sleep."</b></p>
-            <div style='color:#f09819 !important; font-weight:bold;'>--- DAWN ---</div>
-            <p style='color:white !important;'>8. <b>"Sun rises! Everyone open your eyes."</b></p>
-            <p style='color:white !important;'>9. <b>"Last night, the person who died is... [Name/No one]."</b></p>
-            <p style='color:white !important;'>10. <b>"Villagers, you have 5 minutes to discuss and vote someone to be executed."</b></p>
-            """, unsafe_allow_html=True)
-
-        st.markdown("### 💀 Graveyard & Live Roster")
-        
-        if 'dead_players' not in st.session_state:
-            st.session_state.dead_players = []
-
-        col_good, col_evil = st.columns(2)
-        
-        with col_good:
-            st.markdown("<h4 style='color:#00ff88 !important;'>THE INNOCENTS</h4>", unsafe_allow_html=True)
-            for name, role in st.session_state.game_roles.items():
-                if role != "Werewolf":
-                    is_dead = st.checkbox(f"Eliminate {name} ({role})", key=f"dead_{name}")
-                    if is_dead and name not in st.session_state.dead_players:
-                        st.session_state.dead_players.append(name)
-                    elif not is_dead and name in st.session_state.dead_players:
-                        st.session_state.dead_players.remove(name)
-
-        with col_evil:
-            st.markdown("<h4 style='color:#ff4b4b !important;'>THE WEREWOLVES</h4>", unsafe_allow_html=True)
-            for name, role in st.session_state.game_roles.items():
-                if role == "Werewolf":
-                    is_dead = st.checkbox(f"Eliminate {name}", key=f"dead_{name}")
-                    if is_dead and name not in st.session_state.dead_players:
-                        st.session_state.dead_players.append(name)
-                    elif not is_dead and name in st.session_state.dead_players:
-                        st.session_state.dead_players.remove(name)
-
-        alive_villagers = [n for n, r in st.session_state.game_roles.items() if r != "Werewolf" and n not in st.session_state.dead_players]
-        alive_wolves = [n for n, r in st.session_state.game_roles.items() if r == "Werewolf" and n not in st.session_state.dead_players]
-
-        st.markdown("---")
-        
-        if len(alive_wolves) == 0:
-            st.balloons()
+        st.markdown(f"### Narrator: {gold_text(st.session_state.narrator_name)}", unsafe_allow_html=True)
+        with st.expander("📜 NARRATOR SCRIPT"):
             st.markdown("""
-            <div style='background-color:#00ff88; padding:30px; border-radius:15px; text-align:center;'>
-                <h1 style='color:black !important; border:none;'>VILLAGERS WIN!</h1>
-            </div>
+            <b style='color:#f09819'>NIGHT:</b><br>
+            1. Cupid (1st night only)<br>2. Lovers (1st night only)<br>3. Wolves<br>4. Seer<br>5. Doctor<br>6. Witch<br>
+            <b style='color:#f09819'>DAY:</b><br>Reveal dead, discuss, vote.
             """, unsafe_allow_html=True)
-            
-        elif len(alive_wolves) >= len(alive_villagers):
-            st.markdown("""
-            <div style='background-color:#ff4b4b; padding:30px; border-radius:15px; text-align:center;'>
-                <h1 style='color:white !important; border:none;'>WEREWOLVES WIN!</h1>
-            </div>
-            """, unsafe_allow_html=True)
-
-        if st.button("🔄 RESET ENTIRE GAME"):
-            for key in list(st.session_state.keys()):
-                if key.startswith("dead_") or key in ['game_started', 'current_player_index', 'dead_players', 'game_roles', 'narrator_name', 'players_to_reveal', 'show_role']:
-                    del st.session_state[key]
+        
+        # Gestione Morti
+        if 'dead_p' not in st.session_state: st.session_state.dead_p = []
+        
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown(title_html("VILLAGERS", "#00ff88"), unsafe_allow_html=True)
+            for n, r in st.session_state.game_roles.items():
+                if r != "Werewolf":
+                    if st.checkbox(f"{n} ({r})", key=f"d_{n}"): 
+                        if n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
+                    elif n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
+        with c2:
+            st.markdown(title_html("WOLVES", "#ff4b4b"), unsafe_allow_html=True)
+            for n, r in st.session_state.game_roles.items():
+                if r == "Werewolf":
+                    if st.checkbox(f"{n}", key=f"d_{n}"):
+                        if n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
+                    elif n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
+        
+        wolves_alive = sum(1 for n,r in st.session_state.game_roles.items() if r=="Werewolf" and n not in st.session_state.dead_p)
+        villagers_alive = sum(1 for n,r in st.session_state.game_roles.items() if r!="Werewolf" and n not in st.session_state.dead_p)
+        
+        if wolves_alive == 0: 
+            st.markdown("<div style='background:#00ff88; color:black; padding:20px; text-align:center;'><h1>VILLAGERS WIN</h1></div>", unsafe_allow_html=True)
+        elif wolves_alive >= villagers_alive:
+             st.markdown("<div style='background:#ff4b4b; color:white; padding:20px; text-align:center;'><h1>WEREWOLVES WIN</h1></div>", unsafe_allow_html=True)
+             
+        if st.button("RESET GAME"):
+            for k in list(st.session_state.keys()): del st.session_state[k]
             st.rerun()
