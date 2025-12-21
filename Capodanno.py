@@ -16,7 +16,7 @@ with open(config_path, "w") as f:
 st.set_page_config(page_title="Sdrogo Games 2025", page_icon="🔥", layout="wide", initial_sidebar_state="expanded")
 
 # ============================================
-# 2. FUNZIONI DI STILE (PER COLORARE TUTTO)
+# 2. FUNZIONI DI STILE
 # ============================================
 def title_html(text, color="#f09819", size="1.5rem", weight="bold"):
     return f"<div style='color:{color}; font-size:{size}; font-weight:{weight}; margin-bottom:5px; font-family:Montserrat, sans-serif;'>{text}</div>"
@@ -37,7 +37,7 @@ def gold_text(text, size="1rem"):
     return f"<span style='color:#f09819; font-weight:bold; font-size:{size};'>{text}</span>"
 
 # ============================================
-# 3. CSS ESTREMO (Override Totale)
+# 3. CSS 
 # ============================================
 st.markdown("""
 <style>
@@ -100,6 +100,9 @@ rect { fill: #8e2de2 !important; }
 
 /* Messaggi */
 .stAlert { background-color: rgba(0, 0, 0, 0.5) !important; color: white !important; }
+
+/* Separatore */
+hr { border-color: #8e2de2 !important; opacity: 0.3; }
 
 </style>
 """, unsafe_allow_html=True)
@@ -433,70 +436,59 @@ elif menu == "Lupus in Fabula":
         </div>
         """, unsafe_allow_html=True)
         
-        # SCRIPT NARRATORE FINALE PERFETTAMENTE FORMATTATO
+        # SCRIPT NARRATORE FINALE (FORMATTATO SOLO CON STREAMLIT NATIVO)
+        # Sostituiamo l'HTML con chiamate native per evitare bug visivi
         with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
-            st.markdown("""
-            <div style='background:rgba(0,0,0,0.3); padding:15px; border-radius:10px;'>
-                <h3 style='color:#8e2de2; margin-top:0; border-bottom:1px solid #8e2de2; padding-bottom:5px;'>🌙 THE NIGHT PHASE</h3>
-                
-                <div style='margin-bottom:15px; color:white;'>
-                    🛑 <b>"Everyone, close your eyes! Night falls on Mezzenile."</b><br>
-                    <small>(Ensure no one is peeking)</small>
-                </div>
-                
-                <div style='margin-bottom:15px; border-left:4px solid #f09819; padding-left:15px; background:rgba(240, 152, 25, 0.1); color:white;'>
-                    <div style='color:#f09819; font-weight:bold; font-size:0.9rem; margin-bottom:5px;'>--- NIGHT 1 ONLY ---</div>
-                    💘 <b>"Cupid, wake up."</b><br>
-                    "Point to the two Lovers."<br>
-                    <i>(Narrator: Walk around and <u>GENTLY TAP THE SHOULDERS</u> of the two chosen people).</i><br>
-                    <b>"Cupid, sleep."</b>
-                </div>
+            st.subheader("🌙 THE NIGHT PHASE")
+            st.write("🛑 **'Everyone, close your eyes! Deep sleep falls on Mezzenile.'**")
+            st.caption("(Make sure no one is peeking)")
+            
+            st.markdown("---")
+            st.info("""
+            **💘 (NIGHT 1 ONLY) CUPID**
+            * "Cupid, wake up."
+            * "Point to the two Lovers." (Tap shoulders).
+            * "Cupid, sleep."
+            """)
+            
+            st.info("""
+            **❤️ (NIGHT 1 ONLY) LOVERS**
+            * "Lovers, wake up."
+            * "Look at each other. Memorize your partner."
+            * "Lovers, sleep."
+            """)
+            st.markdown("---")
+            
+            st.write("🐺 **'Werewolves, wake up.'**")
+            st.write("* \"Choose your victim.\" (Wolves point).")
+            st.write("* (Narrator: Nod to confirm).")
+            st.write("* **'Wolves, sleep.'**")
+            st.write("") # Spazio
+            
+            st.write("🔮 **'The Seer, wake up.'**")
+            st.write("* \"Point at someone to inspect.\"")
+            st.write("* (Narrator: 👎 = WOLF, 👍 = GOOD).")
+            st.write("* **'Seer, sleep.'**")
+            st.write("")
 
-                <div style='margin-bottom:15px; border-left:4px solid #f09819; padding-left:15px; background:rgba(240, 152, 25, 0.1); color:white;'>
-                    <div style='color:#f09819; font-weight:bold; font-size:0.9rem; margin-bottom:5px;'>--- NIGHT 1 ONLY ---</div>
-                    ❤️ <b>"Lovers, wake up."</b><br>
-                    "Look at each other. Memorize your partner."<br>
-                    <b>"Lovers, sleep."</b>
-                </div>
+            st.write("💉 **'The Doctor, wake up.'**")
+            st.write("* \"Who do you want to protect?\"")
+            st.write("* (Narrator: Remember this person. If Wolves picked them, they survive).")
+            st.write("* **'Doctor, sleep.'**")
+            st.write("")
 
-                <div style='margin-bottom:15px; color:white;'>
-                    🐺 <b>"Werewolves, wake up."</b><br>
-                    "Choose your victim." (Wolves point).<br>
-                    <i>(Narrator: Nod to confirm).</i><br>
-                    <b>"Wolves, sleep."</b>
-                </div>
+            st.write("🧪 **'The Witch, wake up.'**")
+            st.write("* (Narrator: POINT to the victim killed by Wolves).")
+            st.write("* \"Do you want to HEAL? Do you want to KILL?\"")
+            st.write("* **'Witch, sleep.'**")
 
-                <div style='margin-bottom:15px; color:white;'>
-                    🔮 <b>"Seer, wake up."</b><br>
-                    "Point at someone to inspect."<br>
-                    <i>(Narrator: 👎 = WOLF, 👍 = GOOD).</i><br>
-                    <b>"Seer, sleep."</b>
-                </div>
-
-                <div style='margin-bottom:15px; color:white;'>
-                    💉 <b>"Doctor, wake up."</b><br>
-                    "Who do you want to protect?"<br>
-                    <i>(Narrator: Remember this person. If Wolves picked them, they survive).</i><br>
-                    <b>"Doctor, sleep."</b>
-                </div>
-
-                <div style='margin-bottom:15px; color:white;'>
-                    🧪 <b>"Witch, wake up."</b><br>
-                    <i>(Narrator: <u>POINT to the victim</u> killed by Wolves).</i><br>
-                    "Do you want to HEAL? Do you want to KILL?" (Confirm actions).<br>
-                    <b>"Witch, sleep."</b>
-                </div>
-
-                <h3 style='color:#f09819; margin-top:25px; border-bottom:1px solid #f09819; padding-bottom:5px;'>☀️ THE DAY PHASE</h3>
-                
-                <div style='margin-bottom:10px; color:white;'>🌅 <b>"Everybody wake up! It's morning."</b></div>
-                <div style='margin-bottom:10px; color:white;'>📣 <b>"Last night..."</b> (Announce who died. If Doctor saved them or Witch healed them: "Nobody died").</div>
-                <div style='margin-bottom:10px; color:white;'>🔫 If Hunter died: <b>"Hunter, shoot someone immediately."</b></div>
-                <div style='margin-bottom:10px; color:white;'>💔 If Lover died: <b>"The other Lover dies of a broken heart."</b></div>
-                <div style='margin-bottom:10px; color:white;'>🗣️ <b>"Town, debate! Find the wolves!"</b> (5 mins).</div>
-                <div style='margin-bottom:10px; color:white;'>🗳️ <b>"3... 2... 1... VOTE!"</b> (Majority dies).</div>
-            </div>
-            """, unsafe_allow_html=True)
+            st.subheader("☀️ THE DAY PHASE")
+            st.write("🌅 **'Everybody wake up! It's morning.'**")
+            st.write("📣 \"Last night...\" (Announce who died. If saved: 'Nobody died').")
+            st.write("🔫 If Hunter died: \"Hunter, shoot someone immediately.\"")
+            st.write("💔 If Lover died: \"The other Lover dies of a broken heart.\"")
+            st.write("🗣️ \"Town, debate! Find the wolves!\" (5 mins).")
+            st.write("🗳️ \"3... 2... 1... VOTE!\" (Majority dies).")
         
         st.markdown("### 💀 GRAVEYARD & ALIVE PLAYERS")
         
