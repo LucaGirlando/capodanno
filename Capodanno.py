@@ -240,7 +240,7 @@ elif menu == "Event Betting":
     tab1, tab2 = st.tabs(["🗳️ VOTE NOW", "🏆 LIVE PODIUMS"])
     
     single_bets = ["The Drunkest", "First to Throw Up", "First to Fall Asleep", "First to Take a Massive Shit", "First to Mess in Kitchen", "First to Break Something"]
-    pair_bets = ["First Two to Argue", "First Couple to Kiss"]
+    pair_bets = ["First Two to Argue", "First Couple to Kiss HARD in Public"]
 
     with tab1:
         st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
