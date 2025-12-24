@@ -206,6 +206,7 @@ elif menu == "Online Games Links":
     st.markdown(f"""
     <div style='color:#eee; font-size:1.1rem; line-height:1.6;'>
         ► {gold_text('The Setup:')} Form <b>5 TEAMS of 4 players</b> each.<br>
+        ► {gold_text('The Flow:')} Each team will play the 5 games in order. While one team competes, the others witness the performance.<br>
         ► {gold_text('The Penalty:')} At the end of every game round, the <b>4 LOSING TEAMS</b> must take a shot or a full glass of wine/beer.<br>
         ► {gold_text('The Grand Finale:')} After the final game, the <b>OVERALL WINNING TEAM</b> earns the right to choose <b>ONE PLAYER</b> from each of the other teams to take an extra penalty drink.
     </div>
@@ -229,6 +230,17 @@ elif menu == "Online Games Links":
         with c2:
             st.markdown(f"<div style='background:rgba(255,255,255,0.05); padding:10px; border-radius:10px;'>{gold_text(g['name'])}<br><span style='color:#ccc'>{g['desc']}</span></div>", unsafe_allow_html=True)
         st.write("")
+
+    # --- SEZIONE BONUS AGGIUNTA ---
+    st.markdown("<hr style='border-color:#f09819 !important; opacity:0.5; margin:30px 0;'>", unsafe_allow_html=True)
+    st.markdown(title_html("EXTRA / FREE PLAY", "#f09819", "1.5rem"), unsafe_allow_html=True)
+    
+    bc1, bc2 = st.columns([1, 4])
+    with bc1:
+        # Pulsante diverso (Gold) per distinguerlo dal torneo
+        st.markdown(f"<a href='https://makeitmeme.com/it/' target='_blank'><button style='width:100%; padding:15px; background:linear-gradient(45deg, #f09819, #edde5d); color:black; border:none; border-radius:10px; font-weight:bold; cursor:pointer;'>OPEN</button></a>", unsafe_allow_html=True)
+    with bc2:
+        st.markdown(f"<div style='background:rgba(255,255,255,0.05); padding:10px; border-radius:10px;'>{gold_text('Make It Meme')}<br><span style='color:#ccc'>Not part of the tournament. Use this for chill moments!</span></div>", unsafe_allow_html=True)
 
 # ============================================
 # SEZIONE 3: EVENT BETTING
