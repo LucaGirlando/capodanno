@@ -190,51 +190,57 @@ if menu == "Main Dashboard":
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # --- CARD 2: GRAN CENONE MENU (FIXED STYLE) ---
+    # --- CARD 2: GRAN CENONE MENU (VERSIONE NATIVA E STABILE) ---
     st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
     st.markdown(gradient_text("GRAND DINNER MENU", "2.8rem"), unsafe_allow_html=True)
     
-    # HTML CON STILE INLINE PER EVITARE BUG VISIVI
-    menu_html = """
-    <div style="background: rgba(15, 12, 41, 0.6); border: 1px solid rgba(240, 152, 25, 0.3); border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); font-family: 'Montserrat', sans-serif;">
+    st.markdown("<div class='glass-box' style='text-align:center; border: 2px solid #f09819;'>", unsafe_allow_html=True)
+    
+    # STARTERS
+    st.markdown(title_html("STARTERS", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
+    st.markdown("---") # Linea separatrice nativa
+    st.markdown("💎 **Torte Salate Rustiche**")
+    st.markdown("💎 **Panettone Gastronomico Salato**")
+    st.markdown("💎 **Alpine Charcuterie Board (Salumi & Formaggi)**")
+    
+    st.markdown("<br>", unsafe_allow_html=True)
 
-        <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.8rem; font-weight: 700; margin-top: 10px; letter-spacing: 2px;">STARTERS</div>
-        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0)); margin-bottom: 20px;">
-        
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">💎 Torte Salate Rustiche</div>
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">💎 Panettone Gastronomico Salato</div>
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">💎 Alpine Charcuterie Board (Salumi & Formaggi)</div>
+    # FIRST COURSES
+    st.markdown(title_html("FIRST COURSES", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("🍝 **Risotto della Valle**")
+    st.markdown("🍝 **Lasagne al Pesto Genovese**")
+    st.markdown("🍝 **Lasagne al Ragù della Tradizione**")
 
-        <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.8rem; font-weight: 700; margin-top: 40px; letter-spacing: 2px;">FIRST COURSES</div>
-        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0)); margin-bottom: 20px;">
-        
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍝 Risotto della Valle</div>
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍝 Lasagne al Pesto Genovese</div>
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍝 Lasagne al Ragù della Tradizione</div>
+    st.markdown("<br>", unsafe_allow_html=True)
 
-        <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.8rem; font-weight: 700; margin-top: 40px; letter-spacing: 2px;">MAIN COURSES & SIDES</div>
-        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0)); margin-bottom: 20px;">
-        
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍖 Polpo in Pignata e Purè</div>
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🥔 Crispy Roasted Potatoes</div>
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🥗 Arrosto di Vitello alle Erbe</div>
+    # MAINS
+    st.markdown(title_html("MAIN COURSES & SIDES", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("🍖 **Polpo in Pignata e Purè**")
+    st.markdown("🍖 **Arrosto di Vitello alle Erbe**")
+    st.markdown("🥔 **Crispy Roasted Potatoes**")
 
-        <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.8rem; font-weight: 700; margin-top: 40px; letter-spacing: 2px;">DESSERTS</div>
-        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0)); margin-bottom: 20px;">
-        
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍩 Salame di Cioccolato</div>
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍩 Classic Tiramisù</div>
-        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍩 Panettone con Crema Mascarpone</div>
+    st.markdown("<br>", unsafe_allow_html=True)
 
-        <div style="background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); border-radius: 15px; padding: 25px; margin-top: 50px; box-shadow: 0 5px 20px rgba(142, 45, 226, 0.4);">
-            <h2 style="margin:0; font-family:'Syncopate', sans-serif; font-size:1.8rem; letter-spacing:3px; color: white;">🕛 MIDNIGHT 🕛</h2>
-            <p style="font-size:1.4rem; font-weight:bold; margin:15px 0; color: white;">Cotechino con Lenticchie</p>
-            <span style="color:#ffd700; font-size:1.1rem; font-weight:bold;">✨ For money and luck in 2025! ✨</span>
-        </div>
+    # DESSERTS
+    st.markdown(title_html("DESSERTS", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("🍩 **Salame di Cioccolato**")
+    st.markdown("🍩 **Classic Tiramisù**")
+    st.markdown("🍩 **Panettone con Crema Mascarpone**")
 
-    </div>
-    """
-    st.markdown(menu_html, unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # MIDNIGHT SPECIAL
+    st.info("""
+    ### 🕛 MIDNIGHT SPECIAL 🕛
+    **Cotechino con Lenticchie**
+    
+    ✨ *For money and luck in 2025!* ✨
+    """)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
     
 # ============================================
 # SEZIONE 2: ONLINE GAMES
