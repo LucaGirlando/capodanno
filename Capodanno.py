@@ -296,16 +296,67 @@ elif menu == "Online Games Links":
 
     st.write("") # Spaziatore
 
-    # Among Us Button (Nativo Streamlit per l'effetto)
+    # Among Us Button
     au1, au2 = st.columns([1, 4])
     with au1:
-        # Pulsante rosso "primary" per risaltare
+        # Hack CSS per rendere ROSSO solo questo pulsante (target specifico per i pulsanti secondari in questa colonna se possibile, o uso di st.markdown per iniettare lo stile locale)
+        st.markdown("""
+        <style>
+        /* Forza il colore rosso sui bottoni 'primary' solo in questa sezione se possibile, altrimenti sovrascrive */
+        div.stButton > button[kind="primary"] {
+            background: linear-gradient(45deg, #ff0000, #cc0000) !important;
+            border: 2px solid #ff0000 !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+        div.stButton > button[kind="primary"]:hover {
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
         if st.button("AMONGUSSATAAAAAA!?", use_container_width=True, type="primary"):
             st.balloons()
+            # SCRITTA GIGANTE OVERLAY
             st.markdown("""
-            <div style='background:rgba(255,0,0,0.2); border: 2px solid red; padding: 20px; border-radius: 15px; text-align: center; margin-top: 20px;'>
-                <h1 style='color: red; font-family: "Syncopate"; font-size: 2.5rem; margin:0;'>ඞ Let's play Among Us! ඞ</h1>
-                <p style='color: white;'>EMERGENCY MEETING CALLED!</p>
+            <div style='
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 90vw;
+                padding: 60px;
+                background-color: rgba(0, 0, 0, 0.95);
+                border: 10px solid #ff0000;
+                border-radius: 30px;
+                text-align: center;
+                z-index: 999999;
+                box-shadow: 0 0 100px rgba(255, 0, 0, 0.9);
+                backdrop-filter: blur(10px);
+            '>
+                <h1 style='
+                    color: #ff0000; 
+                    font-family: "Syncopate", sans-serif; 
+                    font-size: 5vw; 
+                    font-weight: 900; 
+                    margin: 0; 
+                    text-transform: uppercase;
+                    text-shadow: 0 0 20px red;
+                    line-height: 1.2;
+                '>
+                    ඞ<br>Let's play<br>Among Us!<br>ඞ
+                </h1>
+                <h2 style='
+                    color: white; 
+                    font-family: "Montserrat", sans-serif; 
+                    font-size: 3vw; 
+                    margin-top: 40px; 
+                    font-weight: 800;
+                    letter-spacing: 3px;
+                '>
+                    🚨 EMERGENCY MEETING CALLED! 🚨
+                </h2>
             </div>
             """, unsafe_allow_html=True)
             
