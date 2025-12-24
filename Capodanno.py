@@ -190,57 +190,62 @@ if menu == "Main Dashboard":
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # --- CARD 2: GRAN CENONE MENU (INLINE STYLE FIX) ---
+    # --- CARD 2: GRAN CENONE MENU (NATIVE STREAMLIT DESIGN) ---
     st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
     
-    # HTML BLINDATO CON STILI DIRETTI
-    menu_html = """
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Syncopate:wght@400;700&display=swap');
-    </style>
+    # Titolo Menu
+    st.markdown(gradient_text("GRAND DINNER MENU", "2.8rem"), unsafe_allow_html=True)
     
-    <div style="background-color: rgba(15, 12, 41, 0.85); border: 1px solid #f09819; border-radius: 8px; padding: 50px; text-align: center; max-width: 900px; margin: 0 auto; box-shadow: 0 0 40px rgba(0,0,0,0.5);">
+    # Contenitore menu "simulato" usando colonne per centrare
+    col_spacer_L, col_menu, col_spacer_R = st.columns([1, 6, 1])
+
+    with col_menu:
+        # Bordo dorato superiore
+        st.markdown("<hr style='border: 2px solid #f09819; margin-bottom: 30px; opacity: 0.8;'>", unsafe_allow_html=True)
+
+        # 1. STARTERS
+        st.markdown("<div style='text-align: center; color: #8e2de2; font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px;'>STARTERS</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Torte Salate Rustiche</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Panettone Gastronomico Salato</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Alpine Charcuterie Board</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: #aaa; font-size: 0.9rem; font-style: italic; margin-bottom: 30px;'>Selection of local cured meats & cheeses</div>", unsafe_allow_html=True)
         
-        <h1 style="font-family: 'Syncopate', sans-serif; font-weight: 700; font-size: 3rem; margin-bottom: 50px; letter-spacing: 4px; text-transform: uppercase; background: -webkit-linear-gradient(0deg, #f09819, #edde5d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 0;">Grand Dinner Menu</h1>
+        st.markdown("<div style='text-align: center; color: #f09819; opacity: 0.5;'>♦</div>", unsafe_allow_html=True)
 
-        <div style="margin-bottom: 40px;">
-            <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; border-bottom: 1px solid rgba(142, 45, 226, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 15px;">STARTERS</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Torte Salate Rustiche</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Panettone Gastronomico Salato</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Alpine Charcuterie Board</div>
-            <div style="font-family: 'Playfair Display', serif; color: #aaa; font-size: 1rem; font-style: italic;">Selection of local cured meats & cheeses</div>
+        # 2. FIRST COURSES
+        st.markdown("<div style='text-align: center; color: #8e2de2; font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-top: 30px; margin-bottom: 10px;'>FIRST COURSES</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Risotto della Valle</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Lasagne al Pesto Genovese</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 30px;'>Lasagne al Ragù della Tradizione</div>", unsafe_allow_html=True)
+
+        st.markdown("<div style='text-align: center; color: #f09819; opacity: 0.5;'>♦</div>", unsafe_allow_html=True)
+
+        # 3. MAINS
+        st.markdown("<div style='text-align: center; color: #8e2de2; font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-top: 30px; margin-bottom: 10px;'>MAIN COURSES & SIDES</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Polpo in Pignata e Purè</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Arrosto di Vitello alle Erbe</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 30px;'>Crispy Roasted Potatoes</div>", unsafe_allow_html=True)
+
+        st.markdown("<div style='text-align: center; color: #f09819; opacity: 0.5;'>♦</div>", unsafe_allow_html=True)
+
+        # 4. DESSERTS
+        st.markdown("<div style='text-align: center; color: #8e2de2; font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-top: 30px; margin-bottom: 10px;'>DESSERTS</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Salame di Cioccolato</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Classic Tiramisù</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 40px;'>Panettone con Crema Mascarpone</div>", unsafe_allow_html=True)
+
+        # MIDNIGHT SPECIAL
+        st.markdown("""
+        <div style='background: linear-gradient(135deg, rgba(142, 45, 226, 0.2) 0%, rgba(74, 0, 224, 0.2) 100%); 
+                    border: 1px solid #8e2de2; border-radius: 10px; padding: 20px; text-align: center;'>
+            <div style='color: #f09819; font-size: 1.3rem; letter-spacing: 2px; font-weight: bold; margin-bottom: 10px;'>MIDNIGHT SPECIAL</div>
+            <div style='color: white; font-size: 1.5rem; font-weight: bold; margin-bottom: 5px;'>Cotechino con Lenticchie</div>
+            <div style='color: #ffd700; font-size: 1rem; font-style: italic;'>✨ A tradition for good fortune in 2025 ✨</div>
         </div>
-
-        <div style="margin-bottom: 40px;">
-            <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; border-bottom: 1px solid rgba(142, 45, 226, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 15px;">FIRST COURSES</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Risotto della Valle</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Lasagne al Pesto Genovese</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Lasagne al Ragù della Tradizione</div>
-        </div>
-
-        <div style="margin-bottom: 40px;">
-            <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; border-bottom: 1px solid rgba(142, 45, 226, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 15px;">MAIN COURSES & SIDES</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Polpo in Pignata e Purè</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Arrosto di Vitello alle Erbe</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Crispy Roasted Potatoes</div>
-        </div>
-
-        <div style="margin-bottom: 40px;">
-            <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; border-bottom: 1px solid rgba(142, 45, 226, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 15px;">DESSERTS</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Salame di Cioccolato</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Classic Tiramisù</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Panettone con Crema Mascarpone</div>
-        </div>
-
-        <div style="background: linear-gradient(135deg, rgba(142, 45, 226, 0.1) 0%, rgba(74, 0, 224, 0.1) 100%); border: 1px solid #8e2de2; border-radius: 8px; padding: 30px; margin-top: 50px;">
-            <div style="font-family: 'Syncopate', sans-serif; color: #f09819; font-size: 1.5rem; letter-spacing: 3px; font-weight: bold; margin-bottom: 10px;">MIDNIGHT SPECIAL</div>
-            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.6rem; font-weight: bold; margin: 10px 0;">Cotechino con Lenticchie</div>
-            <div style="font-family: 'Playfair Display', serif; color: #ffd700; font-size: 1.1rem; font-style: italic;">✨ A tradition for good fortune in 2025 ✨</div>
-        </div>
-
-    </div>
-    """
-    st.markdown(menu_html, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+        
+        # Bordo dorato inferiore
+        st.markdown("<hr style='border: 2px solid #f09819; margin-top: 30px; opacity: 0.8;'>", unsafe_allow_html=True)
     
 # ============================================
 # SEZIONE 2: ONLINE GAMES
