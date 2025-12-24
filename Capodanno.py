@@ -622,13 +622,13 @@ elif menu == "UwuFUFU Dojo":
 
     # Lista dei tornei
     tournaments = [
-        {"name": "BEST SONGS OF ALL TIME", "url": "https://www.uwufufu.com/worldcup/best-songs-of-all-time-fouda", "icon": "🎵"},
+        {"name": "BEST SONG OF ALL TIME", "url": "https://www.uwufufu.com/worldcup/best-songs-of-all-time-fouda", "icon": "🎵"},
         {"name": "BEST MOVIE EVER", "url": "https://www.uwufufu.com/worldcup/best-movie-of-all-time-nymphz", "icon": "🎬"},
         {"name": "ITALIAN RAP HITS", "url": "https://www.uwufufu.com/worldcup/canzoni-rap-italiane-alexwrite", "icon": "🎤"},
         {"name": "ANIMAL FIGHT CLUB (1v1)", "url": "https://www.uwufufu.com/worldcup/1v1-animal-tournament-dozed", "icon": "🦁"},
-        {"name": "TOP 98 SUPERPOWERS", "url": "https://www.uwufufu.com/worldcup/top-98-superpowers-professor-tigs", "icon": "⚡"},
+        {"name": "BEST SUPERPOWER", "url": "https://www.uwufufu.com/worldcup/top-98-superpowers-professor-tigs", "icon": "⚡"},
         {"name": "BEST FOOD WORLDWIDE", "url": "https://www.uwufufu.com/worldcup/best-food-worldwide-twitchtvzrvkk", "icon": "🍕"},
-        {"name": "BEST ANIMATED MOVIES", "url": "https://www.uwufufu.com/worldcup/top-film-animazione-giulio-cavatorta", "icon": "👾"},
+        {"name": "BEST ANIMATED MOVIE", "url": "https://www.uwufufu.com/worldcup/top-film-animazione-giulio-cavatorta", "icon": "👾"},
         {"name": "ULTIMATE DEATHMATCH", "url": "https://www.uwufufu.com/worldcup/chi-vincerebbe-in-uno-scontro-allultimo-sangue-gvc9", "icon": "⚔️"},
         {"name": "BETTER CHARACTER", "url": "https://www.uwufufu.com/worldcup/better-character-homelander2000", "icon": "🎭"},
         {"name": "BEST FRUITS TIER LIST", "url": "https://www.uwufufu.com/worldcup/best-fruits-charles", "icon": "🍎"},
