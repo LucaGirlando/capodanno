@@ -190,57 +190,107 @@ if menu == "Main Dashboard":
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # --- CARD 2: GRAN CENONE MENU (VERSIONE NATIVA E STABILE) ---
-    st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
-    st.markdown(gradient_text("GRAND DINNER MENU", "2.8rem"), unsafe_allow_html=True)
+    # --- CARD 2: GRAN CENONE MENU (ELEGANT & NO EMOJI) ---
+    st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
     
-    st.markdown("<div class='glass-box' style='text-align:center; border: 2px solid #f09819;'>", unsafe_allow_html=True)
-    
-    # STARTERS
-    st.markdown(title_html("STARTERS", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
-    st.markdown("---") # Linea separatrice nativa
-    st.markdown("💎 **Torte Salate Rustiche**")
-    st.markdown("💎 **Panettone Gastronomico Salato**")
-    st.markdown("💎 **Alpine Charcuterie Board (Salumi & Formaggi)**")
-    
-    st.markdown("<br>", unsafe_allow_html=True)
+    # CSS E HTML PERSONALIZZATO PER MENU ELEGANTE
+    menu_html = """
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Syncopate:wght@400;700&display=swap');
+        
+        .elegant-menu-box {
+            background-color: rgba(15, 12, 41, 0.7);
+            border: 2px solid #f09819;
+            border-radius: 4px;
+            padding: 60px;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .menu-main-title {
+            font-family: 'Syncopate', sans-serif;
+            font-weight: 700;
+            font-size: 3rem;
+            background: linear-gradient(90deg, #f09819, #edde5d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 40px;
+            letter-spacing: 4px;
+        }
 
-    # FIRST COURSES
-    st.markdown(title_html("FIRST COURSES", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("🍝 **Risotto della Valle**")
-    st.markdown("🍝 **Lasagne al Pesto Genovese**")
-    st.markdown("🍝 **Lasagne al Ragù della Tradizione**")
+        .course-title {
+            font-family: 'Syncopate', sans-serif;
+            color: #8e2de2;
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            display: inline-block;
+            border-bottom: 1px solid rgba(142, 45, 226, 0.3);
+            padding-bottom: 5px;
+        }
 
-    st.markdown("<br>", unsafe_allow_html=True)
+        .dish-item {
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin: 12px 0;
+            letter-spacing: 0.5px;
+        }
 
-    # MAINS
-    st.markdown(title_html("MAIN COURSES & SIDES", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("🍖 **Polpo in Pignata e Purè**")
-    st.markdown("🍖 **Arrosto di Vitello alle Erbe**")
-    st.markdown("🥔 **Crispy Roasted Potatoes**")
+        .dish-desc {
+            color: #ccc;
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-bottom: 5px;
+        }
 
-    st.markdown("<br>", unsafe_allow_html=True)
+        .midnight-section {
+            margin-top: 60px;
+            padding: 30px;
+            border: 1px solid rgba(240, 152, 25, 0.5);
+            background: rgba(240, 152, 25, 0.05);
+        }
+    </style>
 
-    # DESSERTS
-    st.markdown(title_html("DESSERTS", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
-    st.markdown("---")
-    st.markdown("🍩 **Salame di Cioccolato**")
-    st.markdown("🍩 **Classic Tiramisù**")
-    st.markdown("🍩 **Panettone con Crema Mascarpone**")
+    <div class="elegant-menu-box">
+        <div class="menu-main-title">GRAND DINNER MENU</div>
 
-    st.markdown("<br>", unsafe_allow_html=True)
+        <div class="course-title">STARTERS</div>
+        <div class="dish-item">Torte Salate Rustiche</div>
+        <div class="dish-item">Panettone Gastronomico Salato</div>
+        <div class="dish-item">Alpine Charcuterie Board</div>
+        <div class="dish-desc">Selection of local cured meats & cheeses</div>
 
-    # MIDNIGHT SPECIAL
-    st.info("""
-    ### 🕛 MIDNIGHT SPECIAL 🕛
-    **Cotechino con Lenticchie**
-    
-    ✨ *For money and luck in 2025!* ✨
-    """)
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+        <div class="course-title">FIRST COURSES</div>
+        <div class="dish-item">Risotto della Valle</div>
+        <div class="dish-item">Lasagne al Pesto Genovese</div>
+        <div class="dish-item">Lasagne al Ragù della Tradizione</div>
+
+        <div class="course-title">MAIN COURSES & SIDES</div>
+        <div class="dish-item">Polpo in Pignata e Purè</div>
+        <div class="dish-item">Arrosto di Vitello alle Erbe</div>
+        <div class="dish-item">Crispy Roasted Potatoes</div>
+
+        <div class="course-title">DESSERTS</div>
+        <div class="dish-item">Salame di Cioccolato</div>
+        <div class="dish-item">Classic Tiramisù</div>
+        <div class="dish-item">Panettone con Crema Mascarpone</div>
+
+        <div class="midnight-section">
+            <div style="font-family: 'Syncopate'; font-size: 1.5rem; color: #f09819; margin-bottom: 10px;">MIDNIGHT SPECIAL</div>
+            <div style="font-size: 1.6rem; color: white; font-weight: bold;">Cotechino con Lenticchie</div>
+            <div style="font-size: 1rem; color: #ccc; margin-top: 5px;">A tradition for good fortune in 2025</div>
+        </div>
+
+    </div>
+    """
+    st.markdown(menu_html, unsafe_allow_html=True)
     
 # ============================================
 # SEZIONE 2: ONLINE GAMES
