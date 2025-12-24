@@ -369,14 +369,31 @@ elif menu == "Lupus in Fabula":
         if len(active_players) < 5:
              st.error("Need at least 5 players to start!")
         else:
+            st.markdown("---")
+            # --- NUOVA FUNZIONE: SCELTA NARRATORE ---
+            st.markdown(gold_text("NARRATOR SELECTION MODE:"))
+            narrator_mode = st.radio("", ["🎲 Random", "👤 Manual Selection"], label_visibility="collapsed", horizontal=True)
+            
+            manual_narrator = None
+            if narrator_mode == "👤 Manual Selection":
+                manual_narrator = st.selectbox("Select the Narrator:", active_players)
+
+            st.markdown("<br>", unsafe_allow_html=True)
+
             if st.button("🔥 START THE GAME (ASSIGN ROLES)", use_container_width=True):
                 # LOGICA DINAMICA
-                n_players = len(active_players)
-                narrator = random.choice(active_players)
+                
+                # 1. Determina il Narratore
+                if narrator_mode == "👤 Manual Selection" and manual_narrator:
+                    narrator = manual_narrator
+                else:
+                    narrator = random.choice(active_players)
+
+                # 2. Rimuovi il narratore dalla pool dei ruoli
                 players_without_narrator = [p for p in active_players if p != narrator]
                 n_actual_players = len(players_without_narrator)
                 
-                # Calcolo Lupi e Ruoli
+                # 3. Calcolo Lupi e Ruoli
                 n_wolves = max(1, math.floor(n_actual_players / 4))
                 specials = ["Seer", "Doctor", "Witch", "Hunter", "Cupid"]
                 
@@ -389,6 +406,7 @@ elif menu == "Lupus in Fabula":
                 roles_pool = (["Werewolf"] * n_wolves) + active_specials + (["Villager"] * n_villagers)
                 random.shuffle(roles_pool)
                 
+                # 4. Salvataggio stato
                 st.session_state.narrator_name = narrator
                 st.session_state.game_roles = dict(zip(players_without_narrator, roles_pool))
                 st.session_state.players_to_reveal = players_without_narrator
@@ -435,8 +453,7 @@ elif menu == "Lupus in Fabula":
         </div>
         """, unsafe_allow_html=True)
         
-        # SCRIPT NARRATORE FINALE (FORMATTATO SOLO CON STREAMLIT NATIVO)
-        # Sostituiamo l'HTML con chiamate native per evitare bug visivi
+        # SCRIPT NARRATORE FINALE (FORMATTATO SOLO CON STREAMLIT NATIVO PER EVITARE BUG)
         with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
             st.subheader("🌙 THE NIGHT PHASE")
             st.write("🛑 **'Everyone, close your eyes! Deep sleep falls on Mezzenile.'**")
