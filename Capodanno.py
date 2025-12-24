@@ -143,7 +143,7 @@ if menu == "Main Dashboard":
     st.markdown(gradient_text("THE MEZZENILE TAKEOVER"), unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:#8e2de2; letter-spacing:5px; margin-top:-20px;'>SDROGO NEW YEAR 2025</h2>", unsafe_allow_html=True)
     
-    # --- CARD 1: CURIOSITÀ ---
+    # --- CARD 1: INSIGHTS ---
     st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
     st.markdown(title_html("MEZZENILE INSIGHTS", "#f09819", "2rem"), unsafe_allow_html=True)
     
@@ -152,101 +152,156 @@ if menu == "Main Dashboard":
     with c1:
         st.markdown(neon_text("ORIGINS"), unsafe_allow_html=True)
         st.markdown(f"""
-        <p style='color:#ddd;'>
+        <p style='color:#ddd; font-size:0.95rem;'>
             {gold_text('The Name:')} Mezzenile derives from the Latin <i>"Mesenile"</i>, indicating a central settlement. It has always been the strategic heart of the lower Val di Lanzo.
-        </p>
-        """, unsafe_allow_html=True)
+        </p>""", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown(neon_text("NOBLE HISTORY"), unsafe_allow_html=True)
         st.markdown(f"""
-        <p style='color:#ddd;'>
+        <p style='color:#ddd; font-size:0.95rem;'>
             {gold_text('The Castle:')} The Francesetti Castle is the town's crown jewel. It once hosted the high aristocracy of Turin seeking mountain refuge.
-        </p>
-        """, unsafe_allow_html=True)
+        </p>""", unsafe_allow_html=True)
 
     with c2:
         st.markdown(neon_text("CRAFTSMANSHIP"), unsafe_allow_html=True)
         st.markdown(f"""
-        <p style='color:#ddd;'>
+        <p style='color:#ddd; font-size:0.95rem;'>
             {gold_text('Nail Makers:')} Mezzenile was the European capital of handmade nails. The <i>"Chiodaioli"</i> were famous for their indestructible steel creations.
-        </p>
-        """, unsafe_allow_html=True)
+        </p>""", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown(neon_text("THE LEGEND"), unsafe_allow_html=True)
         st.markdown(f"""
-        <p style='color:#ddd;'>
+        <p style='color:#ddd; font-size:0.95rem;'>
             {gold_text('The Sdrogo Code:')} What happens in the mountains stays in the mountains. This is the first and only rule of the 2025 takeover.
-        </p>
-        """, unsafe_allow_html=True)
+        </p>""", unsafe_allow_html=True)
 
     with c3:
         st.markdown(neon_text("ENVIRONMENT"), unsafe_allow_html=True)
         st.markdown(f"""
-        <p style='color:#ddd;'>
+        <p style='color:#ddd; font-size:0.95rem;'>
             {gold_text('Thin Air:')} At 600m+ elevation, oxygen is lower and spirits are higher. Science says one shot here counts as two in the valley.
-        </p>
-        """, unsafe_allow_html=True)
+        </p>""", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         st.markdown(neon_text("SURVIVAL"), unsafe_allow_html=True)
         st.markdown(f"""
-        <p style='color:#ddd;'>
+        <p style='color:#ddd; font-size:0.95rem;'>
             {gold_text('The Cold:')} Don't let the fire go out. Mezzenile winters are unforgiving for those who don't keep their "hydration" levels up.
-        </p>
-        """, unsafe_allow_html=True)
+        </p>""", unsafe_allow_html=True)
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # --- CARD 2: IL MENU DEL CENONE (NUOVA SEZIONE) ---
-    st.markdown("<div style='margin-top: 40px;'></div>", unsafe_allow_html=True)
-    st.markdown(gradient_text("GRAN CENONE MENU", "2.5rem"), unsafe_allow_html=True)
+    # --- CARD 2: GRAN CENONE MENU (ELEGANT DESIGN) ---
+    st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
+    st.markdown(gradient_text("GRAND DINNER MENU", "2.8rem"), unsafe_allow_html=True)
     
-    st.markdown(f"""
-    <div class='glass-box' style='text-align: center; border: 2px solid #f09819;'>
-        <div style='margin-bottom: 30px;'>
-            {neon_text("ANTIPASTI", "1.5rem")}
-            <hr style='width: 50%; margin: 10px auto; border-color: #8e2de2 !important;'>
-            <div style='color:white; font-size:1.1rem; line-height:1.8;'>
-                💎 <b>Torte Salate Rustiche</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Gaia + Ceci</span><br>
-                💎 <b>Panettone Gastronomico Salato</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Lulli + Eugi</span><br>
-                💎 <b>Tagliere Alpino (Salumi & Formaggi)</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Selezione Locale</span>
-            </div>
+    # HTML UNICO PER GARANTIRE LA RESA GRAFICA CORRETTA
+    st.markdown("""
+    <style>
+        .menu-container {
+            background: rgba(15, 12, 41, 0.6);
+            border: 1px solid rgba(240, 152, 25, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            font-family: 'Montserrat', sans-serif;
+        }
+        .menu-category {
+            font-family: 'Syncopate', sans-serif;
+            color: #8e2de2;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(142, 45, 226, 0.4);
+            letter-spacing: 2px;
+        }
+        .menu-divider {
+            border: 0;
+            height: 1px;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0));
+            margin-bottom: 20px;
+        }
+        .menu-item {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .menu-chef {
+            color: #f09819;
+            font-size: 0.95rem;
+            font-style: italic;
+            margin-bottom: 20px;
+            display: block;
+            opacity: 0.9;
+        }
+        .midnight-box {
+            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 40px;
+            color: white;
+            box-shadow: 0 5px 20px rgba(142, 45, 226, 0.4);
+        }
+    </style>
+
+    <div class="menu-container">
+        
+        <div class="menu-category">STARTERS</div>
+        <hr class="menu-divider">
+        
+        <div class="menu-item">💎 Torte Salate Rustiche</div>
+        <span class="menu-chef">Chef: Gaia + Ceci</span>
+        
+        <div class="menu-item">💎 Panettone Gastronomico Salato</div>
+        <span class="menu-chef">Chef: Lulli + Eugi</span>
+        
+        <div class="menu-item">💎 Alpine Charcuterie Board (Salumi & Formaggi)</div>
+        <span class="menu-chef">Chef: Local Selection</span>
+
+        <div class="menu-category">FIRST COURSES</div>
+        <hr class="menu-divider">
+        
+        <div class="menu-item">🍝 Risotto della Valle</div>
+        <span class="menu-chef">Chef: Bax</span>
+        
+        <div class="menu-item">🍝 Lasagne al Pesto Genovese</div>
+        <span class="menu-chef">Chef: Paga + Yara</span>
+        
+        <div class="menu-item">🍝 Lasagne al Ragù della Tradizione</div>
+        <span class="menu-chef">Chef: Nonna Style</span>
+
+        <div class="menu-category">MAIN COURSES & SIDES</div>
+        <hr class="menu-divider">
+        
+        <div class="menu-item">🍖 Polpo in Pignata e Purè</div>
+        <span class="menu-chef">Chef: Marti + Ale</span>
+        
+        <div class="menu-item">🥔 Crispy Roasted Potatoes</div>
+        <span class="menu-chef">Side Dish</span>
+        
+        <div class="menu-item">🥗 Arrosto di Vitello alle Erbe</div>
+        <span class="menu-chef">Chef: Sdrogo Staff</span>
+
+        <div class="menu-category">DESSERTS</div>
+        <hr class="menu-divider">
+        
+        <div class="menu-item">🍩 Salame di Cioccolato</div>
+        <span class="menu-chef">Chef: Girla</span>
+        
+        <div class="menu-item">🍩 Classic Tiramisù</div>
+        <span class="menu-chef">Chef: Paga + Yara</span>
+        
+        <div class="menu-item">🍩 Panettone con Crema Mascarpone</div>
+        <span class="menu-chef">Chef: Marti + Ale</span>
+
+        <div class="midnight-box">
+            <h2 style="margin:0; font-family:'Syncopate'; font-size:1.5rem; letter-spacing:3px;">🕛 MIDNIGHT 🕛</h2>
+            <p style="font-size:1.3rem; font-weight:bold; margin:10px 0;">Cotechino con Lenticchie</p>
+            <span style="color:#ffd700; font-size:1rem;">✨ For money and luck in 2025! ✨</span>
         </div>
 
-        <div style='margin-bottom: 30px;'>
-            {neon_text("PRIMI PIATTI", "1.5rem")}
-            <hr style='width: 50%; margin: 10px auto; border-color: #8e2de2 !important;'>
-            <div style='color:white; font-size:1.1rem; line-height:1.8;'>
-                🍝 <b>Risotto della Valle</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Bax</span><br>
-                🍝 <b>Lasagne al Pesto Genovese</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Paga + Yara</span><br>
-                🍝 <b>Lasagne al Ragù della Tradizione</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Nonna Style</span>
-            </div>
-        </div>
-
-        <div style='margin-bottom: 30px;'>
-            {neon_text("SECONDI & CONTORNI", "1.5rem")}
-            <hr style='width: 50%; margin: 10px auto; border-color: #8e2de2 !important;'>
-            <div style='color:white; font-size:1.1rem; line-height:1.8;'>
-                🍖 <b>Polpo in Pignata e Purè</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Marti + Ale</span><br>
-                🍖 <b>Arrosto di Vitello alle Erbe</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Sdrogo Staff</span><br>
-                🥔 <b>Patate al Forno Croccanti</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Side Dish</span>
-            </div>
-        </div>
-
-        <div style='margin-bottom: 30px;'>
-            {neon_text("DOLCI", "1.5rem")}
-            <hr style='width: 50%; margin: 10px auto; border-color: #8e2de2 !important;'>
-            <div style='color:white; font-size:1.1rem; line-height:1.8;'>
-                🍩 <b>Salame di Cioccolato</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Girla</span><br>
-                🍩 <b>Tiramisù Classico</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Paga + Yara</span><br>
-                🍩 <b>Panettone con Crema Mascarpone</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Marti + Ale</span>
-            </div>
-        </div>
-
-        <div style='background: linear-gradient(45deg, #8e2de2, #4a00e0); padding: 15px; border-radius: 10px; margin-top: 20px;'>
-            <h3 style='color:white; margin:0; letter-spacing:2px;'>🕛 MEZZANOTTE 🕛</h3>
-            <p style='color:white; font-size:1.2rem; font-weight:bold; margin-top:10px;'>Cotechino con Lenticchie</p>
-            <span style='color:#f09819; font-size:0.9rem; font-style:italic;'>Per soldi e fortuna nel 2025!</span>
-        </div>
     </div>
     """, unsafe_allow_html=True)
 
