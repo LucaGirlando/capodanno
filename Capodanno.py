@@ -285,7 +285,7 @@ elif menu == "Online Games Links":
 
     # --- SEZIONE BONUS ---
     st.markdown("<hr style='border-color:#f09819 !important; opacity:0.5; margin:30px 0;'>", unsafe_allow_html=True)
-    st.markdown(title_html("EXTRA / FREE PLAY", "#f09819", "1.5rem"), unsafe_allow_html=True)
+    st.markdown(title_html("EXTRA GAMES", "#f09819", "1.5rem"), unsafe_allow_html=True)
     
     # Make It Meme
     bc1, bc2 = st.columns([1, 4])
