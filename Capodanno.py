@@ -370,8 +370,9 @@ elif menu == "Lupus in Fabula":
              st.error("Need at least 5 players to start!")
         else:
             st.markdown("---")
-            # --- NUOVA FUNZIONE: SCELTA NARRATORE ---
-            st.markdown(gold_text("NARRATOR SELECTION MODE:"))
+            # --- CORREZIONE QUI: Aggiunto unsafe_allow_html=True ---
+            st.markdown(gold_text("NARRATOR SELECTION MODE:"), unsafe_allow_html=True)
+            
             narrator_mode = st.radio("", ["🎲 Random", "👤 Manual Selection"], label_visibility="collapsed", horizontal=True)
             
             manual_narrator = None
@@ -453,7 +454,7 @@ elif menu == "Lupus in Fabula":
         </div>
         """, unsafe_allow_html=True)
         
-        # SCRIPT NARRATORE FINALE (FORMATTATO SOLO CON STREAMLIT NATIVO PER EVITARE BUG)
+        # SCRIPT NARRATORE FINALE (Nativo Streamlit per evitare bug visivi)
         with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
             st.subheader("🌙 THE NIGHT PHASE")
             st.write("🛑 **'Everyone, close your eyes! Deep sleep falls on Mezzenile.'**")
@@ -536,5 +537,7 @@ elif menu == "Lupus in Fabula":
              st.markdown("<div style='background:#ff4b4b; color:white; padding:20px; text-align:center; border-radius:15px;'><h1>🐺 WEREWOLVES WIN! 🐺</h1></div>", unsafe_allow_html=True)
              
         if st.button("🔄 RESET GAME"):
+            for k in list(st.session_state.keys()): del st.session_state[k]
+            st.rerun()
             for k in list(st.session_state.keys()): del st.session_state[k]
             st.rerun()
