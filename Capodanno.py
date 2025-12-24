@@ -616,7 +616,6 @@ elif menu == "UwuFUFU Dojo":
         <h3 style='color: #f09819; margin: 0; font-family: "Syncopate", sans-serif;'>CHILL, JUDGE & DEBATE</h3>
         <p style='color: #ddd; font-size: 1.1rem; margin-top: 10px;'>
             Pick a tournament. Share your screen. Fight for your opinion.<br>
-            <i>Who is the real GOAT? What is the best fruit? Let the bracket decide.</i>
         </p>
     </div>
     """, unsafe_allow_html=True)
