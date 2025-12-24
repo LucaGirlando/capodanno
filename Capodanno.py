@@ -190,102 +190,52 @@ if menu == "Main Dashboard":
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # --- CARD 2: GRAN CENONE MENU (ELEGANT & NO EMOJI) ---
-    st.markdown("<div style='margin-top: 60px;'></div>", unsafe_allow_html=True)
+    # --- CARD 2: GRAN CENONE MENU (INLINE STYLE FIX) ---
+    st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
     
-    # CSS E HTML PERSONALIZZATO PER MENU ELEGANTE
+    # HTML BLINDATO CON STILI DIRETTI
     menu_html = """
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Syncopate:wght@400;700&display=swap');
-        
-        .elegant-menu-box {
-            background-color: rgba(15, 12, 41, 0.7);
-            border: 2px solid #f09819;
-            border-radius: 4px;
-            padding: 60px;
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
-        .menu-main-title {
-            font-family: 'Syncopate', sans-serif;
-            font-weight: 700;
-            font-size: 3rem;
-            background: linear-gradient(90deg, #f09819, #edde5d);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 40px;
-            letter-spacing: 4px;
-        }
-
-        .course-title {
-            font-family: 'Syncopate', sans-serif;
-            color: #8e2de2;
-            font-size: 1.4rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-top: 40px;
-            margin-bottom: 15px;
-            display: inline-block;
-            border-bottom: 1px solid rgba(142, 45, 226, 0.3);
-            padding-bottom: 5px;
-        }
-
-        .dish-item {
-            color: #ffffff;
-            font-size: 1.4rem;
-            font-weight: 400;
-            margin: 12px 0;
-            letter-spacing: 0.5px;
-        }
-
-        .dish-desc {
-            color: #ccc;
-            font-size: 0.9rem;
-            font-style: italic;
-            margin-bottom: 5px;
-        }
-
-        .midnight-section {
-            margin-top: 60px;
-            padding: 30px;
-            border: 1px solid rgba(240, 152, 25, 0.5);
-            background: rgba(240, 152, 25, 0.05);
-        }
     </style>
+    
+    <div style="background-color: rgba(15, 12, 41, 0.85); border: 1px solid #f09819; border-radius: 8px; padding: 50px; text-align: center; max-width: 900px; margin: 0 auto; box-shadow: 0 0 40px rgba(0,0,0,0.5);">
+        
+        <h1 style="font-family: 'Syncopate', sans-serif; font-weight: 700; font-size: 3rem; margin-bottom: 50px; letter-spacing: 4px; text-transform: uppercase; background: -webkit-linear-gradient(0deg, #f09819, #edde5d); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-top: 0;">Grand Dinner Menu</h1>
 
-    <div class="elegant-menu-box">
-        <div class="menu-main-title">GRAND DINNER MENU</div>
+        <div style="margin-bottom: 40px;">
+            <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; border-bottom: 1px solid rgba(142, 45, 226, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 15px;">STARTERS</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Torte Salate Rustiche</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Panettone Gastronomico Salato</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Alpine Charcuterie Board</div>
+            <div style="font-family: 'Playfair Display', serif; color: #aaa; font-size: 1rem; font-style: italic;">Selection of local cured meats & cheeses</div>
+        </div>
 
-        <div class="course-title">STARTERS</div>
-        <div class="dish-item">Torte Salate Rustiche</div>
-        <div class="dish-item">Panettone Gastronomico Salato</div>
-        <div class="dish-item">Alpine Charcuterie Board</div>
-        <div class="dish-desc">Selection of local cured meats & cheeses</div>
+        <div style="margin-bottom: 40px;">
+            <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; border-bottom: 1px solid rgba(142, 45, 226, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 15px;">FIRST COURSES</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Risotto della Valle</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Lasagne al Pesto Genovese</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Lasagne al Ragù della Tradizione</div>
+        </div>
 
-        <div class="course-title">FIRST COURSES</div>
-        <div class="dish-item">Risotto della Valle</div>
-        <div class="dish-item">Lasagne al Pesto Genovese</div>
-        <div class="dish-item">Lasagne al Ragù della Tradizione</div>
+        <div style="margin-bottom: 40px;">
+            <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; border-bottom: 1px solid rgba(142, 45, 226, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 15px;">MAIN COURSES & SIDES</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Polpo in Pignata e Purè</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Arrosto di Vitello alle Erbe</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Crispy Roasted Potatoes</div>
+        </div>
 
-        <div class="course-title">MAIN COURSES & SIDES</div>
-        <div class="dish-item">Polpo in Pignata e Purè</div>
-        <div class="dish-item">Arrosto di Vitello alle Erbe</div>
-        <div class="dish-item">Crispy Roasted Potatoes</div>
+        <div style="margin-bottom: 40px;">
+            <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.5rem; font-weight: 700; letter-spacing: 3px; border-bottom: 1px solid rgba(142, 45, 226, 0.3); display: inline-block; padding-bottom: 5px; margin-bottom: 15px;">DESSERTS</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Salame di Cioccolato</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Classic Tiramisù</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.4rem; margin: 10px 0;">Panettone con Crema Mascarpone</div>
+        </div>
 
-        <div class="course-title">DESSERTS</div>
-        <div class="dish-item">Salame di Cioccolato</div>
-        <div class="dish-item">Classic Tiramisù</div>
-        <div class="dish-item">Panettone con Crema Mascarpone</div>
-
-        <div class="midnight-section">
-            <div style="font-family: 'Syncopate'; font-size: 1.5rem; color: #f09819; margin-bottom: 10px;">MIDNIGHT SPECIAL</div>
-            <div style="font-size: 1.6rem; color: white; font-weight: bold;">Cotechino con Lenticchie</div>
-            <div style="font-size: 1rem; color: #ccc; margin-top: 5px;">A tradition for good fortune in 2025</div>
+        <div style="background: linear-gradient(135deg, rgba(142, 45, 226, 0.1) 0%, rgba(74, 0, 224, 0.1) 100%); border: 1px solid #8e2de2; border-radius: 8px; padding: 30px; margin-top: 50px;">
+            <div style="font-family: 'Syncopate', sans-serif; color: #f09819; font-size: 1.5rem; letter-spacing: 3px; font-weight: bold; margin-bottom: 10px;">MIDNIGHT SPECIAL</div>
+            <div style="font-family: 'Playfair Display', serif; color: white; font-size: 1.6rem; font-weight: bold; margin: 10px 0;">Cotechino con Lenticchie</div>
+            <div style="font-family: 'Playfair Display', serif; color: #ffd700; font-size: 1.1rem; font-style: italic;">✨ A tradition for good fortune in 2025 ✨</div>
         </div>
 
     </div>
