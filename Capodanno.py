@@ -190,121 +190,52 @@ if menu == "Main Dashboard":
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-    # --- CARD 2: GRAN CENONE MENU (ELEGANT DESIGN) ---
+    # --- CARD 2: GRAN CENONE MENU (FIXED STYLE) ---
     st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
     st.markdown(gradient_text("GRAND DINNER MENU", "2.8rem"), unsafe_allow_html=True)
     
-    # HTML UNICO PER GARANTIRE LA RESA GRAFICA CORRETTA
-    st.markdown("""
-    <style>
-        .menu-container {
-            background: rgba(15, 12, 41, 0.6);
-            border: 1px solid rgba(240, 152, 25, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            text-align: center;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-            font-family: 'Montserrat', sans-serif;
-        }
-        .menu-category {
-            font-family: 'Syncopate', sans-serif;
-            color: #8e2de2;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-top: 30px;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(142, 45, 226, 0.4);
-            letter-spacing: 2px;
-        }
-        .menu-divider {
-            border: 0;
-            height: 1px;
-            background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0));
-            margin-bottom: 20px;
-        }
-        .menu-item {
-            color: white;
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        .menu-chef {
-            color: #f09819;
-            font-size: 0.95rem;
-            font-style: italic;
-            margin-bottom: 20px;
-            display: block;
-            opacity: 0.9;
-        }
-        .midnight-box {
-            background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 40px;
-            color: white;
-            box-shadow: 0 5px 20px rgba(142, 45, 226, 0.4);
-        }
-    </style>
+    # HTML CON STILE INLINE PER EVITARE BUG VISIVI
+    menu_html = """
+    <div style="background: rgba(15, 12, 41, 0.6); border: 1px solid rgba(240, 152, 25, 0.3); border-radius: 20px; padding: 40px; text-align: center; box-shadow: 0 0 30px rgba(0,0,0,0.5); font-family: 'Montserrat', sans-serif;">
 
-    <div class="menu-container">
+        <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.8rem; font-weight: 700; margin-top: 10px; letter-spacing: 2px;">STARTERS</div>
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0)); margin-bottom: 20px;">
         
-        <div class="menu-category">STARTERS</div>
-        <hr class="menu-divider">
-        
-        <div class="menu-item">💎 Torte Salate Rustiche</div>
-        <span class="menu-chef">Chef: Gaia + Ceci</span>
-        
-        <div class="menu-item">💎 Panettone Gastronomico Salato</div>
-        <span class="menu-chef">Chef: Lulli + Eugi</span>
-        
-        <div class="menu-item">💎 Alpine Charcuterie Board (Salumi & Formaggi)</div>
-        <span class="menu-chef">Chef: Local Selection</span>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">💎 Torte Salate Rustiche</div>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">💎 Panettone Gastronomico Salato</div>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">💎 Alpine Charcuterie Board (Salumi & Formaggi)</div>
 
-        <div class="menu-category">FIRST COURSES</div>
-        <hr class="menu-divider">
+        <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.8rem; font-weight: 700; margin-top: 40px; letter-spacing: 2px;">FIRST COURSES</div>
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0)); margin-bottom: 20px;">
         
-        <div class="menu-item">🍝 Risotto della Valle</div>
-        <span class="menu-chef">Chef: Bax</span>
-        
-        <div class="menu-item">🍝 Lasagne al Pesto Genovese</div>
-        <span class="menu-chef">Chef: Paga + Yara</span>
-        
-        <div class="menu-item">🍝 Lasagne al Ragù della Tradizione</div>
-        <span class="menu-chef">Chef: Nonna Style</span>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍝 Risotto della Valle</div>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍝 Lasagne al Pesto Genovese</div>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍝 Lasagne al Ragù della Tradizione</div>
 
-        <div class="menu-category">MAIN COURSES & SIDES</div>
-        <hr class="menu-divider">
+        <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.8rem; font-weight: 700; margin-top: 40px; letter-spacing: 2px;">MAIN COURSES & SIDES</div>
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0)); margin-bottom: 20px;">
         
-        <div class="menu-item">🍖 Polpo in Pignata e Purè</div>
-        <span class="menu-chef">Chef: Marti + Ale</span>
-        
-        <div class="menu-item">🥔 Crispy Roasted Potatoes</div>
-        <span class="menu-chef">Side Dish</span>
-        
-        <div class="menu-item">🥗 Arrosto di Vitello alle Erbe</div>
-        <span class="menu-chef">Chef: Sdrogo Staff</span>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍖 Polpo in Pignata e Purè</div>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🥔 Crispy Roasted Potatoes</div>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🥗 Arrosto di Vitello alle Erbe</div>
 
-        <div class="menu-category">DESSERTS</div>
-        <hr class="menu-divider">
+        <div style="font-family: 'Syncopate', sans-serif; color: #8e2de2; font-size: 1.8rem; font-weight: 700; margin-top: 40px; letter-spacing: 2px;">DESSERTS</div>
+        <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(240, 152, 25, 0.75), rgba(0, 0, 0, 0)); margin-bottom: 20px;">
         
-        <div class="menu-item">🍩 Salame di Cioccolato</div>
-        <span class="menu-chef">Chef: Girla</span>
-        
-        <div class="menu-item">🍩 Classic Tiramisù</div>
-        <span class="menu-chef">Chef: Paga + Yara</span>
-        
-        <div class="menu-item">🍩 Panettone con Crema Mascarpone</div>
-        <span class="menu-chef">Chef: Marti + Ale</span>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍩 Salame di Cioccolato</div>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍩 Classic Tiramisù</div>
+        <div style="color: white; font-size: 1.3rem; margin-bottom: 15px;">🍩 Panettone con Crema Mascarpone</div>
 
-        <div class="midnight-box">
-            <h2 style="margin:0; font-family:'Syncopate'; font-size:1.5rem; letter-spacing:3px;">🕛 MIDNIGHT 🕛</h2>
-            <p style="font-size:1.3rem; font-weight:bold; margin:10px 0;">Cotechino con Lenticchie</p>
-            <span style="color:#ffd700; font-size:1rem;">✨ For money and luck in 2025! ✨</span>
+        <div style="background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%); border-radius: 15px; padding: 25px; margin-top: 50px; box-shadow: 0 5px 20px rgba(142, 45, 226, 0.4);">
+            <h2 style="margin:0; font-family:'Syncopate', sans-serif; font-size:1.8rem; letter-spacing:3px; color: white;">🕛 MIDNIGHT 🕛</h2>
+            <p style="font-size:1.4rem; font-weight:bold; margin:15px 0; color: white;">Cotechino con Lenticchie</p>
+            <span style="color:#ffd700; font-size:1.1rem; font-weight:bold;">✨ For money and luck in 2025! ✨</span>
         </div>
 
     </div>
-    """, unsafe_allow_html=True)
-
+    """
+    st.markdown(menu_html, unsafe_allow_html=True)
+    
 # ============================================
 # SEZIONE 2: ONLINE GAMES
 # ============================================
