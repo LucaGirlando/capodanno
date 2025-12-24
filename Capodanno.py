@@ -132,7 +132,7 @@ if 'votes' not in st.session_state:
 with st.sidebar:
     st.markdown(title_html("SDROGO HUB", "#f09819", "2rem", "900"), unsafe_allow_html=True)
     st.markdown("---")
-    menu = st.radio("NAVIGAZIONE", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula", "The Rabbit Hole"], label_visibility="collapsed")
+    menu = st.radio("NAVIGAZIONE", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula", "The Impossible Arcade"], label_visibility="collapsed")
     st.markdown("---")
     st.markdown(f"<div style='text-align:center; color:#8e2de2;'>Logged in as: <b>Guest</b></div>", unsafe_allow_html=True)
 
@@ -605,64 +605,55 @@ elif menu == "Lupus in Fabula":
             st.rerun()
             for k in list(st.session_state.keys()): del st.session_state[k]
             st.rerun()
-
 # ============================================
-# SEZIONE 5: THE RABBIT HOLE (HARDCORE GAME)
+# SEZIONE 5: THE IMPOSSIBLE ARCADE
 # ============================================
-elif menu == "The Rabbit Hole":
-    st.markdown(gradient_text("THE RABBIT HOLE"), unsafe_allow_html=True)
+elif menu == "The Impossible Arcade":
+    st.markdown(gradient_text("IMPOSSIBLE ARCADE"), unsafe_allow_html=True)
     
     st.markdown("""
-    <div style='background: rgba(0,0,0,0.4); border-left: 5px solid #ff0000; padding: 20px; border-radius: 5px; margin-bottom: 30px;'>
-        <h3 style='color: #ff0000; margin: 0; font-family: "Syncopate", sans-serif;'>⚠️ WARNING: SANITY HAZARD ⚠️</h3>
-        <p style='color: #ddd; font-size: 1.1rem; margin-top: 10px;'>
-            You asked for a challenge. You are about to enter the most difficult online riddle ever created.<br>
-            It is not a game. It is an IQ test, a hacking challenge, and a psychological torture.<br>
-            <b>Good luck. You will need it.</b>
+    <div style='background: rgba(20, 0, 0, 0.6); border: 1px solid #ff0000; padding: 20px; border-radius: 10px; margin-bottom: 30px; text-align: center;'>
+        <h3 style='color: #ff4b4b; margin: 0; font-family: "Syncopate", sans-serif; letter-spacing: 2px;'>⚠️ RAGE QUIT WARNING ⚠️</h3>
+        <p style='color: #ddd; font-size: 1rem; margin-top: 10px;'>
+            Reflexes required. If you break the keyboard, you pay for it.
         </p>
     </div>
     """, unsafe_allow_html=True)
 
-    c1, c2 = st.columns([1, 1])
+    # --- GEOMETRY DASH EMBED ---
+    st.markdown(title_html("GEOMETRY DASH (WEB VER.)", "#f09819", "2rem"), unsafe_allow_html=True)
+    
+    # Iframe per Scratch (Griffpatch version - High Quality)
+    st.components.v1.html(
+        """
+        <iframe src="https://scratch.mit.edu/projects/105500895/embed" allowtransparency="true" width="100%" height="500" frameborder="0" scrolling="no" allowfullscreen></iframe>
+        """,
+        height=500,
+        scrolling=False
+    )
+    
+    st.markdown("""
+    <div style='text-align: center; margin-top: 10px; margin-bottom: 40px;'>
+        <span style='color: #8e2de2; font-size: 0.9rem; font-style: italic;'>Controls: Click Mouse, Spacebar or Up Arrow to Jump</span>
+    </div>
+    """, unsafe_allow_html=True)
 
+    st.markdown("---")
+
+    # --- THE WORLD'S HARDEST GAME ---
+    c1, c2 = st.columns([2, 1])
+    
     with c1:
-        st.markdown(title_html("THE CHALLENGE", "#f09819", "2rem"), unsafe_allow_html=True)
-        st.markdown("""
-        <div class='glass-box' style='text-align: center; min-height: 400px; display: flex; flex-direction: column; justify-content: center;'>
-            <h1 style='color: white; font-family: "Syncopate"; font-size: 3rem; margin-bottom: 10px;'>NOTPRON</h1>
-            <p style='color: #aaa; font-style: italic; margin-bottom: 20px;'>The Hardest Riddle on the Internet</p>
-            
-            <div style='text-align: left; color: white; margin-bottom: 30px; line-height: 1.6;'>
-                <b>🧠 Levels:</b> 140<br>
-                <b>⏳ Avg. Time to solve:</b> Years<br>
-                <b>🛠️ Skills needed:</b> Logic, HTML inspection, Audio editing, Cryptography, Lateral thinking.<br>
-                <b>📉 Success Rate:</b> 0.0001%
-            </div>
-
-            <a href='http://notpron.org/notpron/levelone.htm' target='_blank' style='text-decoration: none;'>
-                <button style='width: 100%; padding: 20px; background: linear-gradient(90deg, #8e2de2, #ff0000); color: white; border: none; border-radius: 5px; font-weight: 900; font-size: 1.2rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;'>
-                    ENTER THE VOID
-                </button>
-            </a>
-        </div>
-        """, unsafe_allow_html=True)
-
+        st.markdown(title_html("THE WORLD'S HARDEST GAME", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
+        st.write("You are the red square. Avoid the blue dots. Collect the yellow circles. Try not to cry.")
+        st.markdown(f"<div style='color:#f09819; font-weight:bold; font-size:1.2rem;'>LEVEL 1 DEATH COUNT: <span style='color:white'>∞</span></div>", unsafe_allow_html=True)
+    
     with c2:
-        st.markdown(title_html("SURVIVAL GUIDE", "#8e2de2", "2rem"), unsafe_allow_html=True)
-        st.markdown("""
-        <div class='glass-box' style='min-height: 400px;'>
-            <div style='color: white; font-size: 1.1rem; line-height: 1.8;'>
-                <p><b>Rule #1:</b> The answer is never just "in the picture". Look at the URL. Look at the page title.</p>
-                <p><b>Rule #2:</b> Google is your best friend, but it won't give you the direct answer.</p>
-                <p><b>Rule #3:</b> Use a PC. You cannot solve this on a phone.</p>
-                <hr style='border-color: #8e2de2; opacity: 0.3;'>
-                <p style='color: #f09819; font-weight: bold;'>Alternative for "Casuals":</p>
-                <p>If Notpron is too much, try <b>The Password Game</b>. Still frustrating, but modern.</p>
-                <a href='https://neal.fun/password-game/' target='_blank'>
-                    <button style='width: 100%; padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid #f09819; color: #f09819; border-radius: 5px; cursor: pointer; font-weight: bold;'>
-                        PLAY PASSWORD GAME
-                    </button>
-                </a>
-            </div>
-        </div>
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(f"""
+        <a href='https://www.coolmathgames.com/0-worlds-hardest-game' target='_blank' style='text-decoration: none;'>
+            <button style='width: 100%; padding: 20px; background: linear-gradient(45deg, #ff0000, #990000); color: white; border: none; border-radius: 8px; font-weight: 900; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);'>
+                PLAY NOW 💀
+            </button>
+        </a>
         """, unsafe_allow_html=True)
