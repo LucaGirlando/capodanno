@@ -132,7 +132,7 @@ if 'votes' not in st.session_state:
 with st.sidebar:
     st.markdown(title_html("SDROGO HUB", "#f09819", "2rem", "900"), unsafe_allow_html=True)
     st.markdown("---")
-    menu = st.radio("NAVIGAZIONE", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula", "The Impossible Arcade"], label_visibility="collapsed")
+    menu = st.radio("NAVIGAZIONE", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula", "UwuFUFU Dojo"], label_visibility="collapsed")
     st.markdown("---")
     st.markdown(f"<div style='text-align:center; color:#8e2de2;'>Logged in as: <b>Guest</b></div>", unsafe_allow_html=True)
 
@@ -606,54 +606,68 @@ elif menu == "Lupus in Fabula":
             for k in list(st.session_state.keys()): del st.session_state[k]
             st.rerun()
 # ============================================
-# SEZIONE 5: THE IMPOSSIBLE ARCADE
+# SEZIONE 5: UWUFUFU DOJO (CHILL & DEBATE)
 # ============================================
-elif menu == "The Impossible Arcade":
-    st.markdown(gradient_text("IMPOSSIBLE ARCADE"), unsafe_allow_html=True)
+elif menu == "UwuFUFU Dojo":
+    st.markdown(gradient_text("UWUFUFU DOJO"), unsafe_allow_html=True)
     
     st.markdown("""
-    <div style='background: rgba(20, 0, 0, 0.6); border: 1px solid #ff0000; padding: 20px; border-radius: 10px; margin-bottom: 30px; text-align: center;'>
-        <h3 style='color: #ff4b4b; margin: 0; font-family: "Syncopate", sans-serif; letter-spacing: 2px;'>⚠️ RAGE QUIT WARNING ⚠️</h3>
-        <p style='color: #ddd; font-size: 1rem; margin-top: 10px;'>
-            Reflexes required. If you break the keyboard, you pay for it.
+    <div style='background: rgba(255, 255, 255, 0.05); border-left: 5px solid #f09819; padding: 20px; border-radius: 5px; margin-bottom: 30px;'>
+        <h3 style='color: #f09819; margin: 0; font-family: "Syncopate", sans-serif;'>CHILL, JUDGE & DEBATE</h3>
+        <p style='color: #ddd; font-size: 1.1rem; margin-top: 10px;'>
+            Pick a tournament. Share your screen. Fight for your opinion.<br>
+            <i>Who is the real GOAT? What is the best fruit? Let the bracket decide.</i>
         </p>
     </div>
     """, unsafe_allow_html=True)
 
-    # --- GEOMETRY DASH EMBED ---
-    st.markdown(title_html("GEOMETRY DASH (WEB VER.)", "#f09819", "2rem"), unsafe_allow_html=True)
-    
-    # Iframe per Scratch (Griffpatch version - High Quality)
-    st.components.v1.html(
-        """
-        <iframe src="https://scratch.mit.edu/projects/105500895/embed" allowtransparency="true" width="100%" height="500" frameborder="0" scrolling="no" allowfullscreen></iframe>
-        """,
-        height=500,
-        scrolling=False
-    )
-    
-    st.markdown("""
-    <div style='text-align: center; margin-top: 10px; margin-bottom: 40px;'>
-        <span style='color: #8e2de2; font-size: 0.9rem; font-style: italic;'>Controls: Click Mouse, Spacebar or Up Arrow to Jump</span>
-    </div>
-    """, unsafe_allow_html=True)
+    # Lista dei tornei
+    tournaments = [
+        {"name": "BEST SONGS OF ALL TIME", "url": "https://www.uwufufu.com/worldcup/best-songs-of-all-time-fouda", "icon": "🎵"},
+        {"name": "BEST MOVIE EVER", "url": "https://www.uwufufu.com/worldcup/best-movie-of-all-time-nymphz", "icon": "🎬"},
+        {"name": "ITALIAN RAP HITS", "url": "https://www.uwufufu.com/worldcup/canzoni-rap-italiane-alexwrite", "icon": "🎤"},
+        {"name": "ANIMAL FIGHT CLUB (1v1)", "url": "https://www.uwufufu.com/worldcup/1v1-animal-tournament-dozed", "icon": "🦁"},
+        {"name": "TOP 98 SUPERPOWERS", "url": "https://www.uwufufu.com/worldcup/top-98-superpowers-professor-tigs", "icon": "⚡"},
+        {"name": "BEST FOOD WORLDWIDE", "url": "https://www.uwufufu.com/worldcup/best-food-worldwide-twitchtvzrvkk", "icon": "🍕"},
+        {"name": "BEST ANIMATED MOVIES", "url": "https://www.uwufufu.com/worldcup/top-film-animazione-giulio-cavatorta", "icon": "👾"},
+        {"name": "ULTIMATE DEATHMATCH", "url": "https://www.uwufufu.com/worldcup/chi-vincerebbe-in-uno-scontro-allultimo-sangue-gvc9", "icon": "⚔️"},
+        {"name": "BETTER CHARACTER", "url": "https://www.uwufufu.com/worldcup/better-character-homelander2000", "icon": "🎭"},
+        {"name": "BEST FRUITS TIER LIST", "url": "https://www.uwufufu.com/worldcup/best-fruits-charles", "icon": "🍎"},
+        {"name": "BIGGEST CHAD EVER", "url": "https://www.uwufufu.com/worldcup/the-biggest-chad-of-all-time-compysage", "icon": "🗿"},
+        {"name": "MOST BEAUTIFUL GIRL", "url": "https://www.uwufufu.com/worldcup/most-beautiful-girl-on-earth-jaqenoneal", "icon": "💃"}
+    ]
 
-    st.markdown("---")
-
-    # --- THE WORLD'S HARDEST GAME ---
-    c1, c2 = st.columns([2, 1])
+    # Creazione Griglia 3 colonne
+    cols = st.columns(3)
     
-    with c1:
-        st.markdown(title_html("THE WORLD'S HARDEST GAME", "#8e2de2", "1.8rem"), unsafe_allow_html=True)
-        st.write("You are the red square. Avoid the blue dots. Collect the yellow circles. Try not to cry.")
-        st.markdown(f"<div style='color:#f09819; font-weight:bold; font-size:1.2rem;'>LEVEL 1 DEATH COUNT: <span style='color:white'>∞</span></div>", unsafe_allow_html=True)
-    
-    with c2:
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown(f"""
-        <a href='https://www.coolmathgames.com/0-worlds-hardest-game' target='_blank' style='text-decoration: none;'>
-            <button style='width: 100%; padding: 20px; background: linear-gradient(45deg, #ff0000, #990000); color: white; border: none; border-radius: 8px; font-weight: 900; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);'>
-                PLAY NOW 💀
-            </button>
-        </a>
-        """, unsafe_allow_html=True)
+    for i, t in enumerate(tournaments):
+        with cols[i % 3]:
+            st.markdown(f"""
+            <a href='{t['url']}' target='_blank' style='text-decoration: none;'>
+                <div style='
+                    background: linear-gradient(135deg, rgba(142, 45, 226, 0.1) 0%, rgba(15, 12, 41, 0.8) 100%);
+                    border: 1px solid #8e2de2;
+                    border-radius: 15px;
+                    padding: 25px;
+                    margin-bottom: 20px;
+                    text-align: center;
+                    transition: transform 0.2s;
+                    min-height: 150px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                ' onmouseover="this.style.transform='scale(1.05)'; this.style.borderColor='#f09819';" onmouseout="this.style.transform='scale(1)'; this.style.borderColor='#8e2de2';">
+                    <div style='font-size: 2.5rem; margin-bottom: 10px;'>{t['icon']}</div>
+                    <div style='
+                        color: white;
+                        font-family: "Montserrat", sans-serif;
+                        font-weight: 800;
+                        font-size: 1.1rem;
+                        text-transform: uppercase;
+                        letter-spacing: 1px;
+                    '>{t['name']}</div>
+                    <div style='color: #f09819; font-size: 0.8rem; margin-top: 5px;'>CLICK TO PLAY</div>
+                </div>
+            </a>
+            """, unsafe_allow_html=True)
