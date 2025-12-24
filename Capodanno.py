@@ -143,6 +143,7 @@ if menu == "Main Dashboard":
     st.markdown(gradient_text("THE MEZZENILE TAKEOVER"), unsafe_allow_html=True)
     st.markdown(f"<h2 style='color:#8e2de2; letter-spacing:5px; margin-top:-20px;'>SDROGO NEW YEAR 2025</h2>", unsafe_allow_html=True)
     
+    # --- CARD 1: CURIOSITÀ ---
     st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
     st.markdown(title_html("MEZZENILE INSIGHTS", "#f09819", "2rem"), unsafe_allow_html=True)
     
@@ -195,6 +196,60 @@ if menu == "Main Dashboard":
 
     st.markdown("</div>", unsafe_allow_html=True)
 
+    # --- CARD 2: IL MENU DEL CENONE (NUOVA SEZIONE) ---
+    st.markdown("<div style='margin-top: 40px;'></div>", unsafe_allow_html=True)
+    st.markdown(gradient_text("GRAN CENONE MENU", "2.5rem"), unsafe_allow_html=True)
+    
+    st.markdown(f"""
+    <div class='glass-box' style='text-align: center; border: 2px solid #f09819;'>
+        <div style='margin-bottom: 30px;'>
+            {neon_text("ANTIPASTI", "1.5rem")}
+            <hr style='width: 50%; margin: 10px auto; border-color: #8e2de2 !important;'>
+            <div style='color:white; font-size:1.1rem; line-height:1.8;'>
+                💎 <b>Torte Salate Rustiche</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Gaia + Ceci</span><br>
+                💎 <b>Panettone Gastronomico Salato</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Lulli + Eugi</span><br>
+                💎 <b>Tagliere Alpino (Salumi & Formaggi)</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Selezione Locale</span>
+            </div>
+        </div>
+
+        <div style='margin-bottom: 30px;'>
+            {neon_text("PRIMI PIATTI", "1.5rem")}
+            <hr style='width: 50%; margin: 10px auto; border-color: #8e2de2 !important;'>
+            <div style='color:white; font-size:1.1rem; line-height:1.8;'>
+                🍝 <b>Risotto della Valle</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Bax</span><br>
+                🍝 <b>Lasagne al Pesto Genovese</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Paga + Yara</span><br>
+                🍝 <b>Lasagne al Ragù della Tradizione</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Nonna Style</span>
+            </div>
+        </div>
+
+        <div style='margin-bottom: 30px;'>
+            {neon_text("SECONDI & CONTORNI", "1.5rem")}
+            <hr style='width: 50%; margin: 10px auto; border-color: #8e2de2 !important;'>
+            <div style='color:white; font-size:1.1rem; line-height:1.8;'>
+                🍖 <b>Polpo in Pignata e Purè</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Marti + Ale</span><br>
+                🍖 <b>Arrosto di Vitello alle Erbe</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Sdrogo Staff</span><br>
+                🥔 <b>Patate al Forno Croccanti</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Side Dish</span>
+            </div>
+        </div>
+
+        <div style='margin-bottom: 30px;'>
+            {neon_text("DOLCI", "1.5rem")}
+            <hr style='width: 50%; margin: 10px auto; border-color: #8e2de2 !important;'>
+            <div style='color:white; font-size:1.1rem; line-height:1.8;'>
+                🍩 <b>Salame di Cioccolato</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Girla</span><br>
+                🍩 <b>Tiramisù Classico</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Paga + Yara</span><br>
+                🍩 <b>Panettone con Crema Mascarpone</b> <br> <span style='font-size:0.9rem; color:#f09819; font-style:italic;'>Chef: Marti + Ale</span>
+            </div>
+        </div>
+
+        <div style='background: linear-gradient(45deg, #8e2de2, #4a00e0); padding: 15px; border-radius: 10px; margin-top: 20px;'>
+            <h3 style='color:white; margin:0; letter-spacing:2px;'>🕛 MEZZANOTTE 🕛</h3>
+            <p style='color:white; font-size:1.2rem; font-weight:bold; margin-top:10px;'>Cotechino con Lenticchie</p>
+            <span style='color:#f09819; font-size:0.9rem; font-style:italic;'>Per soldi e fortuna nel 2025!</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 # ============================================
 # SEZIONE 2: ONLINE GAMES
 # ============================================
@@ -233,7 +288,7 @@ elif menu == "Online Games Links":
 
     # --- SEZIONE BONUS AGGIUNTA ---
     st.markdown("<hr style='border-color:#f09819 !important; opacity:0.5; margin:30px 0;'>", unsafe_allow_html=True)
-    st.markdown(title_html("EXTRA / FREE PLAY", "#f09819", "1.5rem"), unsafe_allow_html=True)
+    st.markdown(title_html("EXTRA GAME", "#f09819", "1.5rem"), unsafe_allow_html=True)
     
     bc1, bc2 = st.columns([1, 4])
     with bc1:
