@@ -283,17 +283,34 @@ elif menu == "Online Games Links":
             st.markdown(f"<div style='background:rgba(255,255,255,0.05); padding:10px; border-radius:10px;'>{gold_text(g['name'])}<br><span style='color:#ccc'>{g['desc']}</span></div>", unsafe_allow_html=True)
         st.write("")
 
-    # --- SEZIONE BONUS AGGIUNTA ---
+    # --- SEZIONE BONUS ---
     st.markdown("<hr style='border-color:#f09819 !important; opacity:0.5; margin:30px 0;'>", unsafe_allow_html=True)
-    st.markdown(title_html("EXTRA GAME", "#f09819", "1.5rem"), unsafe_allow_html=True)
+    st.markdown(title_html("EXTRA / FREE PLAY", "#f09819", "1.5rem"), unsafe_allow_html=True)
     
+    # Make It Meme
     bc1, bc2 = st.columns([1, 4])
     with bc1:
-        # Pulsante diverso (Gold) per distinguerlo dal torneo
         st.markdown(f"<a href='https://makeitmeme.com/it/' target='_blank'><button style='width:100%; padding:15px; background:linear-gradient(45deg, #f09819, #edde5d); color:black; border:none; border-radius:10px; font-weight:bold; cursor:pointer;'>OPEN</button></a>", unsafe_allow_html=True)
     with bc2:
         st.markdown(f"<div style='background:rgba(255,255,255,0.05); padding:10px; border-radius:10px;'>{gold_text('Make It Meme')}<br><span style='color:#ccc'>Not part of the tournament. Use this for chill moments!</span></div>", unsafe_allow_html=True)
 
+    st.write("") # Spaziatore
+
+    # Among Us Button (Nativo Streamlit per l'effetto)
+    au1, au2 = st.columns([1, 4])
+    with au1:
+        # Pulsante rosso "primary" per risaltare
+        if st.button("AMONGUSSATAAAAAA!?", use_container_width=True, type="primary"):
+            st.balloons()
+            st.markdown("""
+            <div style='background:rgba(255,0,0,0.2); border: 2px solid red; padding: 20px; border-radius: 15px; text-align: center; margin-top: 20px;'>
+                <h1 style='color: red; font-family: "Syncopate"; font-size: 2.5rem; margin:0;'>ඞ Let's play Among Us! ඞ</h1>
+                <p style='color: white;'>EMERGENCY MEETING CALLED!</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+    with au2:
+        st.markdown(f"<div style='background:rgba(255,255,255,0.05); padding:10px; border-radius:10px;'>{gold_text('Sus Button')}<br><span style='color:#ccc'>Warning: Pressing this button calls an Emergency Meeting.</span></div>", unsafe_allow_html=True)
 # ============================================
 # SEZIONE 3: EVENT BETTING
 # ============================================
