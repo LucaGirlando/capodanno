@@ -454,7 +454,7 @@ elif menu == "Lupus in Fabula":
     if 'current_player_index' not in st.session_state: st.session_state.current_player_index = 0
     if 'show_role' not in st.session_state: st.session_state.show_role = False
 
-    # --- DATI RUOLI (NOMI IN INGLESE & TIPS GIOCATORE) ---
+    # --- DATI RUOLI (NO HUNTER) ---
     role_data = {
         "Werewolf": {
             "desc": "🐺 <b>THE SOLDIER.</b> You are a normal Wolf. Wake up, agree on a victim, kill. Act innocent.",
@@ -474,7 +474,7 @@ elif menu == "Lupus in Fabula":
         },
         "Seer": {
             "desc": "🔮 <b>THE INVESTIGATOR.</b> Check one player every night to see if they are Good or Bad.",
-            "tip": "Wake up. Point to a person. Narrator signals: 👍 = GOOD (Villager), 👎 = BAD (Wolf / Misunderstood / White Spirit)."
+            "tip": "Wake up. Point to a person. Narrator signals: 👍 = GOOD (Villager/Doc/Witch), 👎 = BAD (Wolf / Mascot / White Spirit / Misunderstood)."
         },
         "Doctor": {
             "desc": "💉 <b>THE SAVIOR.</b> Protect one person from Wolf attacks each night. You CAN protect yourself.",
@@ -483,10 +483,6 @@ elif menu == "Lupus in Fabula":
         "Witch": {
             "desc": "🧪 <b>THE ALCHEMIST.</b> You have 2 one-use potions: 💚 LIFE (save a victim) and ☠️ DEATH (kill anyone).",
             "tip": "Narrator points to the victim. Thumbs UP = Save them. Thumbs DOWN = Kill someone else. You can do both."
-        },
-        "Hunter": {
-            "desc": "🔫 <b>THE AVENGER.</b> If you die, you have 3 seconds to shoot someone else immediately.",
-            "tip": "If the Narrator says you are dead, immediately shout 'BANG!' and point to your target."
         },
         "Cupid": {
             "desc": "💘 <b>THE MATCHMAKER.</b> Night 1 only: Link two Lovers. They live and die together.",
@@ -553,8 +549,8 @@ elif menu == "Lupus in Fabula":
                 n_total_wolves = max(1, math.floor(n_actual_players / 4))
                 wolves_list = ["Mascot Wolf"] + (["Werewolf"] * (n_total_wolves - 1))
                 
-                # 3. Setup Speciali (Priorità a quelli richiesti)
-                priority_specials = ["Seer", "Doctor", "Witch", "The Misunderstood", "White Spirit", "Hunter", "Cupid"]
+                # 3. Setup Speciali (Senza Hunter)
+                priority_specials = ["Seer", "Doctor", "Witch", "The Misunderstood", "White Spirit", "Cupid"]
                 
                 max_specials_count = max(0, n_actual_players - n_total_wolves - 1)
                 active_specials = priority_specials[:min(len(priority_specials), max_specials_count)]
@@ -658,7 +654,7 @@ elif menu == "Lupus in Fabula":
             st.warning("""
             **CRITICAL CHECK:**
             * If pointing at **Werewolf** -> 👎 (BAD)
-            * If pointing at **Villager** -> 👍 (GOOD)
+            * If pointing at **Villager / Doc / Witch / Cupid** -> 👍 (GOOD)
             * If pointing at **THE MISUNDERSTOOD** -> 👎 (BAD - Lie to Seer)
             * If pointing at **WHITE SPIRIT** -> 👎 (BAD - Lie to Seer)
             """)
@@ -690,8 +686,7 @@ elif menu == "Lupus in Fabula":
             1. **Who died?** (Wolves' victim OR Witch's victim).
             2. **Did anyone revive?** (White Spirit's choice).
             3. **Did White Spirit die?** (If he used 2nd revive).
-            4. **Did Hunter die?** -> Shoot immediately.
-            5. **Did a Lover die?** -> Partner dies immediately.
+            4. **Did a Lover die?** -> Partner dies immediately.
             """)
             st.write("🗣️ **'DEBATE! Find the wolves!'**")
 
