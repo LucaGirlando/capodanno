@@ -621,8 +621,8 @@ elif menu == "Lupus in Fabula":
             st.info("""
             **💘 (NIGHT 1 ONLY) CUPID**
             * "Cupid, wake up. Point to the two Lovers."
-            * (Tap Lovers' shoulders).
             * "Cupid, sleep."
+            * (Tap Lovers' shoulders).
             * "Lovers, wake up. Look at each other."
             * "Lovers, sleep."
             """)
