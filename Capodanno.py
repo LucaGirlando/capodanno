@@ -111,17 +111,7 @@ hr { border-color: #8e2de2 !important; opacity: 0.3; }
 # DATI & COSTANTI
 # ============================================
 people = ["Girla", "Paci", "Marti", "Paga", "Yara", "Gaia", "Chiara", "Ele", "Ceci", "Ari", "Bax", 
-          "Enry", "Bomber", "Marghe", "Eugi", "Camilla", "Lulli", "Tommaso", "Stefano", "Elisa"]
-
-role_descriptions = {
-    "Werewolf": "🐺 <b>THE BAD GUY.</b> Every night, wake up with the other wolves and choose a victim to kill. Try to act like a villager during the day.",
-    "Seer": "🔮 <b>THE INVESTIGATOR.</b> Every night, point at one player to reveal their true identity (Wolf or Villager). Keep this info secret or use it wisely.",
-    "Doctor": "💉 <b>THE SAVIOR.</b> Every night, choose one player to protect. If the wolves attack them, they survive.",
-    "Hunter": "🔫 <b>THE AVENGER.</b> If you are killed (by wolves or vote), you have 3 seconds to shoot (eliminate) another player immediately.",
-    "Witch": "🧪 <b>THE ALCHEMIST.</b> You have TWO potions for the whole game. One to HEAL a victim, one to KILL anyone. Use them anytime at night.",
-    "Cupid": "💘 <b>THE MATCHMAKER.</b> ONLY on the first night, choose two players to be Lovers. If one dies, the other dies of a broken heart.",
-    "Villager": "🧑‍🌾 <b>THE MOB.</b> You have no powers. Sleep at night, wake up, and try to figure out who is lying. Vote to kill the wolves."
-}
+          "Enry", "Bomber", "Marghe", "Eugi", "Camilla De Ambrogio", "Lulli", "Tommaso", "Stefano", "Elisa", "Camilla 2"]
 
 if 'votes' not in st.session_state:
     st.session_state.votes = []
@@ -464,47 +454,72 @@ elif menu == "Lupus in Fabula":
     if 'current_player_index' not in st.session_state: st.session_state.current_player_index = 0
     if 'show_role' not in st.session_state: st.session_state.show_role = False
 
+    # --- DESCRIZIONE RUOLI AGGIORNATA ---
+    role_descriptions = {
+        # CATTIVI
+        "Werewolf": "🐺 <b>THE SOLDIER.</b> You are a normal Wolf. Wake up, agree on a victim, kill. Act innocent.",
+        "Lupo Mascotte": "🐺👶 <b>THE MASCOT.</b> You are the pack's favorite. If you die (Day or Night), the NEXT night the Wolves kill <b>TWO</b> people out of rage.",
+        
+        # SPECIALI (Nuovi & Classici)
+        "Spirito Bianco": "👻✨ <b>THE WHITE SPIRIT.</b> You are Good, but the Seer sees you as a WOLF. From Night 2, you can REVIVE a dead player. Max 2 resurrections. After the 2nd one, you die of exhaustion.",
+        "Incompreso": "🤷‍♂️ <b>THE MISUNDERSTOOD.</b> You are a 100% Good Villager. However, the Seer and Medium see you as a WOLF. Good luck convincing them.",
+        
+        # CLASSICI
+        "Seer": "🔮 <b>THE INVESTIGATOR.</b> Check one player every night. WARNING: The Incompreso and Spirito Bianco look like Wolves to you!",
+        "Doctor": "💉 <b>THE SAVIOR.</b> Protect one person from Wolf attacks each night. You CAN protect yourself. You CANNOT save someone from the Witch's poison.",
+        "Witch": "🧪 <b>THE ALCHEMIST.</b> You have 2 one-use potions: 💚 LIFE (save a victim) and ☠️ DEATH (kill anyone). You can use both in the same night if you want.",
+        "Hunter": "🔫 <b>THE AVENGER.</b> If you die, you have 3 seconds to shoot someone else immediately.",
+        "Cupid": "💘 <b>THE MATCHMAKER.</b> Night 1 only: Link two Lovers. They live and die together.",
+        "Villager": "🧑‍🌾 <b>THE MOB.</b> Sleep, Wake up, Vote. Trust no one."
+    }
+
     if not st.session_state.game_started:
         st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
         st.markdown(title_html("THE RULES OF MEZZENILE", "#f09819"), unsafe_allow_html=True)
         
         st.markdown(f"""
         <div style='color:white; line-height:1.6;'>
-            <p><b>1. THE GOAL:</b> Villagers must kill all Wolves. Wolves must kill enough Villagers to outnumber them.</p>
-            <p><b>2. THE FLOW:</b>
-                <ul>
-                    <li><b>Night:</b> Everyone closes eyes. Narrator wakes up special roles one by one. Wolves kill.</li>
-                    <li><b>Day:</b> Everyone wakes up. Deaths are announced. Debate ensues. One person is voted to be executed.</li>
-                </ul>
-            </p>
+            <p><b>THE BASICS:</b> Villagers vs Wolves. Wolves kill at night. Villagers vote to hang someone at day.</p>
             <hr style='border-color:#8e2de2'>
-            <h3 style='color:#8e2de2'>THE ROLES</h3>
+            <h3 style='color:#8e2de2'>🛑 CRITICAL ROLE INTERACTIONS</h3>
             <ul>
-                <li>🐺 <b>Werewolf:</b> Kills at night. Deceives by day.</li>
-                <li>🔮 <b>Seer:</b> Checks one player's card every night.</li>
-                <li>💉 <b>Doctor:</b> Saves one player from death every night.</li>
-                <li>🔫 <b>Hunter:</b> If killed, shoots someone else instantly.</li>
-                <li>🧪 <b>Witch:</b> Has 1 Heal Potion and 1 Kill Potion.</li>
-                <li>💘 <b>Cupid:</b> Links two lovers on Night 1.</li>
-                <li>🧑‍🌾 <b>Villager:</b> Just votes. No powers.</li>
+                <li>💉 <b>DOCTOR vs WITCH:</b>
+                    <ul>
+                        <li>The Doctor protects against the <b>WOLF BITE</b> only.</li>
+                        <li>The Doctor <b>CANNOT</b> save someone killed by the Witch's Death Potion.</li>
+                        <li>The Witch's Life Potion <b>CAN</b> save someone even if the Doctor missed.</li>
+                    </ul>
+                </li>
+                <li>👁️ <b>SEER CONFUSION:</b>
+                    <ul>
+                        <li>The Seer sees the <b>INCOMPRESO</b> and <b>SPIRITO BIANCO</b> as <b style='color:red'>WOLVES</b> (even though they are good).</li>
+                    </ul>
+                </li>
+                <li>👶 <b>MASCOT RAGE:</b>
+                    <ul>
+                        <li>If the <b>Lupo Mascotte</b> dies, the Wolves get a <b>DOUBLE KILL</b> the very next night.</li>
+                    </ul>
+                </li>
+                <li>👻 <b>RESURRECTION:</b>
+                    <ul>
+                        <li><b>Spirito Bianco</b> acts from Night 2. Can bring dead people back. Dies after 2nd use.</li>
+                    </ul>
+                </li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
         
-        # GESTIONE GIOCATORI ATTIVI
-        st.markdown(neon_text("WHO IS PLAYING? (Uncheck who is missing)", "1.2rem"), unsafe_allow_html=True)
+        # GESTIONE GIOCATORI
+        st.markdown(neon_text("WHO IS PLAYING?", "1.2rem"), unsafe_allow_html=True)
         active_players = st.multiselect("", people, default=people, key="active_p_sel", label_visibility="collapsed")
-        
         st.markdown(f"<div style='margin:10px 0; color:#ddd;'>Active Players: <b>{len(active_players)}</b></div>", unsafe_allow_html=True)
         
         if len(active_players) < 5:
              st.error("Need at least 5 players to start!")
         else:
             st.markdown("---")
-            # --- CORREZIONE QUI: Aggiunto unsafe_allow_html=True ---
             st.markdown(gold_text("NARRATOR SELECTION MODE:"), unsafe_allow_html=True)
-            
             narrator_mode = st.radio("", ["🎲 Random", "👤 Manual Selection"], label_visibility="collapsed", horizontal=True)
             
             manual_narrator = None
@@ -514,32 +529,34 @@ elif menu == "Lupus in Fabula":
             st.markdown("<br>", unsafe_allow_html=True)
 
             if st.button("🔥 START THE GAME (ASSIGN ROLES)", use_container_width=True):
-                # LOGICA DINAMICA
-                
-                # 1. Determina il Narratore
+                # 1. Narratore
                 if narrator_mode == "👤 Manual Selection" and manual_narrator:
                     narrator = manual_narrator
                 else:
                     narrator = random.choice(active_players)
 
-                # 2. Rimuovi il narratore dalla pool dei ruoli
                 players_without_narrator = [p for p in active_players if p != narrator]
                 n_actual_players = len(players_without_narrator)
                 
-                # 3. Calcolo Lupi e Ruoli
-                n_wolves = max(1, math.floor(n_actual_players / 4))
-                specials = ["Seer", "Doctor", "Witch", "Hunter", "Cupid"]
+                # 2. Setup Lupi (1 Mascotte + Resto Normali)
+                n_total_wolves = max(1, math.floor(n_actual_players / 4))
+                wolves_list = ["Lupo Mascotte"] + (["Werewolf"] * (n_total_wolves - 1))
                 
-                # Se siamo pochi, riduciamo i ruoli speciali
-                max_specials = max(0, n_actual_players - n_wolves - 1)
-                active_specials = specials[:min(len(specials), max_specials)]
+                # 3. Setup Speciali (Priorità a quelli richiesti)
+                # Ordine: Veggente, Dottore, Strega, Incompreso, Spirito Bianco, Cacciatore, Cupido
+                priority_specials = ["Seer", "Doctor", "Witch", "Incompreso", "Spirito Bianco", "Hunter", "Cupid"]
                 
-                n_villagers = n_actual_players - n_wolves - len(active_specials)
+                # Calcola quanti speciali ci stanno
+                max_specials_count = max(0, n_actual_players - n_total_wolves - 1)
+                active_specials = priority_specials[:min(len(priority_specials), max_specials_count)]
                 
-                roles_pool = (["Werewolf"] * n_wolves) + active_specials + (["Villager"] * n_villagers)
+                # 4. Setup Villici
+                n_villagers = n_actual_players - n_total_wolves - len(active_specials)
+                
+                # Mix
+                roles_pool = wolves_list + active_specials + (["Villager"] * n_villagers)
                 random.shuffle(roles_pool)
                 
-                # 4. Salvataggio stato
                 st.session_state.narrator_name = narrator
                 st.session_state.game_roles = dict(zip(players_without_narrator, roles_pool))
                 st.session_state.players_to_reveal = players_without_narrator
@@ -579,6 +596,7 @@ elif menu == "Lupus in Fabula":
             """, unsafe_allow_html=True)
 
     else:
+        # --- DASHBOARD NARRATORE ---
         st.markdown(f"""
         <div style='text-align:center; margin-bottom:30px;'>
             <span style='color:white; font-size:1.5rem;'>Narrator Dashboard:</span><br>
@@ -586,81 +604,107 @@ elif menu == "Lupus in Fabula":
         </div>
         """, unsafe_allow_html=True)
         
-        # SCRIPT NARRATORE FINALE (Nativo Streamlit per evitare bug visivi)
-        with st.expander("📜 OPEN FULL NARRATOR SCRIPT (STEP-BY-STEP)", expanded=True):
-            st.subheader("🌙 THE NIGHT PHASE")
+        with st.expander("📜 OPEN NARRATOR SCRIPT (SUPER DETAILED)", expanded=True):
+            st.markdown("### 🌚 THE NIGHT PHASE")
             st.write("🛑 **'Everyone, close your eyes! Deep sleep falls on Mezzenile.'**")
-            st.caption("(Make sure no one is peeking)")
             
             st.markdown("---")
             st.info("""
             **💘 (NIGHT 1 ONLY) CUPID**
-            * "Cupid, wake up."
-            * "Point to the two Lovers." (Tap shoulders).
+            * "Cupid, wake up. Point to the two Lovers."
+            * (Tap Lovers' shoulders).
             * "Cupid, sleep."
-            """)
-            
-            st.info("""
-            **❤️ (NIGHT 1 ONLY) LOVERS**
-            * "Lovers, wake up."
-            * "Look at each other. Memorize your partner."
+            * "Lovers, wake up. Look at each other."
             * "Lovers, sleep."
             """)
             st.markdown("---")
             
-            st.write("🐺 **'Werewolves, wake up.'**")
-            st.write("* \"Choose your victim.\" (Wolves point).")
-            st.write("* (Narrator: Nod to confirm).")
-            st.write("* **'Wolves, sleep.'**")
-            st.write("") # Spazio
+            st.markdown("#### 👻 SPIRITO BIANCO (Start from NIGHT 2)")
+            st.warning("""
+            **CHECK:** Is it Night 2 or later? Is Spirito Bianco alive?
+            1. "Spirito Bianco, wake up."
+            2. "Point to a DEAD player to revive."
+            3. (If he points: That player wakes up tomorrow).
+            4. **NOTE:** If this is his 2nd resurrection, Spirito dies tomorrow morning.
+            """)
+            st.write("**'Spirito, sleep.'**")
+            st.write("")
+
+            st.markdown("#### 🐺 WEREWOLVES")
+            st.warning("""
+            **CHECK:** Did **Lupo Mascotte** die yesterday?
+            * **NO:** "Wolves, choose **ONE** victim."
+            * **YES:** "Wolves, blinded by rage, choose **TWO** victims tonight!"
+            """)
+            st.write("**'Wolves, wake up... Choose your victim(s).'**")
+            st.write("(Nod to confirm).")
+            st.write("**'Wolves, sleep.'**")
+            st.write("") 
             
-            st.write("🔮 **'The Seer, wake up.'**")
-            st.write("* \"Point at someone to inspect.\"")
-            st.write("* (Narrator: 👎 = WOLF, 👍 = GOOD).")
-            st.write("* **'Seer, sleep.'**")
+            st.markdown("#### 🔮 THE SEER")
+            st.warning("""
+            **CRITICAL CHECK:**
+            * If pointing at **Werewolf** -> 👎 (BAD)
+            * If pointing at **Villager** -> 👍 (GOOD)
+            * If pointing at **INCOMPRESO** -> 👎 (BAD - Lie to Seer)
+            * If pointing at **SPIRITO BIANCO** -> 👎 (BAD - Lie to Seer)
+            """)
+            st.write("**'Seer, wake up. Point to someone.'**")
+            st.write("(Show sign).")
+            st.write("**'Seer, sleep.'**")
             st.write("")
 
-            st.write("💉 **'The Doctor, wake up.'**")
-            st.write("* \"Who do you want to protect?\"")
-            st.write("* (Narrator: Remember this person. If Wolves picked them, they survive).")
-            st.write("* **'Doctor, sleep.'**")
+            st.markdown("#### 💉 THE DOCTOR")
+            st.write("**'Doctor, wake up. Who do you want to save from the bite?'**")
+            st.write("(Remember: He saves from Wolves, NOT from Witch).")
+            st.write("**'Doctor, sleep.'**")
             st.write("")
 
-            st.write("🧪 **'The Witch, wake up.'**")
-            st.write("* (Narrator: POINT to the victim killed by Wolves).")
-            st.write("* \"Do you want to HEAL? Do you want to KILL?\"")
-            st.write("* **'Witch, sleep.'**")
+            st.markdown("#### 🧪 THE WITCH")
+            st.warning("""
+            **ACTION:**
+            1. Point to the Wolf's victim. "This person is dying."
+            2. Show **Life Potion** (Thumbs up). "Do you use it?"
+            3. Show **Death Potion** (Thumbs down). "Do you want to kill someone else?"
+            """)
+            st.write("**'Witch, wake up...'** (Perform actions).")
+            st.write("**'Witch, sleep.'**")
 
-            st.subheader("☀️ THE DAY PHASE")
-            st.write("🌅 **'Everybody wake up! It's morning.'**")
-            st.write("📣 \"Last night...\" (Announce who died. If saved: 'Nobody died').")
-            st.write("🔫 If Hunter died: \"Hunter, shoot someone immediately.\"")
-            st.write("💔 If Lover died: \"The other Lover dies of a broken heart.\"")
-            st.write("🗣️ \"Town, debate! Find the wolves!\" (5 mins).")
-            st.write("🗳️ \"3... 2... 1... VOTE!\" (Majority dies).")
-        
+            st.markdown("### ☀️ THE DAY PHASE")
+            st.write("🌅 **'Everybody wake up!'**")
+            st.success("""
+            **MORNING ANNOUNCEMENTS:**
+            1. **Who died?** (Wolves' victim OR Witch's victim).
+            2. **Did anyone revive?** (Spirito Bianco's choice).
+            3. **Did Spirito Bianco die?** (If he used 2nd revive).
+            4. **Did Hunter die?** -> Shoot immediately.
+            5. **Did a Lover die?** -> Partner dies immediately.
+            """)
+            st.write("🗣️ **'DEBATE! Find the wolves!'**")
+
         st.markdown("### 💀 GRAVEYARD & ALIVE PLAYERS")
         
+        # Checkbox Logic
         if 'dead_p' not in st.session_state: st.session_state.dead_p = []
         
         c1, c2 = st.columns(2)
         with c1:
-            st.markdown(title_html("VILLAGERS (GOOD)", "#00ff88"), unsafe_allow_html=True)
+            st.markdown(title_html("VILLAGERS TEAM", "#00ff88"), unsafe_allow_html=True)
             for n, r in st.session_state.game_roles.items():
-                if r != "Werewolf":
+                if r not in ["Werewolf", "Lupo Mascotte"]:
                     is_dead = st.checkbox(f"{n} ({r})", key=f"d_{n}")
                     if is_dead and n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
                     elif not is_dead and n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
         with c2:
-            st.markdown(title_html("WOLVES (EVIL)", "#ff4b4b"), unsafe_allow_html=True)
+            st.markdown(title_html("WOLVES TEAM", "#ff4b4b"), unsafe_allow_html=True)
             for n, r in st.session_state.game_roles.items():
-                if r == "Werewolf":
-                    is_dead = st.checkbox(f"{n}", key=f"d_{n}")
+                if r in ["Werewolf", "Lupo Mascotte"]:
+                    is_dead = st.checkbox(f"{n} ({r})", key=f"d_{n}")
                     if is_dead and n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
                     elif not is_dead and n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
         
-        wolves_alive = sum(1 for n,r in st.session_state.game_roles.items() if r=="Werewolf" and n not in st.session_state.dead_p)
-        villagers_alive = sum(1 for n,r in st.session_state.game_roles.items() if r!="Werewolf" and n not in st.session_state.dead_p)
+        wolves_alive = sum(1 for n,r in st.session_state.game_roles.items() if (r=="Werewolf" or r=="Lupo Mascotte") and n not in st.session_state.dead_p)
+        villagers_alive = sum(1 for n,r in st.session_state.game_roles.items() if (r!="Werewolf" and r!="Lupo Mascotte") and n not in st.session_state.dead_p)
         
         st.markdown("---")
         if wolves_alive == 0: 
@@ -669,8 +713,6 @@ elif menu == "Lupus in Fabula":
              st.markdown("<div style='background:#ff4b4b; color:white; padding:20px; text-align:center; border-radius:15px;'><h1>🐺 WEREWOLVES WIN! 🐺</h1></div>", unsafe_allow_html=True)
              
         if st.button("🔄 RESET GAME"):
-            for k in list(st.session_state.keys()): del st.session_state[k]
-            st.rerun()
             for k in list(st.session_state.keys()): del st.session_state[k]
             st.rerun()
 # ============================================
