@@ -1,8 +1,10 @@
 import streamlit as st
-import os
 import pandas as pd
 import random
 import math
+import time  
+import io
+import matplotlib.pyplot as plt
 
 # ============================================
 # 1. CONFIGURAZIONE FORZATA (DARK MODE)
