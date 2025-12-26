@@ -953,9 +953,9 @@ elif menu == "UwuFUFU Dojo":
             </a>
             """, unsafe_allow_html=True)
 
-# ============================================
+# =============================================
 # SEZIONE 6: CRAZY TIME SIMULATOR
-# ============================================
+# =============================================
 elif menu == "Ludopazzia":
     # CSS PER STILE CASINO
     st.markdown("""
