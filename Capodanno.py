@@ -356,12 +356,30 @@ elif menu == "Online Games Links":
 # SEZIONE 3: EVENT BETTING
 # ============================================
 elif menu == "Event Betting":
-    st.markdown(gradient_text("PROP BETS"), unsafe_allow_html=True)
+    st.markdown(gradient_text("PROP BETS & ROULETTE"), unsafe_allow_html=True)
     
-    tab1, tab2 = st.tabs(["🗳️ VOTE NOW", "🏆 LIVE PODIUMS"])
+    tab1, tab2 = st.tabs(["🗳️ VOTE NOW", "🏆 LIVE RESULTS"])
     
-    single_bets = ["The Drunkest", "First to Throw Up", "First to Fall Asleep", "First to Take a Massive Shit", "First to Mess in Kitchen", "First to Break Something"]
+    # 1. LISTA SCOMMESSE AGGIORNATA
+    single_bets = [
+        "The Ghost (Disappears without explanation)",
+        "The Bladder (Most bathroom trips)",
+        "The Zombie (Unconscious by midnight)",
+        "The DJ Dictator (Monopolizes music)",
+        "The Philosopher (First unrequested serious toast)",
+        "The Clumsy One (First to spill something)",
+        "The Confused (First to get a name wrong)",
+        "The Drunkest", 
+        "First to Throw Up", 
+        "First to Break Something"
+    ]
     pair_bets = ["First Two to Argue", "First Couple to Kiss HARD in Public"]
+
+    # 2. HELPER PER COLORI ROULETTE
+    def get_roulette_color(n):
+        if n == 0: return "#00ff00" # Green
+        red_nums = [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
+        return "#ff0000" if n in red_nums else "#000000" # Red or Black
 
     with tab1:
         st.markdown("<div class='glass-box'>", unsafe_allow_html=True)
@@ -371,23 +389,54 @@ elif menu == "Event Betting":
         
         if voter_name != "Select your name":
             current_votes = {}
+            
+            # --- SEZIONE 1: LE SCOMMESSE ---
             st.markdown("---")
             st.markdown(neon_text("INDIVIDUAL BETS", "1.5rem"), unsafe_allow_html=True)
-            
             for bet in single_bets:
                 st.markdown(f"<br>{gold_text(bet)}", unsafe_allow_html=True)
                 current_votes[bet] = st.selectbox("", people, key=f"{voter_name}_{bet}", label_visibility="collapsed")
             
             st.markdown("---")
             st.markdown(neon_text("PAIR BETS (Pick 2)", "1.5rem"), unsafe_allow_html=True)
-            
             for bet in pair_bets:
                 st.markdown(f"<br>{gold_text(bet)}", unsafe_allow_html=True)
                 pair = st.multiselect("", people, key=f"{voter_name}_{bet}_pair", label_visibility="collapsed")
                 current_votes[bet] = tuple(sorted(pair))
 
+            # --- SEZIONE 2: BUONI PROPOSITI ---
+            st.markdown("---")
+            st.markdown(neon_text("SECRET RESOLUTION", "1.5rem"), unsafe_allow_html=True)
+            st.info("🔒 **Totally Anonymous.** Write a SERIOUS New Year's resolution. It will be shown shuffled with others.")
+            current_votes['resolution'] = st.text_area("Your Resolution:", key=f"{voter_name}_res", placeholder="I promise to...")
+
+            # --- SEZIONE 3: ROULETTE ---
+            st.markdown("---")
+            st.markdown(neon_text("THE SDROGO ROULETTE", "1.5rem"), unsafe_allow_html=True)
+            st.warning("🎰 **THE PRIZE:** If your number is extracted, you win the **CHILL PASS**. You are authorized to do absolutely nothing and help no one.")
+            
+            # Genera opzioni roulette con colori
+            roulette_options = list(range(37))
+            
+            # Visualizzazione personalizzata della scelta
+            roulette_choice = st.selectbox(
+                "Pick your Lucky Number (0-36)", 
+                roulette_options, 
+                key=f"{voter_name}_roulette"
+            )
+            
+            # Mostra visivamente il colore scelto
+            chosen_color = get_roulette_color(roulette_choice)
+            st.markdown(f"""
+            <div style='text-align:center; margin-top:10px;'>
+                You picked: <span style='background-color:{chosen_color}; color:white; padding: 5px 15px; border-radius:5px; font-weight:bold; font-size:1.2rem; border:1px solid white;'>{roulette_choice}</span>
+            </div>
+            """, unsafe_allow_html=True)
+            current_votes['roulette_num'] = roulette_choice
+
             st.markdown("<br>", unsafe_allow_html=True)
             
+            # --- SALVATAGGIO ---
             if st.button("🔒 LOCK IN PREDICTIONS", use_container_width=True):
                 valid = True
                 for bet in pair_bets:
@@ -396,6 +445,7 @@ elif menu == "Event Betting":
                         valid = False
                 
                 if valid:
+                    # Rimuovi voti precedenti dello stesso utente
                     st.session_state.votes = [v for v in st.session_state.votes if v.get('_voter') != voter_name]
                     current_votes['_voter'] = voter_name
                     st.session_state.votes.append(current_votes)
@@ -410,7 +460,91 @@ elif menu == "Event Betting":
         else:
             df = pd.DataFrame(st.session_state.votes)
             
-            st.markdown(title_html("INDIVIDUAL RANKINGS", "#f09819"), unsafe_allow_html=True)
+            # 1. ROULETTE EXTRACTION (PRIMA DI TUTTO PER HYPE)
+            st.markdown(title_html("🎰 ROULETTE EXTRACTION 🎰", "#ff0000"), unsafe_allow_html=True)
+            
+            if 'roulette_winner_num' not in st.session_state:
+                st.session_state.roulette_winner_num = None
+
+            spin_col1, spin_col2 = st.columns([1,3])
+            with spin_col1:
+                if st.button("🎲 SPIN THE WHEEL"):
+                    placeholder = st.empty()
+                    # Animazione
+                    for _ in range(30):
+                        temp_num = random.randint(0, 36)
+                        temp_col = get_roulette_color(temp_num)
+                        placeholder.markdown(f"""
+                        <div style='text-align:center; font-size:4rem; font-weight:900; color:{temp_col}; text-shadow: 0 0 10px white;'>
+                            {temp_num}
+                        </div>
+                        """, unsafe_allow_html=True)
+                        time.sleep(0.05 + (_ * 0.005)) # Rallenta progressivamente
+                    
+                    # Numero Finale
+                    final_num = random.randint(0, 36)
+                    st.session_state.roulette_winner_num = final_num
+                    placeholder.empty()
+
+            # Mostra Risultato Roulette
+            if st.session_state.roulette_winner_num is not None:
+                win_n = st.session_state.roulette_winner_num
+                win_c = get_roulette_color(win_n)
+                st.markdown(f"""
+                <div style='background: #111; border: 4px solid {win_c}; border-radius: 20px; padding: 20px; text-align: center; animation: pulse 1s infinite;'>
+                    <div style='font-size: 1.5rem; color: #aaa;'>THE WINNING NUMBER IS</div>
+                    <div style='font-size: 6rem; font-weight: 900; color: {win_c}; text-shadow: 0 0 20px {win_c};'>
+                        {win_n}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Cerca i vincitori
+                if 'roulette_num' in df.columns:
+                    winners = df[df['roulette_num'] == win_n]['_voter'].tolist()
+                    if winners:
+                        st.markdown(f"""
+                        <div style='margin-top:20px; text-align:center;'>
+                            <h2 style='color:#ffd700;'>👑 CHILL PASS GRANTED TO: 👑</h2>
+                            <h1 style='color:white;'>{", ".join(winners)}</h1>
+                            <p style='color:#ccc;'>You are legally allowed to do nothing.</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        st.balloons()
+                    else:
+                        st.markdown("<h3 style='text-align:center; color:#ff4b4b; margin-top:20px;'>🚫 NO WINNERS! EVERYONE GET BACK TO WORK! 🚫</h3>", unsafe_allow_html=True)
+
+            st.markdown("---")
+
+            # 2. RESOLUTIONS WALL
+            st.markdown(title_html("📜 WALL OF RESOLUTIONS", "#f09819"), unsafe_allow_html=True)
+            st.caption("Anonymous & Shuffled")
+            
+            if 'resolution' in df.columns:
+                resolutions = df['resolution'].dropna().tolist()
+                # Filtra stringhe vuote
+                resolutions = [r for r in resolutions if len(str(r)) > 2]
+                
+                if resolutions:
+                    random.shuffle(resolutions) # Mescola per anonimato
+                    
+                    # Visualizza come carte
+                    res_cols = st.columns(2)
+                    for i, res in enumerate(resolutions):
+                        with res_cols[i % 2]:
+                            st.markdown(f"""
+                            <div style='background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; margin-bottom:10px; border-left: 3px solid #f09819;'>
+                                <span style='font-size:1.1rem; color:#eee; font-style:italic;'>"{res}"</span>
+                            </div>
+                            """, unsafe_allow_html=True)
+                else:
+                    st.write("No resolutions submitted yet.")
+
+            st.markdown("---")
+
+            # 3. CLASSIFICHE SCOMMESSE (Classico)
+            st.markdown(title_html("BET RANKINGS", "#8e2de2"), unsafe_allow_html=True)
+            
             for bet in single_bets:
                 if bet in df.columns:
                     st.markdown(f"**{bet}**")
@@ -418,7 +552,6 @@ elif menu == "Event Betting":
                     counts.columns = ['Name', 'Votes']
                     st.bar_chart(counts, x='Name', y='Votes', color="#f09819")
             
-            st.markdown(title_html("PAIR RANKINGS", "#8e2de2"), unsafe_allow_html=True)
             for bet in pair_bets:
                 if bet in df.columns:
                     st.markdown(f"**{bet}**")
@@ -429,7 +562,8 @@ elif menu == "Event Betting":
                             counts = pair_series.value_counts().head(3).reset_index()
                             counts.columns = ['Couple', 'Votes']
                             st.bar_chart(counts, x='Couple', y='Votes', color="#8e2de2")
-
+            
+            # MVP
             st.markdown(gradient_text("OVERALL MVP"), unsafe_allow_html=True)
             all_names = []
             for col in single_bets: 
@@ -443,6 +577,7 @@ elif menu == "Event Betting":
                 total = pd.Series(all_names).value_counts().reset_index()
                 total.columns = ['Name', 'Total Votes']
                 st.bar_chart(total, x='Name', y='Total Votes', color="#8e2de2")
+                
 
 # ============================================
 # SEZIONE 4: LUPUS IN FABULA
