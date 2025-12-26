@@ -678,7 +678,7 @@ elif menu == "Lupus in Fabula":
             st.write("**'Witch, wake up...'** (Perform actions).")
             st.write("**'Witch, sleep.'**")
 
-st.markdown("### ☀️ THE DAY PHASE")
+            st.markdown("### ☀️ THE DAY PHASE")
             st.write("🌅 **'Everybody wake up! The sun rises over Mezzenile.'**")
             
             st.markdown("#### 📢 MORNING ANNOUNCEMENTS (Choose the scenario)")
