@@ -110,8 +110,8 @@ hr { border-color: #8e2de2 !important; opacity: 0.3; }
 # ============================================
 # DATI & COSTANTI
 # ============================================
-people = ["Girla", "Paci", "Marti", "Paga", "Yara", "Gaia", "Chiara", "Ele", "Ceci", "Ari", "Bax", 
-          "Enry", "Bomber", "Marghe", "Eugi", "Camilla De Ambrogio", "Lulli", "Tommaso", "Stefano", "Elisa", "Camilla 2"]
+people = ["Girla", "Paci", "Marti", "Paga", "Yara", "Gaia", "Chiara", "Ele", "Ceci", "Ari", "Bax", "Camilla Consonni",
+          "Enry", "Bomber", "Marghe", "Eugi", "Camilla De Ambrogio", "Lulli", "Tommaso", "Stefano", "Elisa"]
 
 if 'votes' not in st.session_state:
     st.session_state.votes = []
