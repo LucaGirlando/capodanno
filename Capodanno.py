@@ -454,23 +454,48 @@ elif menu == "Lupus in Fabula":
     if 'current_player_index' not in st.session_state: st.session_state.current_player_index = 0
     if 'show_role' not in st.session_state: st.session_state.show_role = False
 
-    # --- DESCRIZIONE RUOLI AGGIORNATA ---
-    role_descriptions = {
-        # CATTIVI
-        "Werewolf": "🐺 <b>THE SOLDIER.</b> You are a normal Wolf. Wake up, agree on a victim, kill. Act innocent.",
-        "Lupo Mascotte": "🐺👶 <b>THE MASCOT.</b> You are the pack's favorite. If you die (Day or Night), the NEXT night the Wolves kill <b>TWO</b> people out of rage.",
-        
-        # SPECIALI (Nuovi & Classici)
-        "Spirito Bianco": "👻✨ <b>THE WHITE SPIRIT.</b> You are Good, but the Seer sees you as a WOLF. From Night 2, you can REVIVE a dead player. Max 2 resurrections. After the 2nd one, you die of exhaustion.",
-        "Incompreso": "🤷‍♂️ <b>THE MISUNDERSTOOD.</b> You are a 100% Good Villager. However, the Seer and Medium see you as a WOLF. Good luck convincing them.",
-        
-        # CLASSICI
-        "Seer": "🔮 <b>THE INVESTIGATOR.</b> Check one player every night. WARNING: The Incompreso and Spirito Bianco look like Wolves to you!",
-        "Doctor": "💉 <b>THE SAVIOR.</b> Protect one person from Wolf attacks each night. You CAN protect yourself. You CANNOT save someone from the Witch's poison.",
-        "Witch": "🧪 <b>THE ALCHEMIST.</b> You have 2 one-use potions: 💚 LIFE (save a victim) and ☠️ DEATH (kill anyone). You can use both in the same night if you want.",
-        "Hunter": "🔫 <b>THE AVENGER.</b> If you die, you have 3 seconds to shoot someone else immediately.",
-        "Cupid": "💘 <b>THE MATCHMAKER.</b> Night 1 only: Link two Lovers. They live and die together.",
-        "Villager": "🧑‍🌾 <b>THE MOB.</b> Sleep, Wake up, Vote. Trust no one."
+    # --- DATI RUOLI (NOMI IN INGLESE & TIPS GIOCATORE) ---
+    role_data = {
+        "Werewolf": {
+            "desc": "🐺 <b>THE SOLDIER.</b> You are a normal Wolf. Wake up, agree on a victim, kill. Act innocent.",
+            "tip": "Wake up with wolves. Point to kill. Don't make noise."
+        },
+        "Mascot Wolf": {
+            "desc": "🐺👶 <b>THE MASCOT.</b> You are the pack's favorite. If you die, the NEXT night the Wolves kill <b>TWO</b> people out of rage.",
+            "tip": "You are a Wolf. If you die, tell the Narrator secretly so he knows to grant the Double Kill."
+        },
+        "White Spirit": {
+            "desc": "👻✨ <b>THE WHITE SPIRIT.</b> You are Good, but the Seer sees you as a WOLF. From Night 2, you can REVIVE a dead player. Max 2 resurrections. After the 2nd one, you die.",
+            "tip": "NIGHT 1: Sleep. FROM NIGHT 2: Wake up and point to a dead player to revive. Remember: Seer sees you as 👎 (BAD)!"
+        },
+        "The Misunderstood": {
+            "desc": "🤷‍♂️ <b>THE MISUNDERSTOOD.</b> You are a 100% Good Villager. However, the Seer sees you as a WOLF.",
+            "tip": "You have no active powers. Just survive. Remember: If the Seer checks you, the Narrator will say you are 👎 (BAD)."
+        },
+        "Seer": {
+            "desc": "🔮 <b>THE INVESTIGATOR.</b> Check one player every night to see if they are Good or Bad.",
+            "tip": "Wake up. Point to a person. Narrator signals: 👍 = GOOD (Villager), 👎 = BAD (Wolf / Misunderstood / White Spirit)."
+        },
+        "Doctor": {
+            "desc": "💉 <b>THE SAVIOR.</b> Protect one person from Wolf attacks each night. You CAN protect yourself.",
+            "tip": "Wake up. Point to someone to save from the bite. You cannot save from Witch's potion."
+        },
+        "Witch": {
+            "desc": "🧪 <b>THE ALCHEMIST.</b> You have 2 one-use potions: 💚 LIFE (save a victim) and ☠️ DEATH (kill anyone).",
+            "tip": "Narrator points to the victim. Thumbs UP = Save them. Thumbs DOWN = Kill someone else. You can do both."
+        },
+        "Hunter": {
+            "desc": "🔫 <b>THE AVENGER.</b> If you die, you have 3 seconds to shoot someone else immediately.",
+            "tip": "If the Narrator says you are dead, immediately shout 'BANG!' and point to your target."
+        },
+        "Cupid": {
+            "desc": "💘 <b>THE MATCHMAKER.</b> Night 1 only: Link two Lovers. They live and die together.",
+            "tip": "Wake up Night 1. Point to two people. They are now linked."
+        },
+        "Villager": {
+            "desc": "🧑‍🌾 <b>THE MOB.</b> Sleep, Wake up, Vote. Trust no one.",
+            "tip": "Sleep at night. Listen to sounds. Vote the wolves out during the day."
+        }
     }
 
     if not st.session_state.game_started:
@@ -481,30 +506,16 @@ elif menu == "Lupus in Fabula":
         <div style='color:white; line-height:1.6;'>
             <p><b>THE BASICS:</b> Villagers vs Wolves. Wolves kill at night. Villagers vote to hang someone at day.</p>
             <hr style='border-color:#8e2de2'>
-            <h3 style='color:#8e2de2'>🛑 CRITICAL ROLE INTERACTIONS</h3>
+            <h3 style='color:#8e2de2'>🛑 SPECIAL ROLES EXPLAINED</h3>
             <ul>
-                <li>💉 <b>DOCTOR vs WITCH:</b>
-                    <ul>
-                        <li>The Doctor protects against the <b>WOLF BITE</b> only.</li>
-                        <li>The Doctor <b>CANNOT</b> save someone killed by the Witch's Death Potion.</li>
-                        <li>The Witch's Life Potion <b>CAN</b> save someone even if the Doctor missed.</li>
-                    </ul>
-                </li>
-                <li>👁️ <b>SEER CONFUSION:</b>
-                    <ul>
-                        <li>The Seer sees the <b>INCOMPRESO</b> and <b>SPIRITO BIANCO</b> as <b style='color:red'>WOLVES</b> (even though they are good).</li>
-                    </ul>
-                </li>
-                <li>👶 <b>MASCOT RAGE:</b>
-                    <ul>
-                        <li>If the <b>Lupo Mascotte</b> dies, the Wolves get a <b>DOUBLE KILL</b> the very next night.</li>
-                    </ul>
-                </li>
-                <li>👻 <b>RESURRECTION:</b>
-                    <ul>
-                        <li><b>Spirito Bianco</b> acts from Night 2. Can bring dead people back. Dies after 2nd use.</li>
-                    </ul>
-                </li>
+                <li>🐺👶 <b>MASCOT WOLF (Evil):</b> A normal wolf, but beloved. If he dies, the Wolves get a <b>DOUBLE KILL</b> the next night out of rage.</li>
+                <li>👻✨ <b>WHITE SPIRIT (Good):</b> Can revive dead players starting from Night 2. 
+                    <br>⚠️ <b>CURSE:</b> He appears as a <b style='color:red'>WOLF</b> to the Seer.
+                    <br>⚠️ <b>LIMIT:</b> Dies instantly after his 2nd resurrection.</li>
+                <li>🤷‍♂️ <b>THE MISUNDERSTOOD (Good):</b> A normal villager with bad luck. He appears as a <b style='color:red'>WOLF</b> to the Seer.</li>
+                <li>🔮 <b>SEER (Good):</b> Checks identities. <br>👍 = Good. <br>👎 = Bad (Wolf, Mascot, White Spirit, Misunderstood).</li>
+                <li>💉 <b>DOCTOR (Good):</b> Protects from Wolf Bite (not from Witch). Can protect self.</li>
+                <li>🧪 <b>WITCH (Good):</b> Has 1 Revive Potion and 1 Kill Potion. Can use anytime.</li>
             </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -538,15 +549,13 @@ elif menu == "Lupus in Fabula":
                 players_without_narrator = [p for p in active_players if p != narrator]
                 n_actual_players = len(players_without_narrator)
                 
-                # 2. Setup Lupi (1 Mascotte + Resto Normali)
+                # 2. Setup Lupi (1 Mascot + Resto Normali)
                 n_total_wolves = max(1, math.floor(n_actual_players / 4))
-                wolves_list = ["Lupo Mascotte"] + (["Werewolf"] * (n_total_wolves - 1))
+                wolves_list = ["Mascot Wolf"] + (["Werewolf"] * (n_total_wolves - 1))
                 
                 # 3. Setup Speciali (Priorità a quelli richiesti)
-                # Ordine: Veggente, Dottore, Strega, Incompreso, Spirito Bianco, Cacciatore, Cupido
-                priority_specials = ["Seer", "Doctor", "Witch", "Incompreso", "Spirito Bianco", "Hunter", "Cupid"]
+                priority_specials = ["Seer", "Doctor", "Witch", "The Misunderstood", "White Spirit", "Hunter", "Cupid"]
                 
-                # Calcola quanti speciali ci stanno
                 max_specials_count = max(0, n_actual_players - n_total_wolves - 1)
                 active_specials = priority_specials[:min(len(priority_specials), max_specials_count)]
                 
@@ -586,12 +595,16 @@ elif menu == "Lupus in Fabula":
             st.rerun()
             
         if st.session_state.show_role:
-            role = st.session_state.game_roles[player]
-            desc = role_descriptions.get(role, "")
+            role_name = st.session_state.game_roles[player]
+            info = role_data.get(role_name, {"desc": "Role unknown", "tip": "No tip."})
+            
             st.markdown(f"""
             <div style='background:rgba(142, 45, 226, 0.2); padding:20px; border-radius:10px; border:2px solid #8e2de2; text-align:center; margin-top:10px;'>
-                <h1 style='color:#f09819; margin:0;'>{role.upper()}</h1>
-                <p style='color:white; font-size:1.1rem; margin-top:10px;'>{desc}</p>
+                <h1 style='color:#f09819; margin:0;'>{role_name.upper()}</h1>
+                <p style='color:white; font-size:1.1rem; margin-top:10px;'>{info['desc']}</p>
+                <div style='background: rgba(0,0,0,0.3); padding:10px; border-radius:5px; margin-top:15px; border-left: 3px solid #f09819;'>
+                    <span style='color:#f09819; font-weight:bold;'>💡 PLAYER TIP:</span> <span style='color:#ddd; font-style:italic;'>{info['tip']}</span>
+                </div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -619,20 +632,20 @@ elif menu == "Lupus in Fabula":
             """)
             st.markdown("---")
             
-            st.markdown("#### 👻 SPIRITO BIANCO (Start from NIGHT 2)")
+            st.markdown("#### 👻 WHITE SPIRIT (Start from NIGHT 2)")
             st.warning("""
-            **CHECK:** Is it Night 2 or later? Is Spirito Bianco alive?
-            1. "Spirito Bianco, wake up."
+            **CHECK:** Is it Night 2 or later? Is White Spirit alive?
+            1. "White Spirit, wake up."
             2. "Point to a DEAD player to revive."
             3. (If he points: That player wakes up tomorrow).
-            4. **NOTE:** If this is his 2nd resurrection, Spirito dies tomorrow morning.
+            4. **NOTE:** If this is his 2nd resurrection, White Spirit dies tomorrow morning.
             """)
-            st.write("**'Spirito, sleep.'**")
+            st.write("**'Spirit, sleep.'**")
             st.write("")
 
             st.markdown("#### 🐺 WEREWOLVES")
             st.warning("""
-            **CHECK:** Did **Lupo Mascotte** die yesterday?
+            **CHECK:** Did **Mascot Wolf** die yesterday?
             * **NO:** "Wolves, choose **ONE** victim."
             * **YES:** "Wolves, blinded by rage, choose **TWO** victims tonight!"
             """)
@@ -646,11 +659,11 @@ elif menu == "Lupus in Fabula":
             **CRITICAL CHECK:**
             * If pointing at **Werewolf** -> 👎 (BAD)
             * If pointing at **Villager** -> 👍 (GOOD)
-            * If pointing at **INCOMPRESO** -> 👎 (BAD - Lie to Seer)
-            * If pointing at **SPIRITO BIANCO** -> 👎 (BAD - Lie to Seer)
+            * If pointing at **THE MISUNDERSTOOD** -> 👎 (BAD - Lie to Seer)
+            * If pointing at **WHITE SPIRIT** -> 👎 (BAD - Lie to Seer)
             """)
             st.write("**'Seer, wake up. Point to someone.'**")
-            st.write("(Show sign).")
+            st.write("(Show sign: 👍 or 👎).")
             st.write("**'Seer, sleep.'**")
             st.write("")
 
@@ -675,8 +688,8 @@ elif menu == "Lupus in Fabula":
             st.success("""
             **MORNING ANNOUNCEMENTS:**
             1. **Who died?** (Wolves' victim OR Witch's victim).
-            2. **Did anyone revive?** (Spirito Bianco's choice).
-            3. **Did Spirito Bianco die?** (If he used 2nd revive).
+            2. **Did anyone revive?** (White Spirit's choice).
+            3. **Did White Spirit die?** (If he used 2nd revive).
             4. **Did Hunter die?** -> Shoot immediately.
             5. **Did a Lover die?** -> Partner dies immediately.
             """)
@@ -691,20 +704,20 @@ elif menu == "Lupus in Fabula":
         with c1:
             st.markdown(title_html("VILLAGERS TEAM", "#00ff88"), unsafe_allow_html=True)
             for n, r in st.session_state.game_roles.items():
-                if r not in ["Werewolf", "Lupo Mascotte"]:
+                if r not in ["Werewolf", "Mascot Wolf"]:
                     is_dead = st.checkbox(f"{n} ({r})", key=f"d_{n}")
                     if is_dead and n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
                     elif not is_dead and n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
         with c2:
             st.markdown(title_html("WOLVES TEAM", "#ff4b4b"), unsafe_allow_html=True)
             for n, r in st.session_state.game_roles.items():
-                if r in ["Werewolf", "Lupo Mascotte"]:
+                if r in ["Werewolf", "Mascot Wolf"]:
                     is_dead = st.checkbox(f"{n} ({r})", key=f"d_{n}")
                     if is_dead and n not in st.session_state.dead_p: st.session_state.dead_p.append(n)
                     elif not is_dead and n in st.session_state.dead_p: st.session_state.dead_p.remove(n)
         
-        wolves_alive = sum(1 for n,r in st.session_state.game_roles.items() if (r=="Werewolf" or r=="Lupo Mascotte") and n not in st.session_state.dead_p)
-        villagers_alive = sum(1 for n,r in st.session_state.game_roles.items() if (r!="Werewolf" and r!="Lupo Mascotte") and n not in st.session_state.dead_p)
+        wolves_alive = sum(1 for n,r in st.session_state.game_roles.items() if (r=="Werewolf" or r=="Mascot Wolf") and n not in st.session_state.dead_p)
+        villagers_alive = sum(1 for n,r in st.session_state.game_roles.items() if (r!="Werewolf" and r!="Mascot Wolf") and n not in st.session_state.dead_p)
         
         st.markdown("---")
         if wolves_alive == 0: 
