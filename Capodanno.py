@@ -5,6 +5,7 @@ import math
 import time  
 import io
 import matplotlib.pyplot as plt
+import os
 
 # ============================================
 # 1. CONFIGURAZIONE FORZATA (DARK MODE)
