@@ -125,7 +125,7 @@ if 'votes' not in st.session_state:
 with st.sidebar:
     st.markdown(title_html("SDROGO HUB", "#f09819", "2rem", "900"), unsafe_allow_html=True)
     st.markdown("---")
-    menu = st.radio("NAVIGAZIONE", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula", "UwuFUFU Dojo"], label_visibility="collapsed")
+    menu = st.radio("NAVIGAZIONE", ["Main Dashboard", "Online Games Links", "Event Betting", "Lupus in Fabula", "UwuFUFU Dojo", "Ludopazzia"], label_visibility="collapsed")
     st.markdown("---")
     st.markdown(f"<div style='text-align:center; color:#8e2de2;'>Logged in as: <b>Guest</b></div>", unsafe_allow_html=True)
 
@@ -952,3 +952,253 @@ elif menu == "UwuFUFU Dojo":
                 </div>
             </a>
             """, unsafe_allow_html=True)
+
+# ============================================
+# SEZIONE 6: CRAZY TIME SIMULATOR
+# ============================================
+elif menu == "Ludopazzia":
+    # CSS PER STILE CASINO
+    st.markdown("""
+    <style>
+    .bet-btn { border-radius: 10px; padding: 10px; text-align: center; color: black; font-weight: bold; margin: 5px; border: 2px solid white; }
+    .num-1 { background-color: #6fa8dc; } /* 1 - Bluino */
+    .num-2 { background-color: #ffd966; } /* 2 - Giallo */
+    .num-5 { background-color: #ea9999; } /* 5 - Rosa */
+    .num-10 { background-color: #8e7cc3; } /* 10 - Viola */
+    .bonus-coin { background-color: #0b5394; color: white; border: 2px solid #3d85c6; }
+    .bonus-cash { background-color: #38761d; color: white; border: 2px solid #6aa84f; }
+    .bonus-pachinko { background-color: #a64d79; color: white; border: 2px solid #d5a6bd; }
+    .bonus-crazy { background-color: #cc0000; color: white; border: 2px solid #ff0000; box-shadow: 0 0 10px red; }
+    .history-ball { display: inline-block; width: 30px; height: 30px; border-radius: 50%; text-align: center; line-height: 30px; margin-right: 5px; font-weight: bold; color: black; font-size: 0.8rem; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown(gradient_text("CRAZY TIME: SDROGO EDITION"), unsafe_allow_html=True)
+
+    # --- INIZIALIZZAZIONE STATO ---
+    if 'balance' not in st.session_state: st.session_state.balance = 1000.0
+    if 'history' not in st.session_state: st.session_state.history = []
+    if 'last_win' not in st.session_state: st.session_state.last_win = 0
+
+    # DEFINIZIONE RUOTA (54 Segmenti Ufficiali)
+    # 1 (21 seg), 2 (13 seg), 5 (7 seg), 10 (4 seg), CoinFlip (4), Pachinko (2), CashHunt (2), CrazyTime (1)
+    wheel_segments = (
+        [1]*21 + [2]*13 + [5]*7 + [10]*4 + 
+        ["Coin Flip"]*4 + ["Pachinko"]*2 + ["Cash Hunt"]*2 + ["CRAZY TIME"]*1
+    )
+    
+    # Colori per output
+    seg_colors = {
+        1: "#6fa8dc", 2: "#ffd966", 5: "#ea9999", 10: "#8e7cc3",
+        "Coin Flip": "#0b5394", "Pachinko": "#a64d79", "Cash Hunt": "#38761d", "CRAZY TIME": "#ff0000"
+    }
+
+    # --- INTERFACCIA ---
+    
+    # 1. TOP BAR: SALDO E STORICO
+    c1, c2 = st.columns([1, 2])
+    with c1:
+        st.markdown(f"""
+        <div style='background: #111; border: 2px solid #f09819; border-radius: 10px; padding: 15px; text-align: center;'>
+            <div style='color: #aaa; font-size: 0.9rem;'>YOUR BALANCE</div>
+            <div style='color: #f09819; font-size: 2rem; font-weight: 900;'>€ {st.session_state.balance:.0f}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with c2:
+        st.markdown("<div style='color:#aaa; font-size:0.9rem; margin-bottom:5px;'>LAST RESULTS:</div>", unsafe_allow_html=True)
+        hist_html = ""
+        for h in st.session_state.history[-8:]: # Ultimi 8
+            bg = seg_colors.get(h, "#333")
+            txt = str(h)[0] if isinstance(h, str) else str(h) # Abbrevia Bonus
+            hist_html += f"<div class='history-ball' style='background:{bg};'>{txt}</div>"
+        st.markdown(f"<div>{hist_html}</div>", unsafe_allow_html=True)
+
+    st.markdown("---")
+
+    # 2. BETTING GRID (Griglia Puntate)
+    st.write("💰 **PLACE YOUR BETS**")
+    
+    col_bets = st.columns(4)
+    bets = {} # Dizionario per salvare le puntate
+
+    # Helper function per input puntata
+    def bet_input(label, key, color_class):
+        val = st.number_input(f"Bet on {label}", min_value=0, step=10, key=f"bet_{key}", label_visibility="collapsed")
+        st.markdown(f"<div class='bet-btn {color_class}'>{label}</div>", unsafe_allow_html=True)
+        return val
+
+    with col_bets[0]: bets[1] = bet_input("1 (1:1)", 1, "num-1")
+    with col_bets[1]: bets[2] = bet_input("2 (2:1)", 2, "num-2")
+    with col_bets[2]: bets[5] = bet_input("5 (5:1)", 5, "num-5")
+    with col_bets[3]: bets[10] = bet_input("10 (10:1)", 10, "num-10")
+
+    col_bonus = st.columns(4)
+    with col_bonus[0]: bets["Coin Flip"] = bet_input("Coin Flip", "cf", "bonus-coin")
+    with col_bonus[1]: bets["Cash Hunt"] = bet_input("Cash Hunt", "ch", "bonus-cash")
+    with col_bonus[2]: bets["Pachinko"] = bet_input("Pachinko", "pa", "bonus-pachinko")
+    with col_bonus[3]: bets["CRAZY TIME"] = bet_input("CRAZY TIME", "ct", "bonus-crazy")
+
+    total_bet = sum(bets.values())
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # PULSANTE GIOCA
+    spin_col1, spin_col2 = st.columns([1, 2])
+    with spin_col1:
+        spin_btn = st.button("🎰 SPIN THE WHEEL", use_container_width=True, type="primary")
+    
+    with spin_col2:
+        if total_bet > st.session_state.balance:
+            st.error("💸 You are broke! Decrease your bet.")
+        elif total_bet > 0:
+            st.caption(f"Total Bet: € {total_bet}")
+        else:
+            st.caption("Place a bet to start.")
+
+    # --- LOGICA DI GIOCO ---
+    if spin_btn and total_bet <= st.session_state.balance and total_bet > 0:
+        # 1. Paga la puntata
+        st.session_state.balance -= total_bet
+        
+        # 2. Top Slot Logic (Moltiplicatore Extra)
+        # Sceglie un segmento a caso e un moltiplicatore a caso
+        top_slot_seg = random.choice([1, 2, 5, 10, "Coin Flip", "Pachinko", "Cash Hunt", "CRAZY TIME"])
+        top_slot_mult = random.choice([2, 2, 3, 4, 5, 10, 20, 50])
+        
+        # Animazione Top Slot
+        slot_placeholder = st.empty()
+        slot_placeholder.info(f"🎰 TOP SLOT SPINNING...")
+        time.sleep(1)
+        slot_placeholder.markdown(f"""
+        <div style='text-align:center; padding:10px; background:#222; border: 2px solid #ffd700; border-radius:10px; margin-bottom:20px;'>
+            <span style='color:white;'>TOP SLOT: </span>
+            <span style='color:{seg_colors.get(top_slot_seg)}; font-weight:bold; font-size:1.2rem;'>{top_slot_seg}</span>
+            <span style='color:white;'> + </span>
+            <span style='color:#ffd700; font-weight:bold; font-size:1.2rem;'>{top_slot_mult}x</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # 3. Animazione Ruota Principale
+        wheel_placeholder = st.empty()
+        final_result = None
+        
+        # Simulazione visiva (finta)
+        for i in range(15):
+            temp_res = random.choice(wheel_segments)
+            c = seg_colors.get(temp_res, "#fff")
+            wheel_placeholder.markdown(f"<div style='text-align:center; font-size:3rem; color:{c}; font-weight:900;'>{temp_res}</div>", unsafe_allow_html=True)
+            time.sleep(0.1)
+        
+        # Risultato Reale
+        final_result = random.choice(wheel_segments)
+        st.session_state.history.append(final_result)
+        
+        # Mostra Risultato
+        c_res = seg_colors.get(final_result, "#fff")
+        wheel_placeholder.markdown(f"""
+        <div style='text-align:center; transform: scale(1.2); transition: 0.5s;'>
+            <div style='font-size:1.5rem; color:#aaa;'>RESULT</div>
+            <div style='font-size:5rem; font-weight:900; color:{c_res}; text-shadow:0 0 20px {c_res};'>{final_result}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # 4. Calcolo Vincita
+        payout_mult = 0
+        is_bonus = False
+        bonus_msg = ""
+
+        # Controllo se Top Slot si applica
+        multiplier_active = 1
+        if top_slot_seg == final_result:
+            multiplier_active = top_slot_mult
+            st.success(f"🔥 TOP SLOT MATCH! Multiplier increased to {multiplier_active}x!")
+
+        # CASO 1: NUMERO
+        if isinstance(final_result, int):
+            payout_mult = final_result * multiplier_active
+            # Se vinci, ti ridà la puntata + la vincita (Logica Casino: su 1 vinci 1:1 + la tua puntata indietro)
+            # Ma semplifichiamo: Payout = Puntata * (Moltiplicatore + 1)
+            # Esempio: Punto 10 su 5. Esce 5. Vinco 50. Torno a casa con 60.
+            # Qui gestiamo solo il netto: win_amount = bet * final_result
+            # Poi aggiungiamo la bet originale.
+            
+            if bets[final_result] > 0:
+                win_amount = (bets[final_result] * final_result * multiplier_active) + bets[final_result]
+                st.session_state.balance += win_amount
+                st.session_state.last_win = win_amount
+                st.balloons()
+                st.markdown(f"<h2 style='color:#00ff00; text-align:center;'>YOU WON € {win_amount:.0f}!</h2>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"<h3 style='color:#ff4b4b; text-align:center;'>NO BET ON {final_result}. YOU LOSE.</h3>", unsafe_allow_html=True)
+
+        # CASO 2: BONUS ROUND
+        else:
+            is_bonus = True
+            base_bonus_mult = 0
+            
+            # Simulazione Minigiochi
+            st.markdown("---")
+            st.markdown(f"<h2 style='text-align:center; color:{c_res};'>🚀 BONUS ROUND: {final_result} 🚀</h2>", unsafe_allow_html=True)
+            time.sleep(1)
+
+            if final_result == "Coin Flip":
+                side = random.choice(["RED", "BLUE"])
+                mult_red = random.choice([10, 15, 20, 50]) * multiplier_active
+                mult_blue = random.choice([2, 5, 10, 15]) * multiplier_active
+                st.info(f"🔴 RED: {mult_red}x | 🔵 BLUE: {mult_blue}x")
+                time.sleep(1.5)
+                win_side_mult = mult_red if side == "RED" else mult_blue
+                st.markdown(f"<h3 style='text-align:center;'>Flip result: {side} ({win_side_mult}x)</h3>", unsafe_allow_html=True)
+                base_bonus_mult = win_side_mult
+
+            elif final_result == "Pachinko":
+                st.write("🔮 Puck is dropping...")
+                drops = [10, 20, 50, 100, 200, "DOUBLE"]
+                res_pachinko = random.choice(drops)
+                
+                if res_pachinko == "DOUBLE":
+                    st.warning("✨ DOUBLE! Dropping again...")
+                    time.sleep(1)
+                    res_pachinko = random.choice([50, 100, 200, 500]) * 2
+                
+                final_bonus = res_pachinko * multiplier_active
+                st.markdown(f"<h3 style='text-align:center;'>Landed on: {final_bonus}x</h3>", unsafe_allow_html=True)
+                base_bonus_mult = final_bonus
+
+            elif final_result == "Cash Hunt":
+                st.write("🎯 Aim at the symbols...")
+                time.sleep(1)
+                final_bonus = random.choice([10, 20, 25, 50, 100]) * multiplier_active
+                st.markdown(f"<h3 style='text-align:center;'>You hit a Rabbit! Multiplier: {final_bonus}x</h3>", unsafe_allow_html=True)
+                base_bonus_mult = final_bonus
+
+            elif final_result == "CRAZY TIME":
+                st.error("🚨 OPEN THE RED DOOR! 🚨")
+                st.write("Select Flapper: 🟢 Green | 🔵 Blue | 🟡 Yellow (Randomly picking for you...)")
+                time.sleep(1.5)
+                # Simuliamo una ruota gigante
+                ct_res = random.choice([50, 100, 200, 500, "DOUBLE", "TRIPLE"])
+                if ct_res == "DOUBLE" or ct_res == "TRIPLE":
+                    st.warning(f"✨ {ct_res}! Spinning again with bigger numbers...")
+                    ct_res = random.choice([500, 1000, 2000])
+                
+                final_bonus = ct_res * multiplier_active
+                st.markdown(f"<h1 style='text-align:center; color:red; font-size:4rem;'>{final_bonus}x</h1>", unsafe_allow_html=True)
+                base_bonus_mult = final_bonus
+
+            # Pagamento Bonus
+            if bets[final_result] > 0:
+                win_amount = (bets[final_result] * base_bonus_mult) + bets[final_result]
+                st.session_state.balance += win_amount
+                st.balloons()
+                st.markdown(f"<h2 style='color:#ffd700; text-align:center; background:#111; padding:20px; border-radius:15px;'>BIG WIN! € {win_amount:.0f}</h2>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"<h3 style='color:#aaa; text-align:center;'>You watched the bonus, but you didn't bet on it. Pain.</h3>", unsafe_allow_html=True)
+
+    # REFILL GRATUITO (Per ludopatici veri)
+    if st.session_state.balance < 10:
+        st.markdown("---")
+        st.warning("⚠️ You lost everything. The house always wins.")
+        if st.button("🔄 BEG FOR MONEY (Reset to 1000)"):
+            st.session_state.balance = 1000.0
+            st.rerun()
