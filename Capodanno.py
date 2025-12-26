@@ -630,7 +630,6 @@ elif menu == "Lupus in Fabula":
             
             st.markdown("#### 👻 WHITE SPIRIT (Start from NIGHT 2)")
             st.warning("""
-            **CHECK:** Is it Night 2 or later? Is White Spirit alive?
             1. "White Spirit, wake up."
             2. "Point to a DEAD player to revive."
             3. (If he points: That player wakes up tomorrow).
@@ -679,16 +678,49 @@ elif menu == "Lupus in Fabula":
             st.write("**'Witch, wake up...'** (Perform actions).")
             st.write("**'Witch, sleep.'**")
 
-            st.markdown("### ☀️ THE DAY PHASE")
-            st.write("🌅 **'Everybody wake up!'**")
+st.markdown("### ☀️ THE DAY PHASE")
+            st.write("🌅 **'Everybody wake up! The sun rises over Mezzenile.'**")
+            
+            st.markdown("#### 📢 MORNING ANNOUNCEMENTS (Choose the scenario)")
+            
+            # SCENARIO 1: NESSUNO MORTO
             st.success("""
-            **MORNING ANNOUNCEMENTS:**
-            1. **Who died?** (Wolves' victim OR Witch's victim).
-            2. **Did anyone revive?** (White Spirit's choice).
-            3. **Did White Spirit die?** (If he used 2nd revive).
-            4. **Did a Lover die?** -> Partner dies immediately.
+            **CASE 1: NO ONE DIED (Doctor/Witch saved)**
+            * 🗣️ "It is a miracle! The night was silent. **NOBODY DIED!**"
             """)
-            st.write("🗣️ **'DEBATE! Find the wolves!'**")
+            
+            # SCENARIO 2: QUALCUNO E' MORTO
+            st.error("""
+            **CASE 2: DEATHS OCCURRED**
+            * 🗣️ "I have bad news... Last night, we found the body of **[PLAYER NAME]**."
+            * *(If Witch killed too)*: "...and we also found a second body. **[PLAYER NAME]** is also dead."
+            """)
+            
+            # SCENARIO 3: RESURREZIONE SPIRITO BIANCO
+            st.info("""
+            **CASE 3: WHITE SPIRIT RESURRECTION**
+            * 🗣️ "BUT WAIT! A light shines upon the graveyard... **[PLAYER NAME]** comes back to life!"
+            * *(If Spirit used 2nd revive)*: "...However, the magic required a life for a life. The White Spirit exhausted their power. **[SPIRIT NAME]** drops dead. Thank you for your sacrifice."
+            """)
+            
+            st.markdown("#### ⚡ CHAIN REACTIONS (Check immediately!)")
+            
+            st.warning("""
+            💔 **DID A LOVER DIE?**
+            * 🗣️ "**[PARTNER NAME]**, you see your lover dead. Your heart cannot take it. You die of a broken heart immediately."
+            
+            🔫 **DID THE HUNTER DIE?**
+            * 🗣️ "**[HUNTER NAME]**, take your gun! You have 3 seconds for revenge! 3... 2... 1... SHOOT!"
+            
+            🐺👶 **DID THE MASCOT WOLF DIE?**
+            * 🗣️ "You fools! You killed the Mascot Wolf! The pack is howling in rage... **TOMORROW NIGHT THEY WILL KILL TWO PEOPLE!**"
+            """)
+            
+            st.markdown("---")
+            st.write("🗣️ **'Townspeople, discuss! Who is lying? Who is a Wolf? You have 5 minutes!'**")
+            st.write("⏳ *(Wait for debate)*")
+            st.write("🗳️ **'TIME IS UP! On my count, point to the person you want to execute. 3... 2... 1... VOTE!'**")
+            st.write("🔥 **'The village has spoken. [PLAYER NAME], you are executed. Do you have any last words?'**")
 
         st.markdown("### 💀 GRAVEYARD & ALIVE PLAYERS")
         
