@@ -953,9 +953,9 @@ elif menu == "UwuFUFU Dojo":
             </a>
             """, unsafe_allow_html=True)
 
-# =============================================
+# ============================================
 # SEZIONE 6: CRAZY TIME SIMULATOR
-# =============================================
+# ============================================
 elif menu == "Ludopazzia":
     # CSS PER STILE CASINO
     st.markdown("""
@@ -980,8 +980,34 @@ elif menu == "Ludopazzia":
     if 'history' not in st.session_state: st.session_state.history = []
     if 'last_win' not in st.session_state: st.session_state.last_win = 0
 
+    # --- REGOLE DEL GIOCO (NUOVO) ---
+    with st.expander("📜 HOW TO PLAY (RULES & PAYOUTS)", expanded=False):
+        st.markdown("""
+        <div style='color:#eee; font-size:0.95rem; line-height:1.6;'>
+            <p>Welcome to the <b>Sdrogo Casino</b>. The odds are real, the money is fake, the addiction is guaranteed.</p>
+            <ol>
+                <li><b>PLACE YOUR BETS:</b> You bet on where the wheel will stop. You can bet on Numbers (1, 2, 5, 10) or Bonuses.</li>
+                <li><b>THE TOP SLOT:</b> Before the wheel spins, the Top Slot generates a random Multiplier for one random segment. If they align, the win is multiplied!</li>
+                <li><b>THE SPIN:</b> The wheel stops.
+                    <ul>
+                        <li>If it stops on a <b>Number</b> you bet on: You win (Bet × Number).</li>
+                        <li>If it stops on a <b>Bonus</b> you bet on: The Bonus Round starts. Multipliers can go up to 20,000x!</li>
+                    </ul>
+                </li>
+                <li><b>⚠️ IMPORTANT:</b> If the wheel stops on a Bonus (e.g., Pachinko) but you didn't bet on it, you just WATCH others win while you cry.</li>
+            </ol>
+            <hr style='border-color:#555;'>
+            <div style='display:flex; flex-wrap: wrap; justify-content:space-around; text-align:center; gap: 10px;'>
+                <div>🔵 <b>1, 2, 5, 10</b><br><span style='font-size:0.8rem; color:#aaa;'>Pays 1x, 2x, 5x, 10x.</span></div>
+                <div>🪙 <b>Coin Flip</b><br><span style='font-size:0.8rem; color:#aaa;'>Red or Blue. 50/50.</span></div>
+                <div>🟣 <b>Pachinko</b><br><span style='font-size:0.8rem; color:#aaa;'>Ball drops. Physics.</span></div>
+                <div>🦆 <b>Cash Hunt</b><br><span style='font-size:0.8rem; color:#aaa;'>Shooting gallery.</span></div>
+                <div>🔴 <b>CRAZY TIME</b><br><span style='font-size:0.8rem; color:#aaa;'>The Jackpot Key.</span></div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
     # DEFINIZIONE RUOTA (54 Segmenti Ufficiali)
-    # 1 (21 seg), 2 (13 seg), 5 (7 seg), 10 (4 seg), CoinFlip (4), Pachinko (2), CashHunt (2), CrazyTime (1)
     wheel_segments = (
         [1]*21 + [2]*13 + [5]*7 + [10]*4 + 
         ["Coin Flip"]*4 + ["Pachinko"]*2 + ["Cash Hunt"]*2 + ["CRAZY TIME"]*1
@@ -1116,11 +1142,6 @@ elif menu == "Ludopazzia":
         # CASO 1: NUMERO
         if isinstance(final_result, int):
             payout_mult = final_result * multiplier_active
-            # Se vinci, ti ridà la puntata + la vincita (Logica Casino: su 1 vinci 1:1 + la tua puntata indietro)
-            # Ma semplifichiamo: Payout = Puntata * (Moltiplicatore + 1)
-            # Esempio: Punto 10 su 5. Esce 5. Vinco 50. Torno a casa con 60.
-            # Qui gestiamo solo il netto: win_amount = bet * final_result
-            # Poi aggiungiamo la bet originale.
             
             if bets[final_result] > 0:
                 win_amount = (bets[final_result] * final_result * multiplier_active) + bets[final_result]
