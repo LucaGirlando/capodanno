@@ -1313,7 +1313,7 @@ elif menu == "Ludopazzia":
                 <div style='background: #004d00; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #00ff00; margin-bottom: 20px;'>
                     <h2 style='color: #fff; margin:0;'>YOU WON</h2>
                     <h1 style='color: #00ff00; font-size: 3.5rem; margin:0;'>€ {gross_win:.0f}</h1>
-                    <div style='color: #8f8; font-size: 1.2rem;'>Net Profit: +€ {net_pnl:.0f}</div>
+                    <div style='color: #8f8; font-size: 1.2rem;'>Net Profit: € {net_pnl:.0f}</div>
                 </div>
                 """, unsafe_allow_html=True)
             else:
