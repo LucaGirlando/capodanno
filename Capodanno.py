@@ -709,18 +709,12 @@ elif menu == "Lupus in Fabula":
             💔 **DID A LOVER DIE?**
             * 🗣️ "**[PARTNER NAME]**, you see your lover dead. Your heart cannot take it. You die of a broken heart immediately."
             
-            🔫 **DID THE HUNTER DIE?**
-            * 🗣️ "**[HUNTER NAME]**, take your gun! You have 3 seconds for revenge! 3... 2... 1... SHOOT!"
-            
             🐺👶 **DID THE MASCOT WOLF DIE?**
             * 🗣️ "You fools! You killed the Mascot Wolf! The pack is howling in rage... **TOMORROW NIGHT THEY WILL KILL TWO PEOPLE!**"
             """)
             
             st.markdown("---")
             st.write("🗣️ **'Townspeople, discuss! Who is lying? Who is a Wolf? You have 5 minutes!'**")
-            st.write("⏳ *(Wait for debate)*")
-            st.write("🗳️ **'TIME IS UP! On my count, point to the person you want to execute. 3... 2... 1... VOTE!'**")
-            st.write("🔥 **'The village has spoken. [PLAYER NAME], you are executed. Do you have any last words?'**")
 
         st.markdown("### 💀 GRAVEYARD & ALIVE PLAYERS")
         
