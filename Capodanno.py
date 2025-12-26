@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import os
 
 # ============================================
-# 1. CONFIGURAZIONE FORZATA (DARK MODE)
+# 1. CONFIGURAZIONE FORZATA 
 # ============================================
 config_path = os.path.expanduser("~/.streamlit/config.toml")
 os.makedirs(os.path.dirname(config_path), exist_ok=True)
