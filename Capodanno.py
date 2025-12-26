@@ -957,7 +957,7 @@ elif menu == "UwuFUFU Dojo":
 # ============================================
 # SEZIONE 6: CRAZY TIME SIMULATOR (PRO EDITION)
 # ============================================
-elif menu == "Ludopatia Portami Via":
+elif menu == "Ludopazzia":
     # --- CSS E STILI ---
     st.markdown("""
     <style>
