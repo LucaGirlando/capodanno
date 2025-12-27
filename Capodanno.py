@@ -993,39 +993,29 @@ elif menu == "Ludopazzia":
     if 'game_phase' not in st.session_state: st.session_state.game_phase = 'DEPOSIT'
     if 'balance' not in st.session_state: st.session_state.balance = 0.0
     if 'history' not in st.session_state: st.session_state.history = []
+    
+    # Variabili di Gioco Corrente
     if 'current_bets' not in st.session_state: st.session_state.current_bets = {}
+    if 'total_bet_amount' not in st.session_state: st.session_state.total_bet_amount = 0.0
     if 'last_bets' not in st.session_state: st.session_state.last_bets = {} 
+    
+    # Variabili Risultato
     if 'spin_result' not in st.session_state: st.session_state.spin_result = None
     if 'top_slot_mult' not in st.session_state: st.session_state.top_slot_mult = 1
     if 'active_bonus' not in st.session_state: st.session_state.active_bonus = None
-    if 'last_win_amount' not in st.session_state: st.session_state.last_win_amount = 0 # Per P/L display
+    if 'bonus_win_mult' not in st.session_state: st.session_state.bonus_win_mult = 0
     
-    # Advanced Stats
+    # Stats Avanzate
     if 'pnl_history' not in st.session_state: st.session_state.pnl_history = []
     if 'round_count' not in st.session_state: st.session_state.round_count = 0
     if 'outcome_counts' not in st.session_state: st.session_state.outcome_counts = {}
 
-    # -------------------------------------------------------------------------
-    # DEFINIZIONE RUOTA EQUILIBRATA (120 SEGMENTI TOTALI)
-    # L'obiettivo è un RTP (Return to Player) < 100% per simulare il banco.
-    # -------------------------------------------------------------------------
+    # --- DEFINIZIONE RUOTA EQUILIBRATA (120 SEGMENTI) ---
     wheel_segments = (
-        [1]*50 +          # 41.6% Prob | Paga 1:1
-        [2]*30 +          # 25.0% Prob | Paga 2:1
-        [5]*15 +          # 12.5% Prob | Paga 5:1
-        [10]*8 +          # 6.6%  Prob | Paga 10:1
-        [20]*4 +          # 3.3%  Prob | Paga 20:1
-        [30]*2 +          # 1.6%  Prob | Paga 30:1
-        [40]*1 +          # 0.8%  Prob | Paga 40:1
-        [50]*1 +          # 0.8%  Prob | Paga 50:1
-        [100]*1 +         # 0.8%  Prob | Paga 100:1 (Jackpot)
-        ["Coin Flip"]*4 + # 3.3%
-        ["Pachinko"]*2 +  # 1.6%
-        ["Cash Hunt"]*2 + # 1.6%
-        ["CRAZY TIME"]*1  # 0.8%
+        [1]*50 + [2]*30 + [5]*15 + [10]*8 + 
+        [20]*4 + [30]*2 + [40]*1 + [50]*1 + [100]*1 + 
+        ["Coin Flip"]*4 + ["Pachinko"]*2 + ["Cash Hunt"]*2 + ["CRAZY TIME"]*1
     )
-    # Totale segmenti: 121 (aggiustato per bilanciamento)
-    
     total_segs = len(wheel_segments)
     
     seg_colors = {
@@ -1034,6 +1024,7 @@ elif menu == "Ludopazzia":
         "Coin Flip": "#0b5394", "Pachinko": "#a64d79", "Cash Hunt": "#38761d", "CRAZY TIME": "#ff0000"
     }
     
+    # Probabilità Teoriche
     seg_counts_map = {x: wheel_segments.count(x) for x in set(wheel_segments)}
     seg_probs = {k: v/total_segs for k,v in seg_counts_map.items()}
 
@@ -1045,16 +1036,16 @@ elif menu == "Ludopazzia":
         st.markdown(title_html("💸 DEPOSIT FUNDS", "#f09819", "1.5rem"), unsafe_allow_html=True)
         st.caption("Secure Connection. Enter details to enable gambling.")
         
-        col_cc1, col_cc2 = st.columns(2)
-        with col_cc1: st.text_input("Card Number", placeholder="XXXX-XXXX-XXXX-XXXX")
-        with col_cc2: st.text_input("CVV", type="password", placeholder="***")
+        c1, c2 = st.columns(2)
+        c1.text_input("Card Number", placeholder="XXXX-XXXX-XXXX-XXXX")
+        c2.text_input("CVV", type="password", placeholder="***")
         st.text_input("Cardholder Name", placeholder="MR. DEGENERATE")
         
         deposit_amount = st.number_input("Amount to Deposit (€)", min_value=10, step=50, value=1000)
         
         if st.button("💳 AUTHORIZE TRANSACTION", use_container_width=True, type="primary"):
             with st.spinner("Processing Payment..."):
-                time.sleep(1.5)
+                time.sleep(1.0)
                 if deposit_amount > 20000:
                     st.error("🚫 TRANSACTION DECLINED: Limit Exceeded (Max € 20,000).")
                 else:
@@ -1099,7 +1090,7 @@ elif menu == "Ludopazzia":
             defaults = st.session_state.last_bets if st.session_state.last_bets else {}
             bets = {}
             
-            # GRIGLIA SCOMMESSE
+            # GRID
             c1, c2, c3, c4 = st.columns(4)
             labels_1 = [(1, "num-1", c1), (2, "num-2", c2), (5, "num-5", c3), (10, "num-10", c4)]
             for val, style, col in labels_1:
@@ -1137,8 +1128,10 @@ elif menu == "Ludopazzia":
                 elif total_bet > st.session_state.balance:
                     st.error("Insufficient Funds.")
                 else:
-                    st.session_state.balance -= total_bet # Sottrai subito dal saldo
+                    # SALVA LO STATO E SOTTRAI I SOLDI
+                    st.session_state.balance -= total_bet
                     st.session_state.current_bets = bets
+                    st.session_state.total_bet_amount = total_bet # MEMORIZZA PER IL CALCOLO FINALE
                     st.session_state.last_bets = bets 
                     st.session_state.game_phase = 'SPINNING'
                     st.rerun()
@@ -1160,7 +1153,7 @@ elif menu == "Ludopazzia":
                 st.info("🎰 TOP SLOT SPINNING...")
                 ts_seg = random.choice([1, 2, 5, 10, 20, 50, 100, "Coin Flip", "Pachinko", "Cash Hunt", "CRAZY TIME"])
                 ts_mult = random.choice([2, 3, 4, 5, 10, 20, 50])
-                time.sleep(1.5) 
+                time.sleep(1.2) 
                 st.markdown(f"""
                 <div style='text-align:center; padding:15px; background:#222; border: 3px solid #ffd700; border-radius:15px; margin-bottom:20px; box-shadow: 0 0 20px #ffd700;'>
                     <span style='color:{seg_colors.get(ts_seg)}; font-weight:bold; font-size:1.5rem;'>{ts_seg}</span>
@@ -1172,8 +1165,7 @@ elif menu == "Ludopazzia":
             wheel_ph = st.empty()
             wheel_ph.markdown("<div style='text-align:center; font-size:2rem; margin-top:20px;'>Spinning...</div>", unsafe_allow_html=True)
             
-            # Simulazione
-            for _ in range(12):
+            for _ in range(10):
                 temp = random.choice(wheel_segments)
                 c = seg_colors.get(temp, "#fff")
                 wheel_ph.markdown(f"<div style='text-align:center; font-size:4rem; font-weight:bold; color:{c}; opacity:0.5;'>{temp}</div>", unsafe_allow_html=True)
@@ -1210,7 +1202,7 @@ elif menu == "Ludopazzia":
                 else:
                     st.error(f"😭 You didn't bet on {final_res}. Watching mode enabled.")
                     time.sleep(2)
-                    st.session_state.game_phase = 'BETTING'
+                    st.session_state.game_phase = 'PAYOUT' # Payout diretto (Zero vincita)
                     st.rerun()
             else:
                 st.session_state.game_phase = 'PAYOUT'
@@ -1245,7 +1237,7 @@ elif menu == "Ludopazzia":
                     st.markdown(f"<div style='display:flex; justify-content:space-around; font-size:1.5rem; margin:10px;'><div>🔴 {m_red}x</div><div>🔵 {m_blue}x</div></div>", unsafe_allow_html=True)
                     st.markdown(f"<h2 style='text-align:center;'>RESULT: {flip_res} ({win_mult}x)</h2>", unsafe_allow_html=True)
                     time.sleep(2)
-                    st.session_state.last_win_mult = win_mult
+                    st.session_state.bonus_win_mult = win_mult # Salva moltiplicatore vinto
                     st.session_state.game_phase = 'PAYOUT'
                     st.rerun()
 
@@ -1261,7 +1253,7 @@ elif menu == "Ludopazzia":
                     found_mult = random.choice([10, 25, 50, 100, 500]) * mult
                     st.markdown(f"<h1 style='color:#00ff00; text-align:center;'>💥 HIT! {found_mult}x</h1>", unsafe_allow_html=True)
                     time.sleep(2)
-                    st.session_state.last_win_mult = found_mult
+                    st.session_state.bonus_win_mult = found_mult
                     st.session_state.game_phase = 'PAYOUT'
                     st.rerun()
 
@@ -1284,7 +1276,7 @@ elif menu == "Ludopazzia":
                     final_m = landing * mult
                     st.markdown(f"<h1 style='color:#e066ff; text-align:center;'>🕳️ {final_m}x</h1>", unsafe_allow_html=True)
                     time.sleep(2)
-                    st.session_state.last_win_mult = final_m
+                    st.session_state.bonus_win_mult = final_m
                     st.session_state.game_phase = 'PAYOUT'
                     st.rerun()
 
@@ -1305,79 +1297,78 @@ elif menu == "Ludopazzia":
                     final_m = res * mult
                     st.markdown(f"<h1 style='color:red; font-size:4rem; text-align:center;'>{final_m}x</h1>", unsafe_allow_html=True)
                     time.sleep(3)
-                    st.session_state.last_win_mult = final_m
+                    st.session_state.bonus_win_mult = final_m
                     st.session_state.game_phase = 'PAYOUT'
                     st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
 
         # ==========================================
-        # SOTTO-FASE: PAYOUT & STATISTICS (CLEAN P/L)
+        # SOTTO-FASE: PAYOUT & STATISTICS (LOGICA RIFATTA)
         # ==========================================
         elif st.session_state.game_phase == 'PAYOUT':
             res = st.session_state.spin_result
             bets = st.session_state.current_bets
             mult_active = st.session_state.top_slot_mult
             
-            total_bet_amt = sum(bets.values())
+            # RECUPERA IL TOTALE SCOMMESSO (Già sottratto dal saldo)
+            total_bet_amt = st.session_state.total_bet_amount
             
-            # Calcolo "Gross Return" (Vincita Lorda = Puntata + Profitto)
-            gross_return = 0
+            # CALCOLO RITORNO (GROSS RETURN) - Quanti soldi ti ridà il banco
+            gross_return = 0.0
             
+            # 1. Vincita su NUMERO
             if isinstance(res, int):
                 bet_amt = bets.get(res, 0)
                 if bet_amt > 0:
-                    # Esempio: Punto 10 su 5. Vinco.
-                    # Ritorno = 10 (la mia puntata) + (10 * 5 * mult)
+                    # Formula: Puntata + (Puntata * Moltiplicatore)
+                    # Es: Punto 10 su 5. Vinco 50. Il banco mi da 60.
                     gross_return = bet_amt + (bet_amt * res * mult_active)
-                    
-            elif isinstance(res, str) and 'last_win_mult' in st.session_state:
+            
+            # 2. Vincita su BONUS
+            elif isinstance(res, str):
                 bet_amt = bets.get(res, 0)
                 if bet_amt > 0:
-                    win_mult = st.session_state.last_win_mult
+                    # Recupera il moltiplicatore vinto nel minigioco
+                    win_mult = st.session_state.get('bonus_win_mult', 0)
                     gross_return = bet_amt + (bet_amt * win_mult)
-                del st.session_state.last_win_mult
+                    # Reset variabile temp
+                    st.session_state.bonus_win_mult = 0
 
-            # P/L Netto = Soldi tornati in tasca - Soldi usciti per le puntate
+            # CALCOLO P/L NETTO
+            # Netto = (Soldi tornati in tasca) - (Soldi usciti dal portafoglio)
             net_pnl = gross_return - total_bet_amt
             
-            # Aggiornamento Saldo
-            st.session_state.balance += gross_return
+            # AGGIORNA STATISTICHE
+            st.session_state.balance += gross_return # Aggiungi la vincita al saldo
             st.session_state.pnl_history.append(net_pnl)
             st.session_state.round_count += 1
             
-            # --- UI RISULTATO PULITA ---
-            if net_pnl > 0:
-                st.balloons()
-                st.markdown(f"""
-                <div style='background: #004d00; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #00ff00; margin-bottom: 20px;'>
-                    <h2 style='color: #fff; margin:0;'>PROFIT</h2>
-                    <h1 style='color: #00ff00; font-size: 3.5rem; margin:0;'>+€ {net_pnl:.0f}</h1>
-                    <div style='color: #ccc; font-size: 1rem;'>(Total Return: € {gross_return:.0f})</div>
+            # DISPLAY RISULTATI (DEBUG STYLE PER CHIAREZZA)
+            c_res_box = "#004d00" if net_pnl >= 0 else "#4d0000"
+            border_c = "#00ff00" if net_pnl >= 0 else "#ff0000"
+            title_res = "PROFIT" if net_pnl > 0 else ("LOSS" if net_pnl < 0 else "BREAK EVEN")
+            
+            if gross_return > 0: st.balloons()
+            
+            st.markdown(f"""
+            <div style='background: {c_res_box}; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid {border_c}; margin-bottom: 20px;'>
+                <h2 style='color: #fff; margin:0;'>{title_res}</h2>
+                <div style='display:flex; justify-content:space-around; margin-top:10px; font-size:1.1rem; color:#ccc;'>
+                    <div>Total Bet:<br><b>€ {total_bet_amt:.0f}</b></div>
+                    <div>Total Return:<br><b>€ {gross_return:.0f}</b></div>
                 </div>
-                """, unsafe_allow_html=True)
-            elif net_pnl < 0:
-                # Caso: Ho vinto qualcosa ma meno di quanto ho puntato totale (es. Copertura)
-                # Oppure ho perso tutto.
-                loss_val = abs(net_pnl)
-                st.markdown(f"""
-                <div style='background: #4d0000; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #ff0000; margin-bottom: 20px;'>
-                    <h2 style='color: #fff; margin:0;'>LOSS</h2>
-                    <h1 style='color: #ff4b4b; font-size: 2.5rem; margin:0;'>-€ {loss_val:.0f}</h1>
-                    <div style='color: #ccc; font-size: 1rem;'>(Total Return: € {gross_return:.0f})</div>
-                </div>
-                """, unsafe_allow_html=True)
-            else:
-                st.markdown(f"""
-                <div style='background: #333; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #888; margin-bottom: 20px;'>
-                    <h2 style='color: #fff; margin:0;'>BREAK EVEN</h2>
-                    <h1 style='color: #ccc; font-size: 2.5rem; margin:0;'>€ 0</h1>
-                </div>
-                """, unsafe_allow_html=True)
+                <hr style='border-color:rgba(255,255,255,0.2);'>
+                <h1 style='color: {border_c}; font-size: 3rem; margin:0;'>
+                    {"+" if net_pnl > 0 else ""}€ {net_pnl:.0f}
+                </h1>
+                <div style='color: #eee; font-size: 0.9rem; margin-top:5px;'>Net P/L for this round</div>
+            </div>
+            """, unsafe_allow_html=True)
 
-            # STATS
-            with st.expander("📊 SESSION ANALYTICS (NERD STATS)", expanded=True):
+            # STATS AVANZATE
+            with st.expander("📊 SESSION ANALYTICS (REAL TIME)", expanded=True):
                 theoretical_prob = seg_probs.get(res, 0) * 100
-                st.info(f"🎲 **Outcome Probability:** The chance of hitting **{res}** was **{theoretical_prob:.2f}%**.")
+                st.info(f"🎲 **Event Probability:** {res} occurs in **{theoretical_prob:.2f}%** of spins.")
 
                 import statistics
                 history_pnl = st.session_state.pnl_history
@@ -1389,27 +1380,34 @@ elif menu == "Ludopazzia":
 
                 c1, c2, c3, c4 = st.columns(4)
                 with c1: 
-                    st.markdown("**Total Net P/L**")
+                    st.markdown("**Total Session P/L**")
                     color = "green" if total_pnl >= 0 else "red"
                     st.markdown(f":{color}[€ {total_pnl:.0f}]")
                 with c2:
-                    st.markdown("**Avg P/L**")
+                    st.markdown("**Avg P/L per Round**")
                     st.write(f"€ {avg_pnl:.2f}")
                 with c3:
                     st.markdown("**Median P/L**")
                     st.write(f"€ {median_pnl:.2f}")
                 with c4:
-                    st.markdown("**Std Dev**")
+                    st.markdown("**Std Dev (Volatility)**")
                     st.write(f"{std_dev_pnl:.0f}")
 
                 st.markdown("---")
-                st.write("**Observed Distribution vs Theoretical:**")
+                st.write("**Distribution Tracker:**")
                 dist_txt = ""
                 total_spins = st.session_state.round_count
-                for seg, count in st.session_state.outcome_counts.items():
+                
+                # Ordina per chiave (numeri poi stringhe)
+                sorted_keys = sorted(st.session_state.outcome_counts.keys(), key=lambda x: (isinstance(x, str), x))
+                
+                for seg in sorted_keys:
+                    count = st.session_state.outcome_counts[seg]
                     obs_pct = (count / total_spins) * 100
                     theo_pct = seg_probs.get(seg, 0) * 100
-                    dist_txt += f"- **{seg}**: Observed **{obs_pct:.1f}%** (Theo: {theo_pct:.1f}%)\n"
+                    diff = obs_pct - theo_pct
+                    arrow = "⬆️" if diff > 0 else "⬇️"
+                    dist_txt += f"- **{seg}**: {obs_pct:.1f}% (Exp: {theo_pct:.1f}%) {arrow}\n"
                 st.markdown(dist_txt)
 
             st.markdown("<br>", unsafe_allow_html=True)
