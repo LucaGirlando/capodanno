@@ -1093,7 +1093,7 @@ elif menu == "Ludopazzia":
         # SOTTO-FASE: BETTING (GRID ESPANSA)
         # ==========================================
         if st.session_state.game_phase == 'BETTING':
-            st.info("👇 PLACE YOUR BETS (EXTENDED GRID) 👇")
+            st.info("👇 PLACE YOUR BETS 👇")
             
             defaults = st.session_state.last_bets if st.session_state.last_bets else {}
             bets = {}
