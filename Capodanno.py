@@ -955,74 +955,86 @@ elif menu == "UwuFUFU Dojo":
             """, unsafe_allow_html=True)
 
 # ============================================
-# SEZIONE 6: CRAZY TIME SIMULATOR
+# SEZIONE 6: CRAZY TIME SIMULATOR 
 # ============================================
 elif menu == "Ludopazzia":
     # --- CSS E STILI ---
     st.markdown("""
     <style>
-    .bet-btn { border-radius: 10px; padding: 10px; text-align: center; color: black; font-weight: bold; margin: 5px; border: 2px solid white; transition: all 0.3s; cursor: pointer; }
-    .bet-btn:hover { transform: scale(1.05); }
+    .bet-btn { border-radius: 8px; padding: 15px 5px; text-align: center; color: black; font-weight: bold; margin: 3px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.2s; cursor: pointer; font-size: 0.9rem; }
+    .bet-btn:hover { transform: scale(1.05); border-color: white; }
+    
+    /* NUMERI CLASSICI */
     .num-1 { background-color: #6fa8dc; }
     .num-2 { background-color: #ffd966; }
     .num-5 { background-color: #ea9999; }
     .num-10 { background-color: #8e7cc3; }
+    
+    /* NUOVI NUMERI ALTI */
+    .num-20 { background-color: #76a5af; }
+    .num-30 { background-color: #93c47d; }
+    .num-40 { background-color: #e06666; }
+    .num-50 { background-color: #f6b26b; }
+    .num-100 { background-color: #8e7cc3; border: 2px solid gold; color: white; box-shadow: 0 0 10px gold; }
+
+    /* BONUS */
     .bonus-coin { background-color: #0b5394; color: white; border: 2px solid #3d85c6; }
     .bonus-cash { background-color: #38761d; color: white; border: 2px solid #6aa84f; }
     .bonus-pachinko { background-color: #a64d79; color: white; border: 2px solid #d5a6bd; }
     .bonus-crazy { background-color: #cc0000; color: white; border: 2px solid #ff0000; box-shadow: 0 0 15px red; animation: pulse 2s infinite; }
     
     .history-ball { display: inline-block; width: 35px; height: 35px; border-radius: 50%; text-align: center; line-height: 35px; margin-right: 5px; font-weight: bold; color: black; font-size: 0.8rem; border: 1px solid white; }
-    .stat-box { background: rgba(255,255,255,0.05); border-left: 3px solid #f09819; padding: 10px; margin-bottom: 5px; border-radius: 5px; }
     
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 0, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); } }
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown(gradient_text("CRAZY TIME: HARDCORE EDITION"), unsafe_allow_html=True)
+    st.markdown(gradient_text("CRAZY TIME: EXTENDED EDITION"), unsafe_allow_html=True)
 
-    # --- STATE MANAGEMENT & STATS INITIALIZATION ---
+    # --- STATE MANAGEMENT ---
     if 'game_phase' not in st.session_state: st.session_state.game_phase = 'DEPOSIT'
     if 'balance' not in st.session_state: st.session_state.balance = 0.0
     if 'history' not in st.session_state: st.session_state.history = []
     if 'current_bets' not in st.session_state: st.session_state.current_bets = {}
-    if 'last_bets' not in st.session_state: st.session_state.last_bets = {} # Per il tasto Re-Bet
+    if 'last_bets' not in st.session_state: st.session_state.last_bets = {} 
     if 'spin_result' not in st.session_state: st.session_state.spin_result = None
     if 'top_slot_mult' not in st.session_state: st.session_state.top_slot_mult = 1
     if 'active_bonus' not in st.session_state: st.session_state.active_bonus = None
     
-    # Advanced Stats Tracking
-    if 'pnl_history' not in st.session_state: st.session_state.pnl_history = [] # Lista dei P/L per round
+    # Advanced Stats
+    if 'pnl_history' not in st.session_state: st.session_state.pnl_history = []
     if 'round_count' not in st.session_state: st.session_state.round_count = 0
-    if 'outcome_counts' not in st.session_state: st.session_state.outcome_counts = {} # Per distribuzione
+    if 'outcome_counts' not in st.session_state: st.session_state.outcome_counts = {}
 
-    # DEFINIZIONE SEGMENTI "HARDCORE MODE" (Molti più numeri, bonus rarissimi)
-    # Totale Segmenti: 159
+    # DEFINIZIONE SEGMENTI ESTESA (TANTI NUMERI)
+    # Abbiamo aggiunto 20, 30, 40, 50, 100 per diluire le probabilità e aumentare la griglia
     wheel_segments = (
-        [1]*80 +          # 80 spicchi da 1
-        [2]*40 +          # 40 spicchi da 2
-        [5]*20 +          # 20 spicchi da 5
-        [10]*10 +         # 10 spicchi da 10
-        ["Coin Flip"]*4 + # 4 Coin Flip
-        ["Pachinko"]*2 +  # 2 Pachinko
-        ["Cash Hunt"]*2 + # 2 Cash Hunt
-        ["CRAZY TIME"]*1  # 1 Crazy Time
+        [1]*60 +          
+        [2]*35 +          
+        [5]*20 +          
+        [10]*15 +         
+        [20]*10 +   # Nuovo
+        [30]*8 +    # Nuovo
+        [40]*5 +    # Nuovo
+        [50]*4 +    # Nuovo
+        [100]*2 +   # Nuovo (Jackpot numerico)
+        ["Coin Flip"]*4 + 
+        ["Pachinko"]*2 + 
+        ["Cash Hunt"]*2 + 
+        ["CRAZY TIME"]*1
     )
     
     total_segs = len(wheel_segments)
-    seg_colors = {1: "#6fa8dc", 2: "#ffd966", 5: "#ea9999", 10: "#8e7cc3", "Coin Flip": "#0b5394", "Pachinko": "#a64d79", "Cash Hunt": "#38761d", "CRAZY TIME": "#ff0000"}
     
-    # Probabilità Teoriche Aggiornate (Hardcore)
-    seg_probs = {
-        1: 80/total_segs, 
-        2: 40/total_segs, 
-        5: 20/total_segs, 
-        10: 10/total_segs, 
-        "Coin Flip": 4/total_segs, 
-        "Pachinko": 2/total_segs, 
-        "Cash Hunt": 2/total_segs, 
-        "CRAZY TIME": 1/total_segs
+    seg_colors = {
+        1: "#6fa8dc", 2: "#ffd966", 5: "#ea9999", 10: "#8e7cc3",
+        20: "#76a5af", 30: "#93c47d", 40: "#e06666", 50: "#f6b26b", 100: "#8e7cc3",
+        "Coin Flip": "#0b5394", "Pachinko": "#a64d79", "Cash Hunt": "#38761d", "CRAZY TIME": "#ff0000"
     }
+    
+    # Calcolo Probabilità
+    seg_counts_map = {x: wheel_segments.count(x) for x in set(wheel_segments)}
+    seg_probs = {k: v/total_segs for k,v in seg_counts_map.items()}
 
     # ==========================================
     # FASE 1: DEPOSITO
@@ -1035,7 +1047,6 @@ elif menu == "Ludopazzia":
         col_cc1, col_cc2 = st.columns(2)
         with col_cc1: st.text_input("Card Number", placeholder="XXXX-XXXX-XXXX-XXXX")
         with col_cc2: st.text_input("CVV", type="password", placeholder="***")
-        
         st.text_input("Cardholder Name", placeholder="MR. DEGENERATE")
         
         deposit_amount = st.number_input("Amount to Deposit (€)", min_value=10, step=50, value=1000)
@@ -1079,32 +1090,41 @@ elif menu == "Ludopazzia":
         st.markdown("---")
 
         # ==========================================
-        # SOTTO-FASE: BETTING
+        # SOTTO-FASE: BETTING (GRID ESPANSA)
         # ==========================================
         if st.session_state.game_phase == 'BETTING':
-            st.info("👇 PLACE YOUR BETS 👇")
+            st.info("👇 PLACE YOUR BETS (EXTENDED GRID) 👇")
             
-            # Retrieve last bets if available to pre-fill
             defaults = st.session_state.last_bets if st.session_state.last_bets else {}
-            
             bets = {}
-            cols = st.columns(4)
-            labels = [(1, "num-1"), (2, "num-2"), (5, "num-5"), (10, "num-10")]
-            for i, (l, c) in enumerate(labels):
-                with cols[i]:
-                    bets[l] = st.number_input(f"Bet {l}", min_value=0, step=10, value=int(defaults.get(l, 0)), key=f"bet_{l}", label_visibility="collapsed")
-                    st.markdown(f"<div class='bet-btn {c}'>{l}</div>", unsafe_allow_html=True)
+            
+            # NUMBERS ROW 1 (Standard)
+            c1, c2, c3, c4 = st.columns(4)
+            labels_1 = [(1, "num-1", c1), (2, "num-2", c2), (5, "num-5", c3), (10, "num-10", c4)]
+            for val, style, col in labels_1:
+                with col:
+                    bets[val] = st.number_input(f"Bet {val}", min_value=0, step=10, value=int(defaults.get(val, 0)), key=f"bet_{val}", label_visibility="collapsed")
+                    st.markdown(f"<div class='bet-btn {style}'>{val} (Pays {val}:1)</div>", unsafe_allow_html=True)
 
-            cols_b = st.columns(4)
-            labels_b = [("Coin Flip", "bonus-coin"), ("Cash Hunt", "bonus-cash"), ("Pachinko", "bonus-pachinko"), ("CRAZY TIME", "bonus-crazy")]
-            for i, (l, c) in enumerate(labels_b):
-                with cols_b[i]:
-                    bets[l] = st.number_input(f"Bet {l}", min_value=0, step=10, value=int(defaults.get(l, 0)), key=f"bet_{l}", label_visibility="collapsed")
-                    st.markdown(f"<div class='bet-btn {c}' style='font-size:0.8rem;'>{l}</div>", unsafe_allow_html=True)
+            # NUMBERS ROW 2 (High Rollers)
+            c1, c2, c3, c4, c5 = st.columns(5)
+            labels_2 = [(20, "num-20", c1), (30, "num-30", c2), (40, "num-40", c3), (50, "num-50", c4), (100, "num-100", c5)]
+            for val, style, col in labels_2:
+                with col:
+                    bets[val] = st.number_input(f"Bet {val}", min_value=0, step=10, value=int(defaults.get(val, 0)), key=f"bet_{val}", label_visibility="collapsed")
+                    st.markdown(f"<div class='bet-btn {style}'>{val}</div>", unsafe_allow_html=True)
+
+            # BONUS ROW
+            st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
+            c1, c2, c3, c4 = st.columns(4)
+            labels_b = [("Coin Flip", "bonus-coin", c1), ("Cash Hunt", "bonus-cash", c2), ("Pachinko", "bonus-pachinko", c3), ("CRAZY TIME", "bonus-crazy", c4)]
+            for val, style, col in labels_b:
+                with col:
+                    bets[val] = st.number_input(f"Bet {val}", min_value=0, step=10, value=int(defaults.get(val, 0)), key=f"bet_{val}", label_visibility="collapsed")
+                    st.markdown(f"<div class='bet-btn {style}'>{val}</div>", unsafe_allow_html=True)
 
             total_bet = sum(bets.values())
             
-            # INFO BAR
             st.markdown(f"""
             <div style='background:#333; padding:10px; border-radius:5px; text-align:center; margin-top:15px;'>
                 <span style='color:#aaa;'>TOTAL BET:</span> <span style='color:white; font-weight:bold; font-size:1.2rem;'>€ {total_bet}</span>
@@ -1120,7 +1140,7 @@ elif menu == "Ludopazzia":
                 else:
                     st.session_state.balance -= total_bet
                     st.session_state.current_bets = bets
-                    st.session_state.last_bets = bets # Save for Re-Bet
+                    st.session_state.last_bets = bets 
                     st.session_state.game_phase = 'SPINNING'
                     st.rerun()
             
@@ -1139,8 +1159,8 @@ elif menu == "Ludopazzia":
             slot_ph = st.empty()
             with slot_ph.container():
                 st.info("🎰 TOP SLOT SPINNING...")
-                ts_seg = random.choice([1, 2, 5, 10, "Coin Flip", "Pachinko", "Cash Hunt", "CRAZY TIME"])
-                ts_mult = random.choice([2, 3, 4, 5, 10, 20, 25, 50])
+                ts_seg = random.choice([1, 2, 5, 10, 20, 50, 100, "Coin Flip", "Pachinko", "Cash Hunt", "CRAZY TIME"])
+                ts_mult = random.choice([2, 3, 4, 5, 10, 20, 50])
                 time.sleep(1.5) 
                 st.markdown(f"""
                 <div style='text-align:center; padding:15px; background:#222; border: 3px solid #ffd700; border-radius:15px; margin-bottom:20px; box-shadow: 0 0 20px #ffd700;'>
@@ -1153,18 +1173,17 @@ elif menu == "Ludopazzia":
             wheel_ph = st.empty()
             wheel_ph.markdown("<div style='text-align:center; font-size:2rem; margin-top:20px;'>Spinning...</div>", unsafe_allow_html=True)
             
-            for _ in range(10):
+            for _ in range(12):
                 temp = random.choice(wheel_segments)
                 c = seg_colors.get(temp, "#fff")
                 wheel_ph.markdown(f"<div style='text-align:center; font-size:4rem; font-weight:bold; color:{c}; opacity:0.5;'>{temp}</div>", unsafe_allow_html=True)
-                time.sleep(0.15)
+                time.sleep(0.1)
             time.sleep(0.5)
 
             final_res = random.choice(wheel_segments)
             st.session_state.spin_result = final_res
             st.session_state.history.append(final_res)
             
-            # Aggiorna statistiche distribuzione
             curr_count = st.session_state.outcome_counts.get(final_res, 0)
             st.session_state.outcome_counts[final_res] = curr_count + 1
             
@@ -1221,8 +1240,7 @@ elif menu == "Ludopazzia":
                     if st.button("🔵 BLUE", use_container_width=True): choice = "BLUE"
                 
                 if choice:
-                    with st.spinner("Flipping..."):
-                        time.sleep(2)
+                    with st.spinner("Flipping..."): time.sleep(2)
                     flip_res = random.choice(["RED", "BLUE"])
                     win_mult = m_red if flip_res == "RED" else m_blue
                     st.markdown(f"<div style='display:flex; justify-content:space-around; font-size:1.5rem; margin:10px;'><div>🔴 {m_red}x</div><div>🔵 {m_blue}x</div></div>", unsafe_allow_html=True)
@@ -1239,7 +1257,6 @@ elif menu == "Ludopazzia":
                 if c1.button("🌵 CACTUS"): target = "CACTUS"
                 if c2.button("🐰 RABBIT"): target = "RABBIT"
                 if c3.button("🐥 CHICKEN"): target = "CHICKEN"
-                
                 if target:
                     with st.spinner("Sniper locking on..."): time.sleep(2)
                     found_mult = random.choice([10, 25, 50, 100, 500]) * mult
@@ -1255,7 +1272,6 @@ elif menu == "Ludopazzia":
                 zone = None
                 for i in range(4):
                     if cols[i].button(f"Zone {i+1}"): zone = i
-                
                 if zone is not None:
                     ph = st.empty()
                     for i in range(3):
@@ -1280,7 +1296,6 @@ elif menu == "Ludopazzia":
                 if c1.button("🟢 GREEN"): flap = "GREEN"
                 if c2.button("🔵 BLUE"): flap = "BLUE"
                 if c3.button("🟡 YELLOW"): flap = "YELLOW"
-                
                 if flap:
                     with st.spinner("SPINNING GIGANTIC WHEEL..."): time.sleep(2.5)
                     res = random.choice([50, 100, 200, 500, "DOUBLE", "TRIPLE"])
@@ -1294,7 +1309,6 @@ elif menu == "Ludopazzia":
                     st.session_state.last_win_mult = final_m
                     st.session_state.game_phase = 'PAYOUT'
                     st.rerun()
-            
             st.markdown("</div>", unsafe_allow_html=True)
 
         # ==========================================
@@ -1305,7 +1319,6 @@ elif menu == "Ludopazzia":
             bets = st.session_state.current_bets
             mult_active = st.session_state.top_slot_mult
             
-            # 1. Calcolo Payout
             total_bet_amt = sum(bets.values())
             gross_win = 0
             
@@ -1322,19 +1335,19 @@ elif menu == "Ludopazzia":
 
             net_pnl = gross_win - total_bet_amt
             
-            # 2. Aggiornamento Stats
             st.session_state.balance += gross_win
             st.session_state.pnl_history.append(net_pnl)
             st.session_state.round_count += 1
             
-            # 3. UI Risultato
             if gross_win > 0:
                 st.balloons()
+                # --- FIX P/L FORMATTING HERE ---
+                sign_str = "+" if net_pnl > 0 else ""
                 st.markdown(f"""
                 <div style='background: #004d00; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #00ff00; margin-bottom: 20px;'>
                     <h2 style='color: #fff; margin:0;'>YOU WON</h2>
                     <h1 style='color: #00ff00; font-size: 3.5rem; margin:0;'>€ {gross_win:.0f}</h1>
-                    <div style='color: #8f8; font-size: 1.2rem;'>Net Profit: +€ {net_pnl:.0f}</div>
+                    <div style='color: #8f8; font-size: 1.2rem;'>Net Profit: {sign_str}€ {net_pnl:.0f}</div>
                 </div>
                 """, unsafe_allow_html=True)
             else:
@@ -1345,22 +1358,16 @@ elif menu == "Ludopazzia":
                 </div>
                 """, unsafe_allow_html=True)
 
-            # 4. DASHBOARD ANALITICA (NERD STATS)
             with st.expander("📊 SESSION ANALYTICS (NERD STATS)", expanded=True):
-                # Probability Check
                 theoretical_prob = seg_probs.get(res, 0) * 100
                 st.info(f"🎲 **Outcome Probability:** The chance of hitting **{res}** was **{theoretical_prob:.2f}%**.")
 
-                # Calculation Stats
                 import statistics
                 history_pnl = st.session_state.pnl_history
                 
                 avg_pnl = statistics.mean(history_pnl) if history_pnl else 0
                 median_pnl = statistics.median(history_pnl) if history_pnl else 0
-                
-                # DEVIAZIONE STANDARD AL POSTO DELLA VARIANZA
                 std_dev_pnl = statistics.stdev(history_pnl) if len(history_pnl) > 1 else 0
-                
                 total_pnl = sum(history_pnl)
 
                 c1, c2, c3, c4 = st.columns(4)
@@ -1375,7 +1382,7 @@ elif menu == "Ludopazzia":
                     st.markdown("**Median P/L**")
                     st.write(f"€ {median_pnl:.2f}")
                 with c4:
-                    st.markdown("**Std Dev (Volatility)**")
+                    st.markdown("**Std Dev**")
                     st.write(f"{std_dev_pnl:.0f}")
 
                 st.markdown("---")
