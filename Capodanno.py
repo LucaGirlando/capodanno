@@ -989,7 +989,7 @@ elif menu == "Ludopazzia":
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown(gradient_text("CRAZY TIME: EXTENDED EDITION"), unsafe_allow_html=True)
+    st.markdown(gradient_text("CRAZY TIME: SDROGO EDITION"), unsafe_allow_html=True)
 
     # --- STATE MANAGEMENT ---
     if 'game_phase' not in st.session_state: st.session_state.game_phase = 'DEPOSIT'
