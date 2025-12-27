@@ -955,7 +955,7 @@ elif menu == "UwuFUFU Dojo":
             """, unsafe_allow_html=True)
 
 # ============================================
-# SEZIONE 6: CRAZY TIME SIMULATOR (PRO EDITION)
+# SEZIONE 6: CRAZY TIME SIMULATOR
 # ============================================
 elif menu == "Ludopazzia":
     # --- CSS E STILI ---
@@ -979,7 +979,7 @@ elif menu == "Ludopazzia":
     </style>
     """, unsafe_allow_html=True)
 
-    st.markdown(gradient_text("CRAZY TIME: PROFESSIONAL EDITION"), unsafe_allow_html=True)
+    st.markdown(gradient_text("CRAZY TIME: HARDCORE EDITION"), unsafe_allow_html=True)
 
     # --- STATE MANAGEMENT & STATS INITIALIZATION ---
     if 'game_phase' not in st.session_state: st.session_state.game_phase = 'DEPOSIT'
@@ -996,12 +996,33 @@ elif menu == "Ludopazzia":
     if 'round_count' not in st.session_state: st.session_state.round_count = 0
     if 'outcome_counts' not in st.session_state: st.session_state.outcome_counts = {} # Per distribuzione
 
-    # DEFINIZIONE SEGMENTI E COLORI
-    wheel_segments = ([1]*21 + [2]*13 + [5]*7 + [10]*4 + ["Coin Flip"]*4 + ["Pachinko"]*2 + ["Cash Hunt"]*2 + ["CRAZY TIME"]*1)
+    # DEFINIZIONE SEGMENTI "HARDCORE MODE" (Molti più numeri, bonus rarissimi)
+    # Totale Segmenti: 159
+    wheel_segments = (
+        [1]*80 +          # 80 spicchi da 1
+        [2]*40 +          # 40 spicchi da 2
+        [5]*20 +          # 20 spicchi da 5
+        [10]*10 +         # 10 spicchi da 10
+        ["Coin Flip"]*4 + # 4 Coin Flip
+        ["Pachinko"]*2 +  # 2 Pachinko
+        ["Cash Hunt"]*2 + # 2 Cash Hunt
+        ["CRAZY TIME"]*1  # 1 Crazy Time
+    )
+    
+    total_segs = len(wheel_segments)
     seg_colors = {1: "#6fa8dc", 2: "#ffd966", 5: "#ea9999", 10: "#8e7cc3", "Coin Flip": "#0b5394", "Pachinko": "#a64d79", "Cash Hunt": "#38761d", "CRAZY TIME": "#ff0000"}
     
-    # Probabilità Teoriche (Segmenti / 54)
-    seg_probs = {1: 21/54, 2: 13/54, 5: 7/54, 10: 4/54, "Coin Flip": 4/54, "Pachinko": 2/54, "Cash Hunt": 2/54, "CRAZY TIME": 1/54}
+    # Probabilità Teoriche Aggiornate (Hardcore)
+    seg_probs = {
+        1: 80/total_segs, 
+        2: 40/total_segs, 
+        5: 20/total_segs, 
+        10: 10/total_segs, 
+        "Coin Flip": 4/total_segs, 
+        "Pachinko": 2/total_segs, 
+        "Cash Hunt": 2/total_segs, 
+        "CRAZY TIME": 1/total_segs
+    }
 
     # ==========================================
     # FASE 1: DEPOSITO
@@ -1313,7 +1334,7 @@ elif menu == "Ludopazzia":
                 <div style='background: #004d00; padding: 20px; border-radius: 15px; text-align: center; border: 3px solid #00ff00; margin-bottom: 20px;'>
                     <h2 style='color: #fff; margin:0;'>YOU WON</h2>
                     <h1 style='color: #00ff00; font-size: 3.5rem; margin:0;'>€ {gross_win:.0f}</h1>
-                    <div style='color: #8f8; font-size: 1.2rem;'>Net Profit: € {net_pnl:.0f}</div>
+                    <div style='color: #8f8; font-size: 1.2rem;'>Net Profit: +€ {net_pnl:.0f}</div>
                 </div>
                 """, unsafe_allow_html=True)
             else:
@@ -1336,7 +1357,10 @@ elif menu == "Ludopazzia":
                 
                 avg_pnl = statistics.mean(history_pnl) if history_pnl else 0
                 median_pnl = statistics.median(history_pnl) if history_pnl else 0
-                variance_pnl = statistics.variance(history_pnl) if len(history_pnl) > 1 else 0
+                
+                # DEVIAZIONE STANDARD AL POSTO DELLA VARIANZA
+                std_dev_pnl = statistics.stdev(history_pnl) if len(history_pnl) > 1 else 0
+                
                 total_pnl = sum(history_pnl)
 
                 c1, c2, c3, c4 = st.columns(4)
@@ -1345,18 +1369,17 @@ elif menu == "Ludopazzia":
                     color = "green" if total_pnl >= 0 else "red"
                     st.markdown(f":{color}[€ {total_pnl:.0f}]")
                 with c2:
-                    st.markdown("**Avg P/L / Round**")
+                    st.markdown("**Avg P/L**")
                     st.write(f"€ {avg_pnl:.2f}")
                 with c3:
                     st.markdown("**Median P/L**")
                     st.write(f"€ {median_pnl:.2f}")
                 with c4:
-                    st.markdown("**Variance (Risk)**")
-                    st.write(f"{variance_pnl:.0f}")
+                    st.markdown("**Std Dev (Volatility)**")
+                    st.write(f"{std_dev_pnl:.0f}")
 
                 st.markdown("---")
                 st.write("**Observed Distribution vs Theoretical:**")
-                # Simple Distribution text
                 dist_txt = ""
                 total_spins = st.session_state.round_count
                 for seg, count in st.session_state.outcome_counts.items():
