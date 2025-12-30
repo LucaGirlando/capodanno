@@ -201,7 +201,8 @@ if menu == "Main Dashboard":
         st.markdown("<div style='text-align: center; color: #8e2de2; font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-bottom: 10px;'>STARTERS</div>", unsafe_allow_html=True)
         st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Torte Salate Rustiche</div>", unsafe_allow_html=True)
         st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Panettone Gastronomico Salato</div>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Alpine Charcuterie Board</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Pizzette super rustiche</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Insalata Russa</div>", unsafe_allow_html=True)
         st.markdown("<div style='text-align: center; color: #aaa; font-size: 0.9rem; font-style: italic; margin-bottom: 30px;'>Selection of local cured meats & cheeses</div>", unsafe_allow_html=True)
         
         st.markdown("<div style='text-align: center; color: #f09819; opacity: 0.5;'>♦</div>", unsafe_allow_html=True)
@@ -217,8 +218,7 @@ if menu == "Main Dashboard":
         # 3. MAINS
         st.markdown("<div style='text-align: center; color: #8e2de2; font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; margin-top: 30px; margin-bottom: 10px;'>MAIN COURSES & SIDES</div>", unsafe_allow_html=True)
         st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Polpo in Pignata e Purè</div>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Arrosto di Vitello alle Erbe</div>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 30px;'>Crispy Roasted Potatoes</div>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; color: white; font-size: 1.2rem; margin-bottom: 5px;'>Vitello Tonnato</div>", unsafe_allow_html=True)
 
         st.markdown("<div style='text-align: center; color: #f09819; opacity: 0.5;'>♦</div>", unsafe_allow_html=True)
 
