@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import os
 import statistics
 
-# ==============================================
+# ===============================================
 # 1. CONFIGURAZIONE FORZATA 
 # ===============================================
 config_path = os.path.expanduser("~/.streamlit/config.toml")
